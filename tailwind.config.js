@@ -19,7 +19,8 @@ export default {
         'login-container': '#6653A3',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],  // Moderne, strakke sans-serif font
+        k2d: ['K2D', 'sans-serif'],
+        openSans: ['Open Sans', 'sans-serif'],
       },
     },
   },

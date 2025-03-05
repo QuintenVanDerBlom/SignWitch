@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router';
 
 function Layout() {
     return (
-        <div className="min-h-screen bg-nav-bar text-white">
+        <div className="min-h-screen bg-nav-bar text-black">
             {/* Header */}
             <header className="bg-nav-bar shadow-lg py-4">
                 <nav className="container mx-auto flex justify-between items-center px-4">
@@ -27,9 +27,6 @@ function Layout() {
             </main>
 
             {/* Footer (Optioneel, maar kan toegevoegd worden voor een meer dynamische ervaring) */}
-            <footer className="text-center py-4 mt-8 text-gray-400">
-                <p>&copy; 2025 Music App - All Rights Reserved</p>
-            </footer>
         </div>
     );
 }
