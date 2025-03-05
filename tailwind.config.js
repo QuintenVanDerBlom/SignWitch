@@ -17,6 +17,9 @@ export default {
         'button-login': '#CCA7E9',
         'button-login-hover': '#87669F',
         'login-container': '#6653A3',
+        'gradient-a': '#FFFFFF',
+        'gradient-b': '#E4DAE9',
+        'gradient-c': '#E5C7F4',
       },
       fontFamily: {
         k2d: ['K2D', 'sans-serif'],
