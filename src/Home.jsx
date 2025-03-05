@@ -6,7 +6,7 @@ function Home() {
     return (
         <div className="flex flex-col items-center justify-center px-4 text-center">
             {/* Header & Intro */}
-            <h2 className="text-4xl font-k2d">Hallo {/*{users.name}*/} Abigail</h2>
+            <h2 className="text-4xl font-k2d py-4">Hallo {/*{users.name}*/} Abigail</h2>
             <p className="pb-4 mt-4 text-lg max-w-md font-openSans">
                 Welkom op SignWitch. Hier kan je extra oefeningen doen rondom gebarentaal.
                 Hier zie je een overzicht van je lessen, maar je kan ook het woordenboek bekijken en

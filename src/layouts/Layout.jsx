@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 function Layout() {
     return (
-        <div className="min-h-screen text-white">
+        <div className="min-h-screen text-black">
             {/* Header */}
             <header className="bg-bg-nav-bar shadow-lg py-4">
                 <nav className="container mx-auto flex justify-between items-center px-6">
