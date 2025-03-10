@@ -3,6 +3,7 @@ import Layout from "./layouts/Layout.jsx";
 import Test from "./pages/Test.jsx";
 import Home from "./Home.jsx";
 import Lessons from "./pages/Lessons/Lessons.jsx";
+import MultipleChoiceQuiz from "./pages/Quizzes/MultipleChoiceQuiz.jsx";
 
 
 const router = createBrowserRouter([
@@ -16,10 +17,10 @@ const router = createBrowserRouter([
                 path: '/lessen',
                 element: <Lessons/>
             },
-            // {
-            //     path: '/sportitem',
-            //     element: <SportItemList/>
-            // },
+            {
+                path: '/lessen/1/1',
+                element: <MultipleChoiceQuiz/>
+            },
             // {
             //     path: '/sportitem/create',
             //     element: <SportItemCreateForm/>
