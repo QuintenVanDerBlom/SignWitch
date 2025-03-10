@@ -10,6 +10,13 @@ function Dictionary() {
         { id: 3, name: "Woorden" },
         { id: 4, name: "Basis" },
     ];
+    const lessons = [
+        { id: 1, name: "Les 1" },
+        { id: 2, name: "Les 2" },
+        { id: 3, name: "Les 3" },
+        { id: 4, name: "Les 4" },
+        { id: 5, name: "Les 5" },
+    ];
 
     const navigate = useNavigate();
 
@@ -19,6 +26,7 @@ function Dictionary() {
     const [fadeClass, setFadeClass] = useState("opacity-0 translate-y-4");
     const [favorites, setFavorites] = useState({}); // Store favorite states
     const [selectedCategories, setSelectedCategories] = useState([]); // Track selected categories
+    const [selectedLessons, setSelectedLessons] = useState([]); // Track selected lessons
 
     useEffect(() => {
         setFadeClass("opacity-100 translate-y-0 transition-opacity duration-500 ease-in-out");
@@ -31,7 +39,7 @@ function Dictionary() {
                 const response = await fetch("http://145.24.223.94:8000/signs", {
                     method: "GET",
                     headers: {
-                        "apiKey": "EHKG61Lr3Bq0PDncCoALn9hvG2LeHVBB",
+                        "apiKey": "EHKG61Lr3Bq0PDncCoALn9hvG2LeHVBB", // Replace with your actual API key
                         "Accept": "application/json",
                     },
                 });
@@ -55,8 +63,12 @@ function Dictionary() {
 
 
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentSigns = selectedCategories.length > 0
-        ? signs.filter(sign => selectedCategories.includes(sign.category_id)).slice(startIndex, startIndex + itemsPerPage)
+    const currentSigns = selectedCategories.length > 0 || selectedLessons.length > 0
+        ? signs.filter(sign => {
+            const isCategoryMatch = selectedCategories.length === 0 || selectedCategories.includes(sign.category_id);
+            const isLessonMatch = selectedLessons.length === 0 || selectedLessons.includes(sign.lesson_id);
+            return isCategoryMatch && isLessonMatch;
+        }).slice(startIndex, startIndex + itemsPerPage)
         : signs.slice(startIndex, startIndex + itemsPerPage);
 
     const goToNextPage = () => {
@@ -93,6 +105,19 @@ function Dictionary() {
         });
     };
 
+    const handleLessonChange = (lessonId) => {
+        setCurrentPage(1); // Reset to page 1 when lesson changes
+        setSelectedLessons((prev) => {
+            if (prev.includes(lessonId)) {
+                // Remove lesson if already selected
+                return prev.filter(id => id !== lessonId);
+            } else {
+                // Add lesson if not already selected
+                return [...prev, lessonId];
+            }
+        });
+    };
+
     return (
         <div className="flex-1 p-6 ml-64 min-h-screen">
             {/* Sidebar */}
@@ -125,18 +150,21 @@ function Dictionary() {
                     ))}
                 </div>
 
-                {/* Dropdown for Lessen */}
-                <h2 className="text-lg font-semibold mb-2">Lessen</h2>
-                <hr className="h-px mb-2 bg-gray-200 border-0 dark:bg-gray-300"/>
-                <div className="relative">
-                    <select className="w-full p-2 border rounded-md bg-white focus:ring focus:ring-blue-300">
-                        <option>Selecteer les...</option>
-                        <option>Les 1</option>
-                        <option>Les 2</option>
-                        <option>Les 3</option>
-                        <option>Les 4</option>
-                        <option>Les 5</option>
-                    </select>
+                {/* Lessons */}
+                <h2 className="text-lg font-semibold mb-1">Lessen</h2>
+                <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-300"/>
+                <div className="space-y-2 mb-4">
+                    {lessons.map((lesson) => (
+                        <label key={lesson.id} className="flex items-center space-x-2 text-gray-700">
+                            <input
+                                type="checkbox"
+                                className="w-4 h-4"
+                                onChange={() => handleLessonChange(lesson.id)}
+                                checked={selectedLessons.includes(lesson.id)}
+                            />
+                            <span>{lesson.name}</span>
+                        </label>
+                    ))}
                 </div>
             </aside>
 
@@ -168,7 +196,7 @@ function Dictionary() {
                                 <img src={sign.image} alt={sign.title} className="w-24 h-24 mx-auto mb-2"/>
                                 <h2 className="text-xl font-semibold text-gray-800">{sign.title}</h2>
                                 <button
-                                    onClick={() => navigate("/woordenboek/woord")}
+                                    onClick={() => navigate(`/woordenboek/woord/${sign._id}`)} // Make sure sign.id is available
                                     className="mt-auto bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition">
                                     Meer Informatie
                                 </button>

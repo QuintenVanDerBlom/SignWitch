@@ -19,7 +19,7 @@ const router = createBrowserRouter([
                 element: <Dictionary/>
             },
             {
-                path: '/woordenboek/woord',
+                path: '/woordenboek/woord/:id',
                 element: <Sign/>
             },
             {
