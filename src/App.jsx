@@ -2,6 +2,7 @@ import {createBrowserRouter, RouterProvider} from "react-router";
 import Layout from "./layouts/Layout.jsx";
 import Test from "./pages/Test.jsx";
 import Home from "./Home.jsx";
+import ApiKey from "./pages/ApiKey.jsx";
 
 
 const router = createBrowserRouter([
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
             //     path: '/*',
             //     element: <NotFound/>
             // }
+            {
+                path: '/keygen',
+                element: <ApiKey/>
+            },
         ]
     }
 ]);
