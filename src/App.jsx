@@ -3,6 +3,8 @@ import Layout from "./layouts/Layout.jsx";
 import Test from "./pages/Test.jsx";
 import Home from "./Home.jsx";
 import Lessons from "./pages/Lessons/Lessons.jsx";
+import Dictionary from "./pages/Dictionary.jsx";
+import Sign from "./pages/Sign.jsx";
 
 
 const router = createBrowserRouter([
@@ -12,6 +14,14 @@ const router = createBrowserRouter([
             path: '/',
             element: <Home/>
         },
+            {
+                path: '/woordenboek',
+                element: <Dictionary/>
+            },
+            {
+                path: '/woordenboek/woord',
+                element: <Sign/>
+            },
             {
                 path: '/lessen',
                 element: <Lessons/>
