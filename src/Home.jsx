@@ -11,7 +11,7 @@ function Home() {
             </p>
 
             <div className="">
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className=" inset-0 flex flex-col items-center justify-center">
                     <div className="w-60 h-60 rounded-full border border-black flex items-center justify-center relative">
                         <div className="w-48 h-48 rounded-full border border-black"></div>
                         <div className="absolute text-6xl text-black font-k2d">0%</div>
