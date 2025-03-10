@@ -15,6 +15,11 @@ function Layout() {
 
                     {/* Navigatie */}
                     <ul className="flex space-x-20 text-white text-lg items-center font-openSans">
+                        {/*<li>*/}
+                        {/*    <Link to="/login" className="hover:underline transition-all">*/}
+                        {/*        Login*/}
+                        {/*    </Link>*/}
+                        {/*</li>*/}
                         <li>
                             <Link to="/" className="hover:underline transition-all">
                                 Home

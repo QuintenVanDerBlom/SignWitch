@@ -1,71 +1,46 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
 function Home() {
+    const [searchParams] = useSearchParams();
+
+    // Get data from URL parameters
+    const token = searchParams.get("token");
+    const name = searchParams.get("name");
+    const email = searchParams.get("email");
+
+    // Load data from localStorage if available
+    const [loginData, setLoginData] = useState(() => {
+        const storedData = localStorage.getItem("loginData");
+        return storedData ? JSON.parse(storedData) : null;
+    });
+
+    useEffect(() => {
+        if (token && name && email) {
+            // If URL provides new login data, update localStorage
+            const newLoginData = { token, name, email };
+            localStorage.setItem("loginData", JSON.stringify(newLoginData));
+            setLoginData(newLoginData);
+        } else if (loginData?.token) {
+            // If token is already in localStorage, do not call API again
+            console.log("Using stored token, no API call needed.");
+        } else {
+            // No valid data found, redirect to login
+            console.warn("No valid login data found, redirecting...");
+            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5175";
+        }
+    }, [token, name, email]); // Only re-run if URL data changes
+
     return (
         <div className="flex flex-col items-center justify-center px-4 text-center">
             <h2 className="text-4xl font-k2d">
-                Hallo {/*{users.name}*/} Abigail
+                Hallo {loginData ? loginData.name : "gebruiker"}
             </h2>
             <p className="pb-4 mt-4 text-lg max-w-md font-openSans">
                 Welkom op SignWitch. Hier kan je extra oefeningen doen rondom gebarentaal.
                 Hier zie je een overzicht van je lessen, maar je kan ook het woordenboek bekijken en
                 overzicht van de lessen in de navigatiebalk.
             </p>
-
-            <div className="">
-                <div className=" inset-0 flex flex-col items-center justify-center">
-                    <div className="w-60 h-60 rounded-full border border-black flex items-center justify-center relative">
-                        <div className="w-48 h-48 rounded-full border border-black"></div>
-                        <div className="absolute text-6xl text-black font-k2d">0%</div>
-                    </div>
-                    <div className="mt-4">
-                        <h2 className="text-2xl p-4 font-k2d">Les 1</h2>
-                        {/*
-                            <Link
-                              to="/lessen/les1"
-                              className="inline-block bg-purple-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600 hover:text-white transition-colors"
-                            >
-                              Beginnen
-                            </Link>
-                            */}
-                    </div>
-                </div>
-                <div
-                    className="absolute"
-                    style={{
-                        left: "calc(50% + 200px)",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                    }}
-                >
-                    <div className="flex flex-col items-center">
-                        <div className="w-48 h-48 rounded-full border border-black flex items-center justify-center relative">
-                            <div className="w-36 h-36 rounded-full border border-black"></div>
-                            <div className="absolute text-4xl text-black font-k2d">0%</div>
-                        </div>
-                        <div className="mt-4 text-center">
-                            <h2 className="text-2xl font-k2d">Les 2</h2>
-                            {/*
-                              <Link
-                                to="/lessen/les2"
-                                className="inline-block bg-purple-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-yellow-500 transition-colors"
-                              >
-                                Beginnen
-                              </Link>
-                              */}
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    className="absolute"
-                    style={{
-                        left: "calc(53% + 100px)",
-                        top: "46%",
-                        transform: "translateY(-50%)",
-                    }}
-                >
-                    <div className="text-4xl">→</div>
-                </div>
-            </div>
         </div>
     );
 }
