@@ -4,7 +4,7 @@ function Home() {
             <h2 className="text-4xl font-k2d">
                 Hallo {/*{users.name}*/} Abigail
             </h2>
-            <p className="pb-4 mt-4 text-lg max-w-md font-openSans">
+            <p className="pb-4 mt-4 text-lg max-w-md font-openSans text-black">
                 Welkom op SignWitch. Hier kan je extra oefeningen doen rondom gebarentaal.
                 Hier zie je een overzicht van je lessen, maar je kan ook het woordenboek bekijken en
                 overzicht van de lessen in de navigatiebalk.
@@ -17,7 +17,7 @@ function Home() {
                         <div className="absolute text-6xl text-black font-k2d">0%</div>
                     </div>
                     <div className="mt-4">
-                        <h2 className="text-2xl p-4 font-k2d">Les 1</h2>
+                        <h2 className="text-2xl p-4 font-k2d text-black">Les 1</h2>
                         {/*
                             <Link
                               to="/lessen/les1"
@@ -42,7 +42,7 @@ function Home() {
                             <div className="absolute text-4xl text-black font-k2d">0%</div>
                         </div>
                         <div className="mt-4 text-center">
-                            <h2 className="text-2xl font-k2d">Les 2</h2>
+                            <h2 className="text-2xl font-k2d text-black">Les 2</h2>
                             {/*
                               <Link
                                 to="/lessen/les2"
@@ -63,7 +63,7 @@ function Home() {
                         transform: "translateY(-50%)",
                     }}
                 >
-                    <div className="text-4xl">→</div>
+                    <div className="text-4xl text-black">→</div>
                 </div>
             </div>
         </div>
