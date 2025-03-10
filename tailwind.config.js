@@ -13,13 +13,13 @@ export default {
         'inline-link': '#C77DFF',
         'clicked-link': '#7B2CBF',
         'progress-ND': '#D2D2D2',
-        'progress-Done': '#003340',
+        'progress-Done': '#2D941D',
         'button-login': '#003340',
         'button-login-hover': '#003340',
         'login-container': '#B51F4A',
         'lesson-container':'#B51F4A',
         'background-color': '#F7EFE3',
-
+        'title-color': '#003340',
       },
       fontFamily: {
         k2d: ['K2D', 'sans-serif'],
