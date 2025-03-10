@@ -57,7 +57,7 @@ function Layout() {
             </header>
 
             {/* Main Content */}
-            <main className="h-screen bg-gradient-to-b from-gradient-a to-gradient-c">
+            <main className="h-screen bg-background-color">
                 <Outlet/>
             </main>
 
