@@ -11,6 +11,7 @@ import Sign from "./pages/Sign.jsx";
 import MultipleChoice from "./components/MultipleChoice.jsx";
 import DoneExercise from "./pages/DoneExcercise.jsx";
 import ApiKey from "./pages/ApiKey.jsx";
+import Students from "./pages/Auth/Students/View.jsx";
 
 
 import Register from "./pages/authentication/Register.jsx";
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
             //     path: '/sportitem',
             //     element: <SportItemList/>
             // },
+            {
+                path: '/studenten',
+                element: <Students/>
+            },
             // {
             //     path: '/sportitem/create',
             //     element: <SportItemCreateForm/>
