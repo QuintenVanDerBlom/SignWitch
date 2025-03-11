@@ -34,7 +34,7 @@ function MultipleChoice() {
                 Kijk eerst naar de video.
             </p>
 
-            <div className="w-full max-w-2xl p-6 rounded-lg shadow-md flex flex-row ">
+            <div className="w-full max-w-2xl p-6 gap-24 flex flex-row ">
                 {/*Video placeholder*/}
                 <div className="w-2/3 flex mb-4 justify-center items-center">
                     <div className="w-64 h-40 bg-gray-600 flex justify-center items-center rounded-md">
