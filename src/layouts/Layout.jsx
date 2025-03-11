@@ -39,15 +39,15 @@ function Layout() {
                         </li>
                         <li className="relative group">
                             <button className="hover:underline transition-all flex items-center">
-                                Woordenboek ▼
+                                <Link to="/woordenboek">Woordenboek ▼</Link>
                             </button>
-                            {/* Dropdown */}
-                            <ul className="absolute hidden group-hover:block bg-bg-nav-bar text-white mt-0 py-2 w-40 shadow-md rounded-lg">
-                                <li><Link to="/woordenboek/a"
-                                          className="block px-4 py-2 hover:bg-button-bg-hover">A</Link></li>
-                                <li><Link to="/woordenboek/b"
-                                          className="block px-4 py-2 hover:bg-button-bg-hover">B</Link></li>
-                            </ul>
+                            {/*/!* Dropdown *!/*/}
+                            {/*<ul className="absolute hidden group-hover:block bg-bg-nav-bar text-white mt-0 py-2 w-40 shadow-md rounded-lg">*/}
+                            {/*    <li><Link to="/woordenboek/a"*/}
+                            {/*              className="block px-4 py-2 hover:bg-button-bg-hover">A</Link></li>*/}
+                            {/*    <li><Link to="/woordenboek/b"*/}
+                            {/*              className="block px-4 py-2 hover:bg-button-bg-hover">B</Link></li>*/}
+                            {/*</ul>*/}
                         </li>
                         <Link to="/profile"
                               className="text-gray-200 text-3xl bg-gray-600 rounded-full p-2 hover:bg-gray-500">
