@@ -68,6 +68,13 @@ function MultipleChoiceQuiz() {
                     </div>
                 ))}
 
+                <button
+                type="submit"
+                className="px-4 py-4 rounded mx-auto "
+                >
+                    Controleren
+                </button>
+
             </form>
 
             <h1 className = "font-k2d font-bold text-black justify-center flex text-2xl">
