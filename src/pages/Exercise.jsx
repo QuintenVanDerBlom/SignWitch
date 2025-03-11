@@ -4,7 +4,7 @@ import InvulVraagSleep from "./InvulvraagSleep.jsx";
 import MultipleChoice from "../components/MultipleChoice.jsx";
 
 function Exercise() {
-    const { exercise_id } = useParams();
+    const { category_id } = useParams();
 
     const [questions, setQuestions] = useState([
         // Je vragenarray zoals je hierboven hebt opgegeven
@@ -120,10 +120,14 @@ function Exercise() {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="text-title-color text-4xl font-k2d">Opdracht {currentQuestionIndex +1}</h1>
-            <p className="text-title-color text-lg font-openSans">Hier komt de uitleg van de opdracht</p>
+            <div className="flex flex-col items-center justify-center px-4 text-center">
+                <h2 className="pt-8 text-title-color text-3xl font-k2d">Opdracht {currentQuestionIndex + 1}</h2>
+                <p className="mt-4 text-2xl max-w-2xl font-openSans">
+                    Category {category_id}  {(currentQuestion.type === 'fill_in_the_blank') ? 'Invulvraag' : 'Multiple Choice'}
+                </p>
+            </div>
 
-            <div className="flex flex-col items-center mt-8">
+            <div className="flex flex-col items-center">
                 {currentQuestion.type === 'fill_in_the_blank' ? (
                     <InvulVraagSleep
                         exercise={currentQuestion}
@@ -164,8 +168,9 @@ function Exercise() {
                 </button>
             </div>
             {/* Voortgangsbalk */}
-            <div className="w-1/2 bg-gray-200 h-3 rounded-full mt-6">
-                <div className="bg-blue-500 h-full rounded-full transition-all duration-300" style={{ width: `${progressPercentage}%` }}></div>
+            <div className="w-1/2 bg-progress-ND h-3 rounded-full mt-6">
+                <div className="bg-progress-Done h-full rounded-full transition-all duration-300"
+                     style={{width: `${progressPercentage}%`}}></div>
             </div>
 
         </div>

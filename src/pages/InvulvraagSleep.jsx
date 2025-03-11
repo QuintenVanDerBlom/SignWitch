@@ -100,7 +100,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                         {!showCorrectAnswer && (
                             <div className="mt-4 flex flex-wrap gap-2">
                                 {exercise.possibleAnswers.map((word, index) => (
-                                    <DraggableWord key={index} text={word} />
+                                    <DraggableWord key={index} text={word}/>
                                 ))}
                             </div>
                         )}
@@ -137,7 +137,7 @@ const DraggableWord = ({ text }) => {
     return (
         <div
             ref={drag}
-            className={`p-2 bg-blue-500 text-white rounded-md cursor-pointer shadow-md ${isDragging ? "opacity-50" : "opacity-100"}`}
+            className={`min-w-20 p-2 bg-login-container flex justify-center text-white rounded-md cursor-pointer shadow-md ${isDragging ? "opacity-50" : "opacity-100"}`}
         >
             {text}
         </div>
@@ -157,7 +157,7 @@ const DropZone = ({ index, onDrop, children }) => {
     return (
         <span
             ref={drop}
-            className={`inline-block w-20 h-8 border-2 border-dashed rounded-md text-center align-middle ${
+            className={`min-w-10 inline-block w-20 h-8 border-2 border-dashed rounded-md text-center align-middle ${
                 isOver ? "border-blue-500 bg-blue-100" : "border-gray-400"
             }`}
         >

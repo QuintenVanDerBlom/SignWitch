@@ -74,10 +74,10 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
             <button
                 type="button"
                 onClick={checkAnswer}
-                className="bg-green-400 px-6 py-2 rounded-md text-black hover:bg-green-700 hover:text-white"
+                className="mt-4 px-4 py-2 bg-progress-Done text-white rounded-lg shadow-md"
                 disabled={isCorrect !== null} // 🔹 Voorkomt dubbel klikken
             >
-                Controleren
+                Controleer antwoord
             </button>
         </div>
 
