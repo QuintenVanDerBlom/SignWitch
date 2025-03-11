@@ -36,7 +36,8 @@ function Home() {
             <div className="flex flex-col items-center justify-center px-4 text-center">
                 <h2 className="pt-16 text-6xl font-k2d">Hallo Abigail {/*{users.name}*/}</h2>
                 <p className="pb-20 mt-4 text-2xl max-w-2xl font-openSans">
-                    Welkom op SignWitch. Hier kan je extra oefeningen doen rondom gebarentaal.
+                    Welkom op de website van gebarentaal voor intake. Hier kan je extra oefeningen doen rondom gebarentaal.
+                    Kies een les en ga aan de slag.
                 </p>
             </div>
 
