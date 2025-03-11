@@ -15,7 +15,7 @@ function Layout() {
         <div className="min-h-screen text-black">
             {/* Header */}
             <header className="bg-bg-nav-bar shadow-lg py-4">
-                <nav className="container mx-auto flex justify-between items-center px-6">
+                <nav className="container mx-auto flex justify-between items-center">
                     {/* Logo / Titel */}
                     <Link to="/" className="text-white text-3xl tracking-wide flex ">
                         <img src="../../public/hrlogo.svg" alt="logo" className="h-10 mr-4"/> Gebarentaal bij intake

@@ -102,6 +102,9 @@ function Exercise() {
     const [isChecked, setIsChecked] = useState(false);
 
     const currentQuestion = questions[currentQuestionIndex];
+    // Voortgang berekenen
+    const progressPercentage = ((currentQuestionIndex) / questions.length) * 100;
+
 
     // 🔄 Naar volgende vraag gaan (reset `isChecked`)
     const handleNextQuestion = () => {
@@ -160,6 +163,11 @@ function Exercise() {
                     Volgende
                 </button>
             </div>
+            {/* Voortgangsbalk */}
+            <div className="w-1/2 bg-gray-200 h-3 rounded-full mt-6">
+                <div className="bg-blue-500 h-full rounded-full transition-all duration-300" style={{ width: `${progressPercentage}%` }}></div>
+            </div>
+
         </div>
     );
 }
