@@ -33,6 +33,10 @@ function Lesson() {
     return (
         <div className="flex justify-center py-5 flex-col items-center">
             <h1 className="text-title-color text-4xl font-k2d">Les {id}</h1>
+            <p className="font-openSans w-1/2 text-center">
+                Hier kan je de thema's leren van de gebaren die zijn behandeld in de les.
+                En van de gebaren die staan in het werkboek.
+            </p>
             <div className="flex flex-wrap justify-center mx-10">
                 {filteredCategories.map(category => (
                     <Link to={`/opdracht/${category.id}/1`}> <CategoryContainer category={category}/></Link>
