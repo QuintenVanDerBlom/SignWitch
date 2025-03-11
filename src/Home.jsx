@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import {Link} from "react-router";
 
 const lessons = [
     { id: 1, title: "Les 1", progress: 35 },
@@ -23,9 +24,9 @@ function Home() {
     return (
         <>
             <div className="flex flex-col items-center justify-center px-4 text-center">
-                <h2 className="pt-16 text-6xl font-k2d">Hallo Abigail</h2>
+                <h2 className="pt-16 text-6xl font-k2d">Hallo Abigail {/*{users.name}*/}</h2>
                 <p className="pb-20 mt-4 text-2xl max-w-2xl font-openSans">
-                    Welkom op SignWitch. Hier kan je extra oefeningen doen rondom gebarentaal.
+                    Welkom op de website van het keuzevak gebarentaal bij intake. Hier kan je extra oefeningen doen rondom gebarentaal.
                 </p>
             </div>
 
@@ -85,23 +86,28 @@ function Home() {
                                     </div>
                                     <h2 className="text-4xl p-4 font-k2d">{lesson.title}</h2>
                                     {lesson.progress === 100 ? (
+                                        <Link to={'/lessen/'+ lesson.id}>
                                         <button
-                                            className={`bg-green-500 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-blue-800 transition-colors`}
+                                            className={`bg-green-500 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-green-600 transition-colors`}
                                         >
                                             Herhalen
-                                        </button>
+                                        </button></Link>
                                     ) : lesson.progress === 0 ? (
+                                        <Link to={'/lessen/'+ lesson.id}>
                                         <button
-                                            className={`bg-yellow-300 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-green-800 transition-colors`}
+                                            className={`bg-yellow-300 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-yellow-400 transition-colors`}
                                         >
                                             Beginnen
                                         </button>
+                                        </Link>
                                     ) : (
+                                        <Link to={'/lessen/'+ lesson.id}>
                                         <button
-                                            className={`bg-red-600 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-yellow-800 transition-colors`}
+                                            className={`bg-red-600 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-red-700 transition-colors`}
                                         >
                                             Hervatten
                                         </button>
+                                        </Link>
                                     )}
                                 </div>
                             );
