@@ -17,13 +17,12 @@ import Inlog from "./pages/authentication/Inlog.jsx";
 import Profiel from "./pages/account/profiel.jsx";
 import ProfielFoto from "./pages/account/profielFoto.jsx";
 
-
 const router = createBrowserRouter([
     {
         element: <Layout/>,
         children: [{
             path: '/',
-            element: <Home/>
+            element: <Home />
         },
              {
                 path: '/authentication/register',
@@ -94,9 +93,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+
+
     return (
         <RouterProvider router={router}/>
-    )
+    );
 }
 
 export default App;
