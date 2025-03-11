@@ -10,6 +10,8 @@ import Dictionary from "./pages/Dictionary.jsx";
 import Sign from "./pages/Sign.jsx";
 
 
+
+
 const router = createBrowserRouter([
     {
         element: <Layout/>,
@@ -37,10 +39,6 @@ const router = createBrowserRouter([
                 path: '/opdracht/:category_id/:exercise_id',
                 element: <Exercise/>
             },
-            // {
-            //     path: '/sportitem',
-            //     element: <SportItemList/>
-            // },
             // {
             //     path: '/sportitem/create',
             //     element: <SportItemCreateForm/>
