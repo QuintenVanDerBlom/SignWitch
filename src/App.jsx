@@ -8,6 +8,7 @@ import {BiExpandVertical} from "react-icons/bi";
 import Exercise from "./pages/Exercise.jsx";
 import Dictionary from "./pages/Dictionary.jsx";
 import Sign from "./pages/Sign.jsx";
+import Students from "./pages/Auth/Students/View.jsx";
 
 
 const router = createBrowserRouter([
@@ -37,10 +38,10 @@ const router = createBrowserRouter([
                 path: '/opdracht/:category_id/:exercise_id',
                 element: <Exercise/>
             },
-            // {
-            //     path: '/sportitem',
-            //     element: <SportItemList/>
-            // },
+            {
+                path: '/studenten',
+                element: <Students/>
+            },
             // {
             //     path: '/sportitem/create',
             //     element: <SportItemCreateForm/>
