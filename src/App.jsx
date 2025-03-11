@@ -3,24 +3,18 @@ import Layout from "./layouts/Layout.jsx";
 import Test from "./pages/Test.jsx";
 import Home from "./Home.jsx";
 import Lessons from "./pages/Lessons/Lessons.jsx";
-import Login from "./pages/login.jsx";
-
 
 const router = createBrowserRouter([
     {
         element: <Layout/>,
         children: [{
             path: '/',
-            element: <Home/>
+            element: <Home />
         },
             {
                 path: '/lessen',
                 element: <Lessons/>
             },
-            // {
-            //     path: '/login',
-            //     element: <Login/>
-            // },
             // {
             //     path: '/sportitem',
             //     element: <SportItemList/>
@@ -50,6 +44,8 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+
+
     return (
         <RouterProvider router={router}/>
     );
