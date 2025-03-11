@@ -67,12 +67,12 @@ function Layout() {
             </main>
 
             {/* Footer (Optioneel, maar kan toegevoegd worden voor een meer dynamische ervaring) */}
-            <footer className="flex bg-progress-Done py-4 text-white font-openSans justify-between px-6">
-                <div className="flex space-x-5">
-                <p className="">Privacy Policy</p>
-                <p className="">Contact</p>
-                </div>
-            </footer>
+            {/*<footer className="flex bg-progress-Done py-4 text-white font-openSans justify-between px-6">*/}
+            {/*    <div className="flex space-x-5">*/}
+            {/*    <p className="">Privacy Policy</p>*/}
+            {/*    <p className="">Contact</p>*/}
+            {/*    </div>*/}
+            {/*</footer>*/}
         </div>
     );
 }
