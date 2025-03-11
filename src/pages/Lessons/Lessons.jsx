@@ -1,8 +1,7 @@
 import LessonContainer from "./LessonContainer.jsx";
-import {Link} from "react-router";
-
+import { Link } from "react-router";
 import { useState, useEffect } from "react";
-import {useOutletContext, useSearchParams} from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 function Lessons() {
     const lessons = [
@@ -20,13 +19,16 @@ function Lessons() {
         <div className="flex justify-center py-5 flex-col items-center">
             <h1 className="text-title-color text-4xl font-k2d">Lessen</h1>
             <div className="flex flex-wrap justify-center mx-10">
-            {lessons.map(lesson => (
-                <Link to={`/les/${lesson.id}`}> <LessonContainer lesson={lesson}/></Link>
-            ))}
+                {lessons.map(lesson => (
+                    <Link to={`/les/${lesson.id}`} key={lesson.id}>
+                        <LessonContainer lesson={lesson} />
+                    </Link>
+                ))}
             </div>
-        <div>
-            <h1>Lessons</h1>
-            {loginData ? <p>Token: {loginData.token}</p> : <p>Loading...</p>}
+            {/*<div>*/}
+            {/*    <h1>Lessons</h1>*/}
+            {/*    {loginData ? <p>Token: {loginData.token}</p> : <p>Loading...</p>}*/}
+            {/*</div>*/}
         </div>
     );
 }
