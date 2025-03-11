@@ -9,6 +9,7 @@ import Exercise from "./pages/Exercise.jsx";
 import Dictionary from "./pages/Dictionary.jsx";
 import Sign from "./pages/Sign.jsx";
 import MultipleChoice from "./components/MultipleChoice.jsx";
+import DoneExercise from "./pages/DoneExcercise.jsx";
 
 
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
             {
                 path: '/opdracht/:category_id/',
                 element: <Exercise/>
+            },
+            {
+                path: '/opdracht/:category_id/done',
+                element: <DoneExercise/>
             },
             // {
             //     path: '/sportitem',

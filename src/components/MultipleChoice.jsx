@@ -1,13 +1,15 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 function MultipleChoice({ question, setScore, setIsChecked }) {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [isCorrect, setIsCorrect] = useState(null);
+
     useEffect(() => {
         // Reset bij een nieuwe vraag
         setSelectedAnswer(null);
         setIsCorrect(null);
     }, [question]); // 🔹 Reset als `question` verandert
+
     const handleAnswerChange = (e) => {
         setSelectedAnswer(e.target.value);
     };
@@ -17,14 +19,11 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
         if (selectedAnswer === question.correctAnswer) {
             setIsCorrect(true);
             setScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
-
         } else {
             setIsCorrect(false);
             setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
-
         }
         setIsChecked(true); // ✅ Gebruiker heeft de vraag gecontroleerd
-
     };
 
     return (
@@ -37,15 +36,19 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                 {/* Video placeholder */}
                 <div className="w-1/2 flex justify-end ml-10">
                     <video width="640" height="360" controls className="rounded-lg shadow-lg">
-                        <source src="" type="video/mp4"/>
+                        <source src="" type="video/mp4" />
                         Je browser ondersteunt deze video niet.
                     </video>
                 </div>
 
                 <div className="flex flex-col">
                     {isCorrect !== null && (
-                        <p className={`text-lg font-semibold ${isCorrect ? "text-green-500" : "text-red-500"}`}>
-                            {isCorrect ? "✅ Juist, het antwoord is: " : "❌ Fout, het juiste antwoord is: "}
+                        <p
+                            className={`text-lg font-semibold ${isCorrect ? 'text-green-500' : 'text-red-500'}`}
+                        >
+                            {isCorrect
+                                ? '✅ Juist, het antwoord is: '
+                                : '❌ Fout, het juiste antwoord is: '}
                             <span className="font-bold">{question.correctAnswer}</span>
                         </p>
                     )}
@@ -53,7 +56,9 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                     {question.possibleAnswers.map((option, i) => (
                         <label
                             key={i}
-                            className={`flex items-center space-x-3 p-2 rounded-md ${isCorrect === null ? "hover:bg-gray-100" : ""}`}
+                            className={`flex items-center space-x-3 p-2 rounded-md ${
+                                isCorrect === null ? 'hover:bg-gray-100' : ''
+                            }`}
                         >
                             <input
                                 type="radio"
@@ -68,19 +73,18 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                         </label>
                     ))}
                 </div>
-
             </div>
 
             <button
                 type="button"
                 onClick={checkAnswer}
-                className="mt-4 px-4 py-2 bg-progress-Done text-white rounded-lg shadow-md"
-                disabled={isCorrect !== null} // 🔹 Voorkomt dubbel klikken
+                className={`mt-4 px-4 py-2 rounded-lg shadow-md ${selectedAnswer === null || isCorrect !== null ? 'bg-gray-400 cursor-not-allowed' : 'bg-progress-Done text-white'}`}
+                disabled={selectedAnswer === null || isCorrect !== null}
             >
                 Controleer antwoord
             </button>
-        </div>
 
+        </div>
     );
 }
 

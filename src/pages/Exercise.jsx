@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import InvulVraagSleep from "./InvulvraagSleep.jsx";
 import MultipleChoice from "../components/MultipleChoice.jsx";
 import InvulvraagOpen from "./InvulvraagOpen.jsx";
@@ -95,57 +95,79 @@ function Exercise() {
         }
         // Voeg de rest van de vragen toe
     ]);
-
-
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState({ correct: 0, incorrect: 0 });
-
-    // Nieuwe state: Vraag is nog niet gecontroleerd
     const [isChecked, setIsChecked] = useState(false);
+    const [toggle, setToggle] = useState(false);
 
     const currentQuestion = questions[currentQuestionIndex];
-    // Voortgang berekenen
     const progressPercentage = ((currentQuestionIndex) / questions.length) * 100;
+    // 🔄 Volgende vraag
+    const navigate = useNavigate(); // Voeg deze regel toe binnen de function
 
-
-    // 🔄 Naar volgende vraag gaan (reset `isChecked`)
     const handleNextQuestion = () => {
-        setCurrentQuestionIndex((prevIndex) => (prevIndex + 1) % questions.length);
-        setIsChecked(false); // Reset controle-status voor volgende vraag
+        const nextIndex = (currentQuestionIndex + 1);
+        if (nextIndex >= questions.length) {
+            // Als alle vragen beantwoord zijn, ga naar de done pagina voor de specifieke categorie en stuur de score mee
+            navigate(`/opdracht/${category_id}/done`, { state: { score } });
+        } else {
+            setCurrentQuestionIndex(nextIndex);
+            setToggle(!toggle); // Wisselt tussen true en false
+        }
     };
 
     // 🔄 Vorige vraag
     const handlePreviousQuestion = () => {
         setCurrentQuestionIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : questions.length - 1));
-        setIsChecked(false); // Reset controle-status voor vorige vraag
+        setIsChecked(false); // Reset de controle-status voor de vorige vraag
     };
+
+    // Funtie om willekeurig te kiezen tussen vraagtypes
+
+
+    // function fiftyFifty() {
+    //     invulType = !invulType;
+    //     console.log(invulType);
+    // }
+
+
 
     return (
         <div className="flex flex-col items-center">
             <div className="flex flex-col items-center justify-center px-4 text-center">
                 <h2 className="pt-8 text-title-color text-3xl font-k2d">Opdracht {currentQuestionIndex + 1}</h2>
                 <p className="mt-4 text-2xl max-w-2xl font-openSans">
-                    Category {category_id}  {(currentQuestion.type === 'fill_in_the_blank') ? 'Invulvraag' : 'Multiple Choice'}
+                    Category {category_id} {(currentQuestion.type === 'fill_in_the_blank') ? 'Invulvraag' : 'Multiple Choice'}
                 </p>
             </div>
 
             <div className="flex flex-col items-center">
                 {currentQuestion.type === 'fill_in_the_blank' ? (
-                    <InvulVraagSleep
-                        exercise={currentQuestion}
-                        onNext={handleNextQuestion}
-                        setScore={setScore}
-                        setIsChecked={setIsChecked} // Geeft controle-status door
-                    />
+                    toggle ? (
+                        <InvulvraagOpen
+                            exercise={currentQuestion}
+                            onNext={handleNextQuestion}
+                            setScore={setScore}
+                            setIsChecked={setIsChecked}
+                        />
+                    ) : (
+                        <InvulVraagSleep
+                            exercise={currentQuestion}
+                            onNext={handleNextQuestion}
+                            setScore={setScore}
+                            setIsChecked={setIsChecked}
+                        />
+                    )
                 ) : (
                     <MultipleChoice
                         question={currentQuestion}
                         onNext={handleNextQuestion}
                         setScore={setScore}
-                        setIsChecked={setIsChecked} // Geeft controle-status door
+                        setIsChecked={setIsChecked}
                     />
                 )}
             </div>
+
 
             <div className="mt-4">
                 <p>Score: {score.correct} correct, {score.incorrect} nog te oefenen</p>
@@ -156,25 +178,23 @@ function Exercise() {
                 <button
                     className="btn bg-gray-500 text-white rounded w-full sm:w-auto m-4 px-5 py-2"
                     onClick={handlePreviousQuestion}
+                    disabled={currentQuestionIndex <= 1} // Volgende knop pas actief na controle van het antwoord
                 >
                     Vorige
                 </button>
                 <button
-                    className={`btn rounded w-full sm:w-auto m-4 px-5 py-2 ${
-                        isChecked ? "bg-progress-Done text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}
+                    className={`btn rounded w-full sm:w-auto m-4 px-5 py-2 ${isChecked ? "bg-progress-Done text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
                     onClick={handleNextQuestion}
-                    disabled={!isChecked} // Disable als vraag nog niet gecontroleerd is
+                    disabled={!isChecked} // Volgende knop pas actief na controle van het antwoord
                 >
                     Volgende
                 </button>
             </div>
+
             {/* Voortgangsbalk */}
             <div className="w-1/2 bg-progress-ND h-3 rounded-full mt-6">
-                <div className="bg-progress-Done h-full rounded-full transition-all duration-300"
-                     style={{width: `${progressPercentage}%`}}></div>
+                <div className="bg-progress-Done h-full rounded-full transition-all duration-300" style={{width: `${progressPercentage}%`}}></div>
             </div>
-
         </div>
     );
 }

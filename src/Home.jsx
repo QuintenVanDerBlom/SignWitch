@@ -98,7 +98,7 @@ function Home() {
                                     </div>
                                     <h2 className="text-4xl p-4 font-k2d">{lesson.title}</h2>
                                     {lesson.progress === 100 ? (
-                                        <Link to={`/lessen/${lesson.id}`}>
+                                        <Link to={`/les/${lesson.id}`}>
                                             <button
                                                 className={`bg-green-500 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-green-600 transition-colors`}
                                             >
@@ -106,7 +106,7 @@ function Home() {
                                             </button>
                                         </Link>
                                     ) : lesson.progress === 0 ? (
-                                        <Link to={`/lessen/${lesson.id}`}>
+                                        <Link to={`/les/${lesson.id}`}>
                                             <button
                                                 className={`bg-yellow-300 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-yellow-400 transition-colors`}
                                             >
@@ -114,7 +114,7 @@ function Home() {
                                             </button>
                                         </Link>
                                     ) : (
-                                        <Link to={`/lessen/${lesson.id}`}>
+                                        <Link to={`/les/${lesson.id}`}>
                                             <button
                                                 className={`bg-red-600 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-red-700 transition-colors`}
                                             >

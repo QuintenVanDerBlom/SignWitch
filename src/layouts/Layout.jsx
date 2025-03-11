@@ -22,7 +22,7 @@ function Layout() {
                     </Link>
 
                     {/* Navigatie */}
-                    <ul className="flex space-x-20 text-white text-lg items-center font-openSans">
+                    <ul className="flex space-x-20 text-white text-xl items-center font-openSans">
                         <li>
                             <Link to="/" className="hover:underline transition-all">
                                 Home

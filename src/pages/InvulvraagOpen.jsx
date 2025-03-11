@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const Invulvraagopen = () => {
-    const exercise = {
-        videoUrl: "https://www.youtube.com/watch?v=fsdi9SJc42s&list=PLP8IosJB9PlVHJHTW7D0x7s0wtBsnIss2&index=2",
-        question: "De (1)____ schijnt en de lucht is helemaal (2)____. ",
-        correctAnswer: ["zon", "blauw"],
-    };
-
+function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(""));
+    const [isCorrect, setIsCorrect] = useState(null);
+    const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+
+    useEffect(() => {
+        // ✅ Reset state wanneer er een nieuwe vraag is
+        setAnswers(Array(exercise.correctAnswer.length).fill(""));
+        setIsCorrect(null);
+        setShowCorrectAnswer(false);
+    }, [exercise]);
 
     const handleChange = (index, value) => {
         const newAnswers = [...answers];
@@ -15,57 +18,102 @@ const Invulvraagopen = () => {
         setAnswers(newAnswers);
     };
 
-    // Functie om de YouTube video URL om te zetten naar de embed URL met aangepaste parameters
-    const getEmbedUrl = (url) => {
-        const videoId = url.split("v=")[1].split("&")[0];
-        return `https://www.youtube.com/watch?v=fsdi9SJc42s&list=PLP8IosJB9PlVHJHTW7D0x7s0wtBsnIss2&index=2`;
-    };
+    // ✅ Controleer of de antwoorden kloppen
+    const checkAnswers = () => {
+        const correct = exercise.correctAnswer.every((word, i) =>
+            word.toLowerCase().trim() === answers[i].toLowerCase().trim()
+        );
+        setIsCorrect(correct);
 
-    // Dynamisch aantal invulvelden creëren
-    const renderInputs = () => {
-        return exercise.correctAnswer.map((_, index) => (
-            <div key={index} className="mb-6 text-center">
-                <input
-                    type="text"
-                    value={answers[index] || ""}
-                    onChange={(e) => handleChange(index, e.target.value)}
-                    className="border-b-4 border-button-bg mx-1 w-72 text-center text-lg p-4 bg-gray-100 rounded-lg shadow"
-                    placeholder={` (${index + 1})`}
-                />
-            </div>
-        ));
+        if (correct) {
+            setScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
+        } else {
+            setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
+        }
+
+        setIsChecked(true);
+        setShowCorrectAnswer(true);
     };
 
     return (
-        <div className="flex flex-col justify-center items-center p-8 w-full max-w-4xl mx-auto">
-            <h2 className="text-2xl font-semibold mb-8 text-center">Vul de juiste woorden in</h2>
+        <div className="flex flex-col justify-center items-center w-full max-w-4xl mx-auto">
+            <h1 className="underline text-lg m-5">Vul de juiste woorden in</h1>
             <div className="flex gap-12 items-start w-full">
-                {/* YouTube Video zonder interface */}
-                <div className="w-full md:w-1/2 h-[35vh]">
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        src={getEmbedUrl(exercise.videoUrl)}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="rounded-lg shadow-lg"
-                    ></iframe>
+                <div className="w-1/2 flex justify-end ml-10">
+                    <video width="640" height="360" controls className="rounded-lg shadow-lg">
+                        <source src={exercise.video} type="video/mp4"/>
+                        Je browser ondersteunt deze video niet.
+                    </video>
                 </div>
 
-                {/* Vragen sectie naast de video */}
                 <div className="w-full md:w-3/5">
-                    <p className="text-xl mb-6 text-center">{exercise.question}</p>
-                    <div className="mb-6 text-center">
-                    </div>
-                    {/* Dynamisch de invoervelden renderen */}
-                    <div className="flex flex-col gap-6 items-center">
-                        {renderInputs()}
-                    </div>
+                    {/* ✅ Toon de correcte zin na controle */}
+                    {showCorrectAnswer ? (
+                        <div className="text-center">
+                            <p className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
+                                {isCorrect ? "Goed gedaan! ✅" : "Helaas ❌ het juiste antwoord is:"}
+                            </p>
+                            <p className="text-lg font-semibold">
+                                {(() => {
+                                    let correctIndex = 0;
+                                    return exercise.question.map((word, index) =>
+                                        word === "___" ? (
+                                            <span key={index} className="font-bold text-blue-600">
+                                                {exercise.correctAnswer[correctIndex++]}
+                                            </span>
+                                        ) : (
+                                            ` ${word} `
+                                        )
+                                    );
+                                })()}
+                            </p>
+                        </div>
+                    ) : (
+                        // 🔹 Normale vraag met invulvelden
+                        <>
+                            <p className="text-xl mb-6 text-center">
+                                {(() => {
+                                    let placeIndex = 1;
+                                    return exercise.question.map((word, index) =>
+                                        word === "___" ? (
+                                            <span key={index} className="underline"> __{placeIndex++}__ </span>
+                                        ) : (
+                                            ` ${word} `
+                                        )
+                                    );
+                                })()}
+                            </p>
+
+                            {/* ✅ Correcte invulvelden behouden bij meerdere vragen */}
+                            <div className="flex flex-col gap-6 items-center">
+                                {exercise.correctAnswer.map((_, index) => (
+                                    <div key={index} className="mb-6 text-center">
+                                        <input
+                                            type="text"
+                                            value={answers[index] || ""}
+                                            onChange={(e) => handleChange(index, e.target.value)}
+                                            className="border-b-4 border-button-bg mx-1 w-72 text-center text-lg p-4 bg-gray-100 rounded-lg shadow"
+                                            placeholder={` (${index + 1})`}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Controleer-knop */}
+
+                        </>
+                    )}
                 </div>
+
             </div>
+            <button
+                onClick={checkAnswers}
+                className="mt-4 px-4 py-2 bg-progress-Done text-white rounded-lg shadow-md"
+            >
+                Controleer antwoord
+            </button>
         </div>
     );
-};
+}
 
-export default Invulvraagopen;
+export default InvulvraagOpen;
