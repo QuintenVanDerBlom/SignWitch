@@ -27,21 +27,17 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
     };
 
     return (
-        <div className="flex flex-col items-center p-4">
-            <p className="text-lg text-gray-800 text-center mb-6">
-                Kijk eerst naar de video. Welk gebaar zie je hier?
-            </p>
-
-            <div className="w-full p-6 flex flex-row gap-10">
-                {/* Video placeholder */}
-                <div className="w-1/2 flex justify-end ml-10">
+        <div className="flex flex-col items-center w-screen h-1/2">
+            <h1 className="underline text-lg m-5">Kijk eerst naar de video. Welk gebaar zie je hier?</h1>
+            <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
+                <div className="flex justify-end ml-10">
                     <video width="640" height="360" controls className="rounded-lg shadow-lg">
-                        <source src="" type="video/mp4" />
+                        <source src={question.video} type="video/mp4"/>
                         Je browser ondersteunt deze video niet.
                     </video>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="w-96 mr-10">
                     {isCorrect !== null && (
                         <p
                             className={`text-lg font-semibold ${isCorrect ? 'text-green-500' : 'text-red-500'}`}
@@ -73,6 +69,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                         </label>
                     ))}
                 </div>
+                <div></div>
             </div>
 
             <button

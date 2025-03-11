@@ -46,11 +46,13 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
     };
 
     return (
+
         <DndProvider backend={HTML5Backend}>
-            <div className="flex flex-col items-center">
+
+            <div className="flex flex-col items-center w-screen h-1/2">
                 <h1 className="underline text-lg m-5">Sleep in de juiste volgorde</h1>
                 <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
-                    <div className="w-1/2 flex justify-end ml-10">
+                    <div className="flex justify-end ml-10">
                         <video width="640" height="360" controls className="rounded-lg shadow-lg">
                             <source src={exercise.video} type="video/mp4"/>
                             Je browser ondersteunt deze video niet.
@@ -108,15 +110,13 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
                 </div>
 
-                {/* Controleer-knop */}
-                {!showCorrectAnswer && (
+
                     <button
                         onClick={checkAnswers}
                         className="mt-4 px-4 py-2 bg-progress-Done text-white rounded-lg shadow-md"
                     >
                         Controleer antwoord
                     </button>
-                )}
 
                 {/* Feedback weergeven */}
             </div>

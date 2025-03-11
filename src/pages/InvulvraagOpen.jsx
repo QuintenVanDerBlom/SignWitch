@@ -36,17 +36,17 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center w-full max-w-4xl mx-auto">
+        <div className="flex flex-col items-center w-screen h-1/2">
             <h1 className="underline text-lg m-5">Vul de juiste woorden in</h1>
-            <div className="flex gap-12 items-start w-full">
-                <div className="w-1/2 flex justify-end ml-10">
+            <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
+                <div className="flex justify-end ml-10">
                     <video width="640" height="360" controls className="rounded-lg shadow-lg">
                         <source src={exercise.video} type="video/mp4"/>
                         Je browser ondersteunt deze video niet.
                     </video>
                 </div>
 
-                <div className="w-full md:w-3/5">
+                <div className="w-1/2 mr-10">
                     {/* ✅ Toon de correcte zin na controle */}
                     {showCorrectAnswer ? (
                         <div className="text-center">

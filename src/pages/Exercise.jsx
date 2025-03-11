@@ -104,23 +104,30 @@ function Exercise() {
     const progressPercentage = ((currentQuestionIndex) / questions.length) * 100;
     // 🔄 Volgende vraag
     const navigate = useNavigate(); // Voeg deze regel toe binnen de function
+    const [answeredQuestions, setAnsweredQuestions] = useState({}); // Bijhouden welke vragen al beantwoord zijn
 
     const handleNextQuestion = () => {
-        const nextIndex = (currentQuestionIndex + 1);
+        setAnsweredQuestions((prev) => ({
+            ...prev,
+            [currentQuestionIndex]: true, // Markeer als beantwoord
+        }));
+
+        const nextIndex = currentQuestionIndex + 1;
         if (nextIndex >= questions.length) {
-            // Als alle vragen beantwoord zijn, ga naar de done pagina voor de specifieke categorie en stuur de score mee
             navigate(`/opdracht/${category_id}/done`, { state: { score } });
         } else {
             setCurrentQuestionIndex(nextIndex);
-            setToggle(!toggle); // Wisselt tussen true en false
+            setToggle(!toggle);
         }
     };
 
-    // 🔄 Vorige vraag
     const handlePreviousQuestion = () => {
-        setCurrentQuestionIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : questions.length - 1));
-        setIsChecked(false); // Reset de controle-status voor de vorige vraag
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+            setIsChecked(true); // Voorkomt dat het opnieuw beantwoord wordt
+        }
     };
+
 
     // Funtie om willekeurig te kiezen tussen vraagtypes
 
@@ -133,7 +140,7 @@ function Exercise() {
 
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center ">
             <div className="flex flex-col items-center justify-center px-4 text-center">
                 <h2 className="pt-8 text-title-color text-3xl font-k2d">Opdracht {currentQuestionIndex + 1}</h2>
                 <p className="mt-4 text-2xl max-w-2xl font-openSans">
@@ -141,7 +148,7 @@ function Exercise() {
                 </p>
             </div>
 
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center w-screen">
                 {currentQuestion.type === 'fill_in_the_blank' ? (
                     toggle ? (
                         <InvulvraagOpen
@@ -178,7 +185,7 @@ function Exercise() {
                 <button
                     className="btn bg-gray-500 text-white rounded w-full sm:w-auto m-4 px-5 py-2"
                     onClick={handlePreviousQuestion}
-                    disabled={currentQuestionIndex <= 1} // Volgende knop pas actief na controle van het antwoord
+                    disabled={currentQuestionIndex < 1} // Volgende knop pas actief na controle van het antwoord
                 >
                     Vorige
                 </button>
