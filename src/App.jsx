@@ -12,6 +12,10 @@ import MultipleChoice from "./components/MultipleChoice.jsx";
 import DoneExercise from "./pages/DoneExcercise.jsx";
 
 
+import Register from "./pages/authentication/Register.jsx";
+import Inlog from "./pages/authentication/Inlog.jsx";
+import Profiel from "./pages/account/profiel.jsx";
+import ProfielFoto from "./pages/account/profielFoto.jsx";
 
 
 const router = createBrowserRouter([
@@ -21,6 +25,14 @@ const router = createBrowserRouter([
             path: '/',
             element: <Home/>
         },
+             {
+                path: '/authentication/register',
+                element: <Register/>
+             },
+            {
+                path: '/authentication/inlog',
+                element: <Inlog/>
+             },
             {
                 path: '/woordenboek',
                 element: <Dictionary/>
@@ -33,6 +45,14 @@ const router = createBrowserRouter([
                 path: '/lessen',
                 element: <Lessons/>
             },
+            {
+                path: '/account/profiel',
+                element: <Profiel/>
+            },
+             {
+                path: '/account/profielFoto',
+                 element: <ProfielFoto/>
+             },
             {
                 path: '/les/:id',
                 element: <Lesson/>
