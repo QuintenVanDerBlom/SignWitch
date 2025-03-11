@@ -62,7 +62,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                     <div className="w-1/2 mr-10">
                         {/* 🔹 Toon de volledige correcte zin na controle */}
                         {showCorrectAnswer ? (
-                            <div> {/* ✅ JSX heeft één hoofdelement nodig */}
+                            <div className="text-center"> {/* ✅ JSX heeft één hoofdelement nodig */}
                                 <p className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
                                     {isCorrect ? "Goed gedaan! ✅" : "Helaas ❌ het juiste antwoord is:"}
                                 </p>
@@ -85,14 +85,14 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                             </div>
                         ) : (
                             // 🔹 Normale vraag met sleepzones
-                            <p className="text-lg font-semibold flex flex-wrap gap-2">
+                            <p className="text-xl mb-6 text-center">
                                 {exercise.question.map((word, index) =>
                                     word === "___" ? (
                                         <DropZone key={index} index={index} onDrop={handleDrop}>
                                             {answers[index]}
                                         </DropZone>
                                     ) : (
-                                        <span key={index}>{word}</span>
+                                        <span key={index}> {word} </span>
                                     )
                                 )}
                             </p>
@@ -100,7 +100,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
                         {/* 🔹 Alleen tonen als het juiste antwoord nog NIET is getoond */}
                         {!showCorrectAnswer && (
-                            <div className="mt-4 flex flex-wrap gap-2">
+                            <div className="mt-4 flex flex-wrap gap-2 justify-center">
                                 {exercise.possibleAnswers.map((word, index) => (
                                     <DraggableWord key={index} text={word}/>
                                 ))}

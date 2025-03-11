@@ -26,7 +26,13 @@ function DoneExercise() {
     return (
         <div className="flex flex-col items-center justify-center">
             {/* Voeg confetti effect toe */}
-            <Confetti width={windowWidth} height={windowHeight} recycle={false}/>
+            <Confetti
+                width={windowWidth}
+                height={windowHeight}
+                recycle={false}
+                gravity={0.3} // Verhoog dit om de snelheid te laten toenemen
+            />
+
 
             <h1 className="text-6xl font-k2d pt-32 font-bold">Gefeliciteerd!</h1>
             <p className="mt-4 text-3xl py-10 font-k2d">Thema {category_id} compleet!</p>
