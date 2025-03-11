@@ -49,11 +49,6 @@ function Layout() {
                                           className="block px-4 py-2 hover:bg-button-bg-hover">B</Link></li>
                             </ul>
                         </li>
-                        <li>
-                            <Link to="/mpcq" className="hover:underline transition-all">
-                                MC Test
-                            </Link>
-                        </li>
                         <Link to="/profile"
                               className="text-gray-200 text-3xl bg-gray-600 rounded-full p-2 hover:bg-gray-500">
                             <FaUserCircle/>

@@ -35,7 +35,7 @@ function Lesson() {
             <h1 className="text-title-color text-4xl font-k2d">Les {id}</h1>
             <div className="flex flex-wrap justify-center mx-10">
                 {filteredCategories.map(category => (
-                    <Link to={`/opdracht/${category.id}/1`}> <CategoryContainer category={category}/></Link>
+                    <Link to={`/opdracht/${category.id}`}> <CategoryContainer category={category}/></Link>
                 ))}
             </div>
         </div>
