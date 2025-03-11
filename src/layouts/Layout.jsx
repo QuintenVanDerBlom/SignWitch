@@ -50,7 +50,7 @@ function Layout() {
                             </ul>
                         </li>
                         <li>
-                            <Link to="/lessen/1/1" className="hover:underline transition-all">
+                            <Link to="/mpcq" className="hover:underline transition-all">
                                 MC Test
                             </Link>
                         </li>
