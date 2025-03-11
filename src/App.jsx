@@ -11,6 +11,8 @@ import Sign from "./pages/Sign.jsx";
 import MultipleChoice from "./components/MultipleChoice.jsx";
 
 
+
+
 const router = createBrowserRouter([
     {
         element: <Layout/>,
@@ -38,10 +40,10 @@ const router = createBrowserRouter([
                 path: '/opdracht/:category_id/',
                 element: <Exercise/>
             },
-            {
-                path: '/mpcq',
-                element: <MultipleChoice/>
-            },
+            // {
+            //     path: '/sportitem',
+            //     element: <SportItemList/>
+            // },
             // {
             //     path: '/sportitem/create',
             //     element: <SportItemCreateForm/>

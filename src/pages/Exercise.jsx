@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import InvulVraagSleep from "./InvulvraagSleep.jsx";
 import MultipleChoice from "../components/MultipleChoice.jsx";
+import InvulvraagOpen from "./InvulvraagOpen.jsx";
+
 
 function Exercise() {
     const { category_id } = useParams();
