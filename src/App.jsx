@@ -10,6 +10,7 @@ import Dictionary from "./pages/Dictionary.jsx";
 import Sign from "./pages/Sign.jsx";
 import MultipleChoice from "./components/MultipleChoice.jsx";
 import DoneExercise from "./pages/DoneExcercise.jsx";
+import ApiKey from "./pages/ApiKey.jsx";
 
 
 import Register from "./pages/authentication/Register.jsx";
@@ -88,13 +89,15 @@ const router = createBrowserRouter([
             //     path: '/*',
             //     element: <NotFound/>
             // }
+            {
+                path: '/keygen',
+                element: <ApiKey/>
+            },
         ]
     }
 ]);
 
 function App() {
-
-
     return (
         <RouterProvider router={router}/>
     );
