@@ -31,10 +31,12 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
             <h1 className="underline text-lg m-5">Kijk eerst naar de video. Welk gebaar zie je hier?</h1>
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
-                    <video width="640" height="360" controls className="rounded-lg shadow-lg">
-                        <source src={question.video} type="video/mp4"/>
+                    <video key={question.correctAnswer} width="640" height="360" controls
+                           className="rounded-lg shadow-lg">
+                        <source src={`../public/signs/${question.correctAnswer}.mp4`} type="video/mp4"/>
                         Je browser ondersteunt deze video niet.
                     </video>
+
                 </div>
 
                 <div className="w-96 mr-10">

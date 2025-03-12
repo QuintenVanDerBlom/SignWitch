@@ -3,9 +3,28 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const ITEM_TYPE = "WORD";
+import React from "react";
+import ReactPlayer from "react-player";
+
+const VideoPlayer = ({ videoId, playlistId }) => {
+    const videoUrl = `https://www.youtube.com/watch?v=hglEJkVy1L8`;
+
+    return (
+        <div className="flex justify-end ml-10">
+            <div className="w-[640px] h-[360px] rounded-lg shadow-lg overflow-hidden">
+                <ReactPlayer
+                    url={videoUrl}
+                    controls
+                    width="100%"
+                    height="100%"
+                />
+            </div>
+        </div>
+    );
+};
+
 
 function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
-
     const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(null));
 
 // ✅ Reset antwoorden bij een nieuwe vraag
@@ -53,10 +72,10 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                 <h1 className="underline text-lg m-5">Sleep in de juiste volgorde</h1>
                 <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                     <div className="flex justify-end ml-10">
-                        <video width="640" height="360" controls className="rounded-lg shadow-lg">
-                            <source src={exercise.video} type="video/mp4"/>
-                            Je browser ondersteunt deze video niet.
-                        </video>
+                        <VideoPlayer
+                            videoId="hglEJkVy1L8" // <-- Dit is de video die moet starten
+                            playlistId="PLP8IosJB9PlUueQCTSe82RoQRSB3rGyTe"
+                        />
                     </div>
 
                     <div className="w-1/2 mr-10">
@@ -113,7 +132,8 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
                     <button
                         onClick={checkAnswers}
-                        className="mt-4 px-4 py-2 bg-progress-Done text-white rounded-lg shadow-md"
+                        className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white" }`}
+                        disabled={showCorrectAnswer}
                     >
                         Controleer antwoord
                     </button>
@@ -157,7 +177,7 @@ const DropZone = ({ index, onDrop, children }) => {
     return (
         <span
             ref={drop}
-            className={`min-w-10 inline-block w-20 h-8 border-2 border-dashed rounded-md text-center align-middle ${
+            className={`min-w-20 inline-block w-40 h-8 border-2 border-dashed rounded-md text-center align-middle ${
                 isOver ? "border-blue-500 bg-blue-100" : "border-gray-400"
             }`}
         >
