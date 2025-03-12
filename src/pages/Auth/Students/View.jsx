@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import mockStudents from "./DummyStudents.jsx";
 
@@ -8,20 +8,9 @@ function Students() {
     const [currentStudent, setCurrentStudent] = useState(null);
     const [modalMode, setModalMode] = useState(""); // "create" or "edit"
 
-    // const fetchStudents = async () => {
-    //     try {
-    //         const response = await fetch("http://example.com/api/students"); // Replace with your web service
-    //         const data = await response.json();
-    //         setStudents(data);
-    //     } catch (error) {
-    //         console.error("Error fetching students:", error);
-    //     }
-    // };
-
     const fetchStudents = () => {
         setStudents(mockStudents);
     };
-
 
     useEffect(() => {
         fetchStudents();
@@ -62,19 +51,34 @@ function Students() {
         setStudents(students.filter(student => student.username !== username));
     };
 
-    const handleXMLImport = (e) => {
+    const handleFileImport = (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const xmlContent = event.target.result;
-            const parsedStudents = parseXML(xmlContent);
-            insertStudentsFromXML(parsedStudents);
-        };
-        reader.readAsText(file);
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+
+        if (fileExtension === "xml") {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const xmlContent = event.target.result;
+                const parsedStudents = parseXML(xmlContent);
+                insertStudentsFromFile(parsedStudents);
+            };
+            reader.readAsText(file);
+        } else if (fileExtension === "csv") {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const csvContent = event.target.result;
+                const parsedStudents = parseCSV(csvContent);
+                insertStudentsFromFile(parsedStudents);
+            };
+            reader.readAsText(file);
+        } else {
+            alert("Alleen XML of CSV bestanden toegestaan!");
+        }
     };
 
+    // XML Parsing
     const parseXML = (xmlContent) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlContent, "application/xml");
@@ -97,7 +101,31 @@ function Students() {
         return studentsArray;
     };
 
-    const insertStudentsFromXML = (newStudents) => {
+    // CSV Parsing
+    const parseCSV = (csvContent) => {
+        const lines = csvContent.split("\n");
+        const header = lines[0].split(",");
+        const studentsArray = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(",");
+            if (values.length === header.length) {
+                const student = {};
+                header.forEach((field, index) => {
+                    student[field.trim()] = values[index]?.trim();
+                });
+                studentsArray.push({
+                    username: student["username"],
+                    email: student["email"],
+                    created_date: new Date().toISOString(),
+                });
+            }
+        }
+
+        return studentsArray;
+    };
+
+    const insertStudentsFromFile = (newStudents) => {
         setStudents((prevStudents) => [...prevStudents, ...newStudents]);
     };
 
@@ -107,13 +135,12 @@ function Students() {
             <div className="flex justify-between mb-4">
                 <h1 className="text-xl font-semibold">Studenten</h1>
                 <div className="flex space-x-4">
-                    {/* Import XML Button */}
                     <label className="bg-green-600 text-white py-2 px-4 rounded-lg cursor-pointer hover:bg-green-700 transition">
-                        Importeer XML
+                        Importeer Bestand
                         <input
                             type="file"
-                            accept=".xml"
-                            onChange={handleXMLImport}
+                            accept=".xml, .csv"
+                            onChange={handleFileImport}
                             className="hidden"
                         />
                     </label>
