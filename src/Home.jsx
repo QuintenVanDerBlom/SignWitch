@@ -1,6 +1,6 @@
 import {useOutletContext, useSearchParams} from "react-router-dom";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 
@@ -35,6 +35,20 @@ function Home() {
         }
     };
 
+    // Add arrow key navigation
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "ArrowLeft" || event.key === "a") {
+                prevLesson();
+            } else if (event.key === "ArrowRight" || event.key === "d") {
+                nextLesson();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [index]);
+
     return (
         <>
             <div className="flex flex-col items-center justify-center px-4 text-center">
@@ -45,9 +59,7 @@ function Home() {
                 </p>
             </div>
 
-            {/* Carousel Wrapper */}
             <div className="flex items-center justify-center gap-10">
-                {/* Left Arrow */}
                 <button onClick={prevLesson} className="text-4xl">
                     ←
                 </button>
@@ -138,7 +150,6 @@ function Home() {
                     </motion.div>
                 </div>
 
-                {/* Right Arrow */}
                 <button onClick={nextLesson} className="text-4xl">
                     →
                 </button>
