@@ -8,9 +8,36 @@ function Students() {
     const [currentStudent, setCurrentStudent] = useState(null);
     const [modalMode, setModalMode] = useState(""); // "create", "edit" of "multi"
 
-    const fetchStudents = () => {
-        setStudents(mockStudents);
+    const fetchStudents = async () => {
+        try {
+            // GET-verzoek sturen
+            const response = await fetch("http://145.24.223.94:8000/users", {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    apikey: "pinda",
+                },
+            });
+            const data = await response.json();
+
+            // Controleren of het goed gaat
+            if (!response.ok) {
+                console.error("Fout bij ophalen users:", response.status, await response.text());
+                return;
+            }
+
+            // JSON parsen
+            //const data = await response.json();
+
+            // Resultaat loggen en in state zetten
+            console.log("Data van de API:", data);
+            // setStudents(data);
+            setStudents(data.users);
+        } catch (error) {
+            console.error("Er ging iets mis:", error);
+        }
     };
+
 
     useEffect(() => {
         fetchStudents();
@@ -31,18 +58,16 @@ function Students() {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        // Maak een object van de ingevoerde gegevens
+        // Object met nieuwe waarden
         const newStudent = {
             username: formData.get("username"),
             email: formData.get("email"),
-            created_date: new Date().toISOString(),
             role: "user", // Voorbeeld: standaard 'user'
         };
 
-        // Bij "create" versturen we de data naar de API
         if (modalMode === "create") {
+            // === CREATE ===
             try {
-                // Gebruik URLSearchParams voor application/x-www-form-urlencoded
                 const postData = new URLSearchParams();
                 postData.append("username", newStudent.username);
                 postData.append("email", newStudent.email);
@@ -53,48 +78,82 @@ function Students() {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                         Accept: "application/json",
-                        apikey: "pinda", // Zet hier je API-key
+                        apikey: "pinda",
                     },
                     body: postData.toString(),
                 });
 
                 if (!response.ok) {
-                    // Toon fout in console als het misgaat
                     console.error("Fout bij aanmaken user:", response.status, await response.text());
                 } else {
-                    // Optioneel: de nieuwe user-gegevens uit de response halen
                     const data = await response.json();
                     console.log("Gebruiker aangemaakt via API:", data);
-
-                    // Toevoegen aan je lokale state (optioneel)
-                    setStudents((prev) => [
-                        ...prev,
-                        {
-                            // Hier kun je data uit de response gebruiken
-                            username: data.username,
-                            email: data.email,
-                            created_date: new Date().toISOString(),
-                        },
-                    ]);
+                    // Eventueel direct opnieuw fetchen of toevoegen aan state
+                    // Voorbeeld: opnieuw fetchen om de lijst te updaten
+                    fetchStudents();
                 }
             } catch (error) {
                 console.error("Error in POST request:", error);
             }
-        }
-        // Bij "edit" werk je alleen je lokale state bij (of doe je een PUT/PATCH naar de API, afhankelijk van je behoefte)
-        else if (modalMode === "edit" && currentStudent) {
-            const updatedStudents = students.map((student) =>
-                student.username === currentStudent.username ? newStudent : student
-            );
-            setStudents(updatedStudents);
+        } else if (modalMode === "edit" && currentStudent) {
+            // === EDIT ===
+            try {
+                // Gebruiker ID uit currentStudent (API geeft '_id' terug)
+                const userId = currentStudent._id;
+
+                // x-www-form-urlencoded body maken
+                const putData = new URLSearchParams();
+                putData.append("username", newStudent.username);
+                putData.append("email", newStudent.email);
+                putData.append("role", newStudent.role);
+
+                const response = await fetch(`http://145.24.223.94:8000/users/${userId}`, {
+                    method: "PUT", // Of 'PATCH' als jouw API dat verlangt
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        Accept: "application/json",
+                        apikey: "pinda",
+                    },
+                    body: putData.toString(),
+                });
+
+                if (!response.ok) {
+                    console.error("Fout bij updaten user:", response.status, await response.text());
+                } else {
+                    const data = await response.json();
+                    console.log("Gebruiker bijgewerkt via API:", data);
+                    // Hier kun je de lokale state bijwerken, of opnieuw fetchen
+                    // Bijv. opnieuw fetchen om zeker te weten dat je de actuele data hebt
+                    fetchStudents();
+                }
+            } catch (error) {
+                console.error("Error in PUT request:", error);
+            }
         }
 
-        // Modal sluiten
         closeModal();
     };
 
-    const handleDelete = (username) => {
-        setStudents(students.filter((student) => student.username !== username));
+    const handleDelete = async (userId) => {
+        try {
+            const response = await fetch(`http://145.24.223.94:8000/users/${userId}`, {
+                method: "DELETE",
+                headers: {
+                    Accept: "application/json",
+                    apikey: "pinda",
+                },
+            });
+
+            if (!response.ok) {
+                console.error("Fout bij verwijderen user:", response.status, await response.text());
+            } else {
+                console.log("Gebruiker verwijderd");
+                // Lokaal uit je state halen of opnieuw fetchen
+                setStudents(students.filter((student) => student._id !== userId));
+            }
+        } catch (error) {
+            console.error("Error in DELETE request:", error);
+        }
     };
 
     // Hier is de logica voor "Meerdere studenten" (multi) ongewijzigd:
@@ -218,15 +277,16 @@ function Students() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {students.map((student) => (
-                    <div key={student.username} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
+                    <div key={student.id} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
                         <h2 className="text-xl font-semibold">{student.username}</h2>
                         <p className="text-sm text-gray-500">{student.email}</p>
-                        <p className="text-xs text-gray-400">{new Date(student.created_date).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-500">{student._id}</p>
+                        <p className="text-xs text-gray-400">{new Date(student.created_at).toLocaleDateString()}</p>
                         <div className="absolute top-2 right-2 space-x-2">
                             <button onClick={() => openModal("edit", student)} className="text-yellow-400">
                                 <FaEdit />
                             </button>
-                            <button onClick={() => handleDelete(student.username)} className="text-red-400">
+                            <button onClick={() => handleDelete(student._id)} className="text-red-400">
                                 <FaTrashAlt />
                             </button>
                         </div>
