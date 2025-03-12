@@ -38,7 +38,7 @@ function Layout() {
         } else {
             // No valid data found, redirect to login
             console.warn("No valid login data found, redirecting...");
-            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://145.24.222.32";
         }
     }, [token, name, email]); // Only re-run if URL data changes
 
