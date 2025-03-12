@@ -65,6 +65,12 @@ function Home() {
                             const circleClass = isActive ? "w-80 h-80" : "w-60 h-60";
                             const textSize = isActive ? "text-4xl" : "text-2xl";
                             const buttonPadding = isActive ? "px-24" : "px-16";
+                            const circleColorClass =
+                                lesson.progress === 100
+                                    ? "text-green-500"
+                                    : lesson.progress === 0
+                                        ? "text-red-600"
+                                        : "text-orange-500";
 
                             return (
                                 <div key={lesson.id} className="flex flex-col items-center w-[300px]">
@@ -87,7 +93,7 @@ function Home() {
                                                 cy="18"
                                                 r="16"
                                                 fill="none"
-                                                className="stroke-current text-red-600"
+                                                className={`stroke-current ${circleColorClass}`}
                                                 strokeWidth="2"
                                                 strokeDasharray="100"
                                                 strokeDashoffset={100 - lesson.progress}
