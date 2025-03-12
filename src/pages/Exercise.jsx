@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import InvulVraagSleep from "./InvulvraagSleep.jsx";
 import MultipleChoice from "../components/MultipleChoice.jsx";
@@ -255,6 +255,34 @@ function Exercise() {
             setIsChecked(true); // Voorkomt dat het opnieuw beantwoord wordt
         }
     };
+    const [category, setCategory] = useState([]);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://145.24.223.94:8000/categories/${category_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setCategory(data)
+                console.log(data)
+            } catch (error) {
+                setError(error.message);  // Zet de fout in de state in
+            }
+        };
+
+        fetchData();
+    }, []);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
+
 
 
 
@@ -263,7 +291,7 @@ function Exercise() {
             <div className="flex flex-col items-center justify-center px-4 text-center">
                 <h2 className="pt-8 text-title-color text-3xl font-k2d">Opdracht {currentQuestionIndex + 1}</h2>
                 <p className="mt-4 text-2xl max-w-2xl font-openSans">
-                    Category {category_id} {(currentQuestion.type === 'fill_in_the_blank') ? 'Invulvraag' : 'Multiple Choice'}
+                    {category.categoryName} {(currentQuestion.type === 'fill_in_the_blank') ? 'Invulvraag' : 'Multiple Choice'}
                 </p>
             </div>
 

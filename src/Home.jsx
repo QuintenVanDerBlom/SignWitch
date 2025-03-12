@@ -4,17 +4,44 @@ import {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 
-const lessons = [
-    { id: 1, title: "Les 1", progress: 35 },
-    { id: 2, title: "Les 2", progress: 75 },
-    { id: 3, title: "Les 3", progress: 50 },
-    { id: 4, title: "Les 4", progress: 100 },
-    { id: 5, title: "Les 5", progress: 0 },
-    { id: 6, title: "Les 6", progress: 0 },
-    { id: 7, title: "Les 7", progress: 0 },
-];
+// const lessons = [
+//     { id: 1, title: "Les 1", progress: 35 },
+//     { id: 2, title: "Les 2", progress: 75 },
+//     { id: 3, title: "Les 3", progress: 50 },
+//     { id: 4, title: "Les 4", progress: 100 },
+//     { id: 5, title: "Les 5", progress: 0 },
+//     { id: 6, title: "Les 6", progress: 0 },
+//     { id: 7, title: "Les 7", progress: 0 },
+// ];
 
 function Home() {
+    const [lessons, setLessons] = useState([]);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://145.24.223.94:8000/lessons', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setLessons(data.items);  // Stel de lessons in de state in
+                console.log(data.items)
+            } catch (error) {
+                setError(error.message);  // Zet de fout in de state in
+            }
+        };
+
+        fetchData();
+    }, []);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
     const loginData = useOutletContext();
 
     const [index, setIndex] = useState(- 2);
