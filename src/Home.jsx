@@ -108,7 +108,7 @@ function Home() {
                                     ) : lesson.progress === 0 ? (
                                         <Link to={`/les/${lesson.id}`}>
                                             <button
-                                                className={`bg-yellow-300 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-yellow-400 transition-colors`}
+                                                className={` bg-red-600 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-red-700 transition-colors`}
                                             >
                                                 Beginnen
                                             </button>
@@ -116,7 +116,7 @@ function Home() {
                                     ) : (
                                         <Link to={`/les/${lesson.id}`}>
                                             <button
-                                                className={`bg-red-600 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-red-700 transition-colors`}
+                                                className={`bg-yellow-300 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-yellow-400 transition-colors`}
                                             >
                                                 Hervatten
                                             </button>
