@@ -70,7 +70,7 @@ function Home() {
                                     ? "text-green-500"
                                     : lesson.progress === 0
                                         ? "text-red-600"
-                                        : "text-orange-500";
+                                        : "text-orange-600";
 
                             return (
                                 <div key={lesson.id} className="flex flex-col items-center w-[300px]">
