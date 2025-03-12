@@ -313,7 +313,8 @@ function Exercise() {
                         />
                     )
                 ) : (
-                    <MultipleChoice
+                    <Mul
+                        tipleChoice
                         question={currentQuestion}
                         onNext={handleNextQuestion}
                         setScore={setScore}
