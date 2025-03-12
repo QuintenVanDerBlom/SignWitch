@@ -94,7 +94,7 @@ function Layout() {
             </header>
 
             {/* Main Content */}
-            <main className="h-screen bg-background-color">
+            <main className="min-h-screen bg-background-color">
                 {/*<Outlet loginData={loginData}/>*/}
                 <Outlet context={loginData} />
             </main>

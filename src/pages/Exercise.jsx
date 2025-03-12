@@ -13,85 +13,212 @@ function Exercise() {
         // Invulvragen
         {
             id: 1,
-            question: ["De", "___", "schijnt", "en", "de", "lucht", "is", "helemaal", "___"],
+            question: ["De", "___", "is", "begonnen", "en", "het", "is", "de", "bedoeling", "dat", "jullie", "goed", "___", "En", "volgende", "les", "de", "opdracht", "goed", "___"],
             type: 'fill_in_the_blank',
             category_id: 1,
-            possibleAnswers: ["zon", "blauw", "maan", "rood"],
-            correctAnswer: ["zon", "blauw"]
+            possibleAnswers: ["huiswerkoefening", "oefenen", "voorbereiden", "taak", "opdracht", "training"],
+            correctAnswer: ["huiswerkoefening", "oefenen", "voorbereiden"]
         },
         {
             id: 2,
-            question: ["Het", "___", "is", "geplaatst", "op", "de", "tafel"],
+            question: ["Wil", "je", "alsjeblieft", "de", "___", "of", "___", "pakken?"],
             type: 'fill_in_the_blank',
             category_id: 1,
-            possibleAnswers: ["boek", "glas", "bord", "stoel"],
-            correctAnswer: ["boek"]
+            possibleAnswers: ["koffie", "thee", "water", "sap", "drank"],
+            correctAnswer: ["koffie", "thee"]
+        },
+        {
+            id: 11,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Hoeveel', 'Wanneer', 'Waar', 'Hoelang'],
+            correctAnswer: 'Hoeveel'
         },
         {
             id: 3,
-            question: ["Ik", "heb", "___", "bij", "mij", "en", "ga", "daarmee", "___"],
+            question: ["Welkom,", "ik", "zal", "mij", "even", "___", "Mijn", "voornaam", "is", "___", "mijn", "naam", "is", "___", "Mijn", "achternaam", "is", "___"],
             type: 'fill_in_the_blank',
             category_id: 2,
-            possibleAnswers: ["telefoon", "laptop", "map", "pen"],
-            correctAnswer: ["telefoon", "laptop"]
+            possibleAnswers: ["voorstellen", "makkelijk", "naambordje", "niet", "moeilijk", "naam", "zelf"],
+            correctAnswer: ["voorstellen", "makkelijk", "naambordje", "niet moeilijk"]
         },
         {
             id: 4,
-            question: ["De", "___", "is", "groen", "en", "heeft", "veel", "___"],
+            question: ["De", "les", "begin", "ik", "met", "koffie", "drinken,", "thuis", "drink", "ik", "___"],
             type: 'fill_in_the_blank',
             category_id: 1,
-            possibleAnswers: ["boom", "gras", "bloem", "bladeren"],
-            correctAnswer: ["boom", "bladeren"]
+            possibleAnswers: ["thee", "water", "sap", "koffie", "drankje"],
+            correctAnswer: ["thee"]
         },
         {
             id: 5,
-            question: ["De", "___", "zong", "en", "de", "klanken", "vielen", "___"],
+            question: ["Ik", "ben", "op", "tijd", "aanwezig", "voor", "de", "les", "en", "zet", "de", "tafels", "en", "stoelen", "goed", "in", "het", "___"],
             type: 'fill_in_the_blank',
-            category_id: 2,
-            possibleAnswers: ["vogel", "wind", "regen", "zee"],
-            correctAnswer: ["vogel", "wind"]
+            category_id: 1,
+            possibleAnswers: ["lokaal", "klas", "ruimte", "leslokaal", "zaal"],
+            correctAnswer: ["lokaal"]
         },
-
-        // Multiple-choice vragen
         {
             id: 6,
-            question: 'Welk gebaar betekent "Hallo" in gebarentaal?',
+            question: ["Nu", "is", "de", "oefening", "klaar", "Was", "het", "___", "of", "___", "?" ],
+            type: 'fill_in_the_blank',
+            category_id: 2,
+            possibleAnswers: ["makkelijk", "moeilijk", "interessant", "saai", "leuk", "langzaam"],
+            correctAnswer: ["makkelijk", "moeilijk"]
+        },
+        // Multiple-choice vragen
+        {
+            id: 12,
+            question: 'Welk gebaar zie je hier?',
             type: 'multiple_choice',
             category_id: 1,
-            possibleAnswers: ['Hand omhoog', 'Vingers in de lucht steken', 'Hoofd knikken', 'Vrede teken'],
-            correctAnswer: 'Hand omhoog'
+            possibleAnswers: ['Hoeveel', 'Wanneer', 'Waar', 'Hoelang'],
+            correctAnswer: 'Wanneer'
         },
         {
-            id: 7,
-            question: 'Wat betekent het gebaar waarbij je de hand op je hart legt?',
+            id: 13,
+            question: 'Welk gebaar zie je hier?',
             type: 'multiple_choice',
             category_id: 1,
-            possibleAnswers: ['Sorry', 'Ik hou van jou', 'Dank je wel', 'Hallo'],
-            correctAnswer: 'Ik hou van jou'
+            possibleAnswers: ['Waar', 'Hoeveel', 'Hoelang', 'Wanneer'],
+            correctAnswer: 'Waar'
         },
         {
-            id: 8,
-            question: 'Welk gebaar betekent "Ja" in gebarentaal?',
+            id: 14,
+            question: 'Welk gebaar zie je hier?',
             type: 'multiple_choice',
             category_id: 1,
-            possibleAnswers: ['Hoofd knikken', 'Vingers tikken', 'Hand omhoog', 'Schouders ophalen'],
-            correctAnswer: 'Hoofd knikken'
+            possibleAnswers: ['Hoelang', 'Wat', 'Hoeveel', 'Waar'],
+            correctAnswer: 'Hoelang'
         },
         {
-            id: 9,
-            question: 'Wat betekent het gebaar met de handpalm naar buiten en een draaiende beweging?',
+            id: 15,
+            question: 'Welk gebaar zie je hier?',
             type: 'multiple_choice',
             category_id: 1,
-            possibleAnswers: ['Bedankt', 'Sorry', 'Vrede teken', 'Hallo'],
-            correctAnswer: 'Bedankt'
+            possibleAnswers: ['Wat', 'Hoeveel', 'Waar', 'Hoelang'],
+            correctAnswer: 'Wat'
         },
         {
-            id: 10,
-            question: 'Welk gebaar betekent "Ik weet het niet"?',
+            id: 16,
+            question: 'Welk gebaar zie je hier?',
             type: 'multiple_choice',
             category_id: 1,
-            possibleAnswers: ['Handen omhoog en schouders ophalen', 'Hand op je lippen', 'Handen in de lucht steken', 'Vingers kruis'],
-            correctAnswer: 'Handen omhoog en schouders ophalen'
+            possibleAnswers: ['Hoeveel', 'Wat', 'Hoelang', 'Welke'],
+            correctAnswer: 'Hoeveel'
+        },
+        {
+            id: 17,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Welk', 'Waarom', 'Wat', 'Hoeveel'],
+            correctAnswer: 'Welk'
+        },
+        {
+            id: 18,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Tijdens de les', 'Na school', 'In de pauze', 'Thuis'],
+            correctAnswer: 'Tijdens de les'
+        },
+        {
+            id: 19,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Aanwezig', 'Afwezig', 'Ziek', 'Absent'],
+            correctAnswer: 'Aanwezig'
+        },
+        {
+            id: 20,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Makkelijk', 'Moeilijk', 'Gemiddeld', 'Eenvoudig'],
+            correctAnswer: 'Makkelijk'
+        },
+        {
+            id: 21,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Volgende', 'Vorige', 'Eerdere', 'Laatste'],
+            correctAnswer: 'Volgende'
+        },
+        {
+            id: 22,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Bedoeling', 'Doel', 'Motief', 'Verklaring'],
+            correctAnswer: 'Bedoeling'
+        },
+        {
+            id: 23,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Meenemen', 'Halen', 'Brengen', 'Leiden'],
+            correctAnswer: 'Meenemen'
+        },
+        {
+            id: 24,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Voorbeeld', 'Oefening', 'Uitleg', 'Les'],
+            correctAnswer: 'Voorbeeld'
+        },
+        {
+            id: 25,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Beginnen', 'Stoppen', 'Wachten', 'Voortgaan'],
+            correctAnswer: 'Beginnen'
+        },
+        {
+            id: 26,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Moeilijk', 'Gemakkelijk', 'Middelmatig', 'Verschillend'],
+            correctAnswer: 'Moeilijk'
+        },
+        {
+            id: 27,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Voorbereiden', 'Leiden', 'Plannen', 'Uitvoeren'],
+            correctAnswer: 'Voorbereiden'
+        },
+        {
+            id: 28,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Boek', 'Schrift', 'Map', 'Pen'],
+            correctAnswer: 'Boek'
+        },
+        {
+            id: 29,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Nu', 'Later', 'Eerder', 'Ooit'],
+            correctAnswer: 'Nu'
+        },
+        {
+            id: 30,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Vorige', 'Heden', 'Toekomst', 'Verleden'],
+            correctAnswer: 'Vorige'
         }
         // Voeg de rest van de vragen toe
     ]);
@@ -111,6 +238,7 @@ function Exercise() {
             ...prev,
             [currentQuestionIndex]: true, // Markeer als beantwoord
         }));
+        setIsChecked(false)
 
         const nextIndex = currentQuestionIndex + 1;
         if (nextIndex >= questions.length) {
@@ -127,15 +255,6 @@ function Exercise() {
             setIsChecked(true); // Voorkomt dat het opnieuw beantwoord wordt
         }
     };
-
-
-    // Funtie om willekeurig te kiezen tussen vraagtypes
-
-
-    // function fiftyFifty() {
-    //     invulType = !invulType;
-    //     console.log(invulType);
-    // }
 
 
 
@@ -181,11 +300,11 @@ function Exercise() {
             </div>
 
             {/* Navigatie knoppen */}
-            <div className="mt-6 flex flex-row justify-between w-full">
+            <div className="flex flex-row justify-between w-full">
                 <button
                     className="btn bg-gray-500 text-white rounded w-full sm:w-auto m-4 px-5 py-2"
                     onClick={handlePreviousQuestion}
-                    disabled={currentQuestionIndex < 1} // Volgende knop pas actief na controle van het antwoord
+                    disabled={true} // Volgende knop pas actief na controle van het antwoord
                 >
                     Vorige
                 </button>
@@ -199,7 +318,7 @@ function Exercise() {
             </div>
 
             {/* Voortgangsbalk */}
-            <div className="w-1/2 bg-progress-ND h-3 rounded-full mt-6">
+            <div className="w-1/2 bg-progress-ND h-3 rounded-full">
                 <div className="bg-progress-Done h-full rounded-full transition-all duration-300" style={{width: `${progressPercentage}%`}}></div>
             </div>
         </div>

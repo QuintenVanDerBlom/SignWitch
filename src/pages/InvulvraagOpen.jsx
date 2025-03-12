@@ -1,5 +1,21 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import ReactPlayer from "react-player";
+const VideoPlayer = ({ videoId, playlistId }) => {
+    const videoUrl = `https://www.youtube.com/watch?v=hglEJkVy1L8`;
 
+    return (
+        <div className="flex justify-end ml-10">
+            <div className="w-[640px] h-[360px] rounded-lg shadow-lg overflow-hidden">
+                <ReactPlayer
+                    url={videoUrl}
+                    controls
+                    width="100%"
+                    height="100%"
+                />
+            </div>
+        </div>
+    );
+};
 function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(""));
     const [isCorrect, setIsCorrect] = useState(null);
@@ -40,10 +56,10 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
             <h1 className="underline text-lg m-5">Vul de juiste woorden in</h1>
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
-                    <video width="640" height="360" controls className="rounded-lg shadow-lg">
-                        <source src={exercise.video} type="video/mp4"/>
-                        Je browser ondersteunt deze video niet.
-                    </video>
+                    <VideoPlayer
+                        videoId="hglEJkVy1L8" // <-- Dit is de video die moet starten
+                        playlistId="PLP8IosJB9PlUueQCTSe82RoQRSB3rGyTe"
+                    />
                 </div>
 
                 <div className="w-1/2 mr-10">
@@ -108,7 +124,8 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
             </div>
             <button
                 onClick={checkAnswers}
-                className="mt-4 px-4 py-2 bg-progress-Done text-white rounded-lg shadow-md"
+                className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white" }`}
+                disabled={showCorrectAnswer}
             >
                 Controleer antwoord
             </button>
