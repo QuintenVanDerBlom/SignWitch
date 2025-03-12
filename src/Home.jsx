@@ -116,7 +116,7 @@ function Home() {
                                     ) : (
                                         <Link to={`/les/${lesson.id}`}>
                                             <button
-                                                className={`bg-yellow-300 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-yellow-400 transition-colors`}
+                                                className={`bg-orange-500 text-white font-k2d text-xl py-2 ${buttonPadding} rounded-md hover:bg-orange-600 transition-colors`}
                                             >
                                                 Hervatten
                                             </button>
