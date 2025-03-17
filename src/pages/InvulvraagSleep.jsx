@@ -1,13 +1,15 @@
 import {useEffect, useState} from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { FaHeart } from "react-icons/fa"; // FontAwesome-iconen
+
 
 const ITEM_TYPE = "WORD";
 import React from "react";
 import ReactPlayer from "react-player";
 
 const VideoPlayer = ({ videoId, playlistId }) => {
-    const videoUrl = `https://www.youtube.com/watch?v=hglEJkVy1L8`;
+    const videoUrl = `https://youtu.be/hglEJkVy1L8?t=18`;
 
     return (
         <div className="flex justify-end ml-10">
@@ -28,14 +30,21 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
     const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(null));
     const [isCorrect, setIsCorrect] = useState(null);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+    const [wrongAnswer, setWrongAnswer] = useState("");
+    let limitCheck = 2;
+    let [amountChecked, setAmountChecked] = useState(0);
+    useEffect(() => {
+        setWrongAnswer("Helaas ❌, probeer het nog een keer.")
+    }, [amountChecked]);
 
 // ✅ Reset antwoorden bij een nieuwe vraag
     useEffect(() => {
         setAnswers(Array(exercise.correctAnswer.length).fill(null));
         setIsCorrect(null);
         setShowCorrectAnswer(false);
+        setAmountChecked(0)
+        setWrongAnswer("")
     }, [exercise]);
-
 
 
     // 🎯 Woord wordt gesleept en neergezet
@@ -53,16 +62,21 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
     // ✅ Controleer of de antwoorden kloppen
     const checkAnswers = () => {
         const correct = exercise.correctAnswer.every((word, i) => word === answers.filter(a => a !== null)[i]);
-        setIsCorrect(correct);
+        setAmountChecked((prev) => prev + 1);
+        if(amountChecked < limitCheck && !correct) {
+            setAnswers(Array(exercise.question.length).fill(null));
+            setIsCorrect(null);
+        }else{
+            setIsCorrect(correct);
+            if (correct) {
+                setScore((prev) => ({...prev, correct: prev.correct + 1}));
+            } else {
+                setScore((prev) => ({...prev, incorrect: prev.incorrect + 1}));
+            }
 
-        if (correct) {
-            setScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
-        } else {
-            setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
+            setIsChecked(true);
+            setShowCorrectAnswer(true); // ✅ Laat de volledige correcte zin zien
         }
-
-        setIsChecked(true);
-        setShowCorrectAnswer(true); // ✅ Laat de volledige correcte zin zien
     };
 
     return (
@@ -70,7 +84,9 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
         <DndProvider backend={HTML5Backend}>
 
             <div className="flex flex-col items-center w-screen h-1/2">
-                <h1 className="underline text-lg m-5">Sleep in de juiste volgorde</h1>
+
+                <h1 className="underline text-xl m-2">Sleep in de juiste volgorde</h1>
+
                 <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                     <div className="flex justify-end ml-10">
                         <VideoPlayer
@@ -104,8 +120,10 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
                             </div>
                         ) : (
-                            // 🔹 Normale vraag met sleepzones
                             <p className="text-xl mb-6 text-center">
+                                <p className="text-lg font-semibold text-red-500">
+                                    {wrongAnswer}
+                                </p>
                                 {exercise.question.map((word, index) =>
                                     word === "___" ? (
                                         <DropZone key={index} index={index} onDrop={handleDrop}>
@@ -116,6 +134,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                                     )
                                 )}
                             </p>
+
                         )}
 
                         {/* 🔹 Alleen tonen als het juiste antwoord nog NIET is getoond */}
@@ -131,13 +150,38 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                 </div>
 
 
-                    <button
-                        onClick={checkAnswers}
-                        className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white" }`}
-                        disabled={showCorrectAnswer}
-                    >
-                        Controleer antwoord
-                    </button>
+                <button
+                    onClick={checkAnswers}
+                    className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white"}`}
+                    disabled={showCorrectAnswer}
+                >
+                    Controleer antwoord
+                </button>
+                <div className="flex flex-col items-center mb-2">
+                    {!showCorrectAnswer ? (
+                        <>
+                            <h1 className="text-xl m-1 font-k2d">Kansen:</h1>
+                            <div className="flex flex-row justify-center gap-4">
+                                {[...Array(limitCheck + 1)].map((_, i) => (
+                                    <FaHeart
+                                        key={i}
+                                        size={30}
+                                        className={i < amountChecked ? "text-gray-500" : "text-red-400"}
+                                    />
+                                ))}
+                                {/*                <div*/}
+                                {/*                    className={`flex items-center justify-center w-16 h-16 rounded-full text-white text-2xl font-openSans */}
+                                {/*${limitCheck + 1 - amountChecked === 3 ? "bg-red-500" :*/}
+                                {/*                        limitCheck + 1 - amountChecked === 2 ? "bg-orange-500" :*/}
+                                {/*                            "bg-green-500"}`}*/}
+                                {/*                >*/}
+                                {/*                    {limitCheck + 1 - amountChecked}*/}
+                                {/*                </div>*/}
+
+                            </div>
+                        </>
+                    ) : null}
+                </div>
 
                 {/* Feedback weergeven */}
             </div>
@@ -146,10 +190,10 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 }
 
 // 📌 Draggable woord component
-const DraggableWord = ({ text }) => {
-    const [{ isDragging }, drag] = useDrag(() => ({
+const DraggableWord = ({text}) => {
+    const [{isDragging}, drag] = useDrag(() => ({
         type: ITEM_TYPE,
-        item: { text },
+        item: {text},
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -166,8 +210,8 @@ const DraggableWord = ({ text }) => {
 };
 
 // 📌 DropZone component (voor de lege plekken)
-const DropZone = ({ index, onDrop, children }) => {
-    const [{ isOver }, drop] = useDrop(() => ({
+const DropZone = ({index, onDrop, children}) => {
+    const [{isOver}, drop] = useDrop(() => ({
         accept: ITEM_TYPE,
         drop: (item) => onDrop(index, item),
         collect: (monitor) => ({

@@ -1,17 +1,18 @@
-import { Link, Outlet } from 'react-router';
-import { FaUserCircle } from "react-icons/fa";
+import {Link, Outlet} from 'react-router';
+import {FaUserCircle} from "react-icons/fa";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import Unauthorised from "./Unauthorised.jsx";
 
 
 function Layout() {
     const lessons = [
-        { id: 1, title: "Les 1", progress: 20 },
-        { id: 2, title: "Les 2", progress: 50 },
-        { id: 3, title: "Les 3", progress: 75 },
-        { id: 4, title: "Les 4", progress: 100 },
-        { id: 5, title: "Les 5", progress: 40 },
-        { id: 6, title: "Les 6", progress: 60 },
+        {id: 1, title: "Les 1", progress: 20},
+        {id: 2, title: "Les 2", progress: 50},
+        {id: 3, title: "Les 3", progress: 75},
+        {id: 4, title: "Les 4", progress: 100},
+        {id: 5, title: "Les 5", progress: 40},
+        {id: 6, title: "Les 6", progress: 60},
     ];
 
     const [searchParams] = useSearchParams();
@@ -20,27 +21,81 @@ function Layout() {
     const name = searchParams.get("name");
     const email = searchParams.get("email");
 
-    // Load data from localStorage if available
+
     const [loginData, setLoginData] = useState(() => {
         const storedData = localStorage.getItem("loginData");
         return storedData ? JSON.parse(storedData) : null;
     });
 
+
+    const [isAuthorised, setIsAuthorised] = useState(true);
+
     useEffect(() => {
-        if (token && name && email) {
-            // If URL provides new login data, update localStorage
-            const newLoginData = { token, name, email };
+        checkAuth();
+    }, []);
+
+    async function checkAuth() {
+
+        if (searchParams.get("token")) {
+            const newLoginData = {token, name, email};
             localStorage.setItem("loginData", JSON.stringify(newLoginData));
             setLoginData(newLoginData);
-        } else if (loginData?.token) {
-            // If token is already in localStorage, do not call API again
-            console.log("Using stored token, no API call needed.");
-        } else {
-            // No valid data found, redirect to login
-            console.warn("No valid login data found, redirecting...");
-            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+            window.location.href = "http://localhost:5173/";
         }
-    }, [token, name, email]); // Only re-run if URL data changes
+
+        if (loginData == null) {
+            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+        } else {
+            const response = await fetch(`https://cmgt.hr.nl/api/validate-sso-token`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Token': `${loginData.token}`,
+                },
+            });
+            if (response.status === 200) {
+                console.log('token valide');
+
+                console.log(loginData.email)
+
+                const responses = await fetch(`http://145.24.223.94:8000/users`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'apikey': `pinda`,
+                    },
+                });
+
+                const data = await responses.json();
+
+                console.log(data.users);
+
+                let matchFound = false;
+                for (let i = 0; i < data.users.length; i++) {
+                    console.log(data.users[i].email);
+                    if (data.users[i].email === loginData.email) {
+                        console.log('email staat in het systeem');
+                        console.log(data.users[i].role);
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                if (!matchFound) {
+                    setIsAuthorised(false);
+                }
+
+
+            } else {
+                console.log('token invalide');
+                window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+            }
+        }
+    }
+
+    if (!isAuthorised) {
+        return <Unauthorised />;
+    }
 
 
     return (
@@ -71,7 +126,9 @@ function Layout() {
                             </button>
                             {/* Dropdown */}
                             <ul className="absolute hidden group-hover:block bg-bg-nav-bar text-white mt-0 py-2 w-40 shadow-md rounded-lg">
-                                {lessons.map(lesson => (<li><Link to={`/les/${lesson.id}`} className="block px-4 py-2 hover:bg-button-bg-hover">{lesson.title}</Link></li>))}
+                                {lessons.map(lesson => (<li><Link to={`/les/${lesson.id}`}
+                                                                  className="block px-4 py-2 hover:bg-button-bg-hover">{lesson.title}</Link>
+                                </li>))}
                             </ul>
                         </li>
                         <li className="relative group">
@@ -93,15 +150,13 @@ function Layout() {
                     </ul>
 
 
-
-
                 </nav>
             </header>
 
             {/* Main Content */}
             <main className="min-h-screen bg-background-color">
                 {/*<Outlet loginData={loginData}/>*/}
-                <Outlet context={loginData} />
+                <Outlet context={loginData}/>
             </main>
 
             {/* Footer (Optioneel, maar kan toegevoegd worden voor een meer dynamische ervaring) */}

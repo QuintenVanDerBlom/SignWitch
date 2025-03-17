@@ -62,7 +62,7 @@ function Students() {
         const newStudent = {
             username: formData.get("username"),
             email: formData.get("email"),
-            role: "user", // Voorbeeld: standaard 'user'
+            role: formData.get("role"),
         };
 
         if (modalMode === "create") {
@@ -227,11 +227,13 @@ function Students() {
             const studentNode = studentsNodes[i];
             const username = studentNode.getElementsByTagName("username")[0]?.textContent;
             const email = studentNode.getElementsByTagName("email")[0]?.textContent;
+            const role = studentNode.getElementsByTagName("role")[0]?.textContent;
 
             if (username && email) {
                 studentsArray.push({
                     username: username,
                     email: email,
+                    role: role,
                     created_date: new Date().toISOString(),
                 });
             }
@@ -281,6 +283,7 @@ function Students() {
                         <h2 className="text-xl font-semibold">{student.username}</h2>
                         <p className="text-sm text-gray-500">{student.email}</p>
                         <p className="text-sm text-gray-500">{student._id}</p>
+                        <p className="text-sm text-gray-500">{student.role}</p>
                         <p className="text-xs text-gray-400">{new Date(student.created_at).toLocaleDateString()}</p>
                         <div className="absolute top-2 right-2 space-x-2">
                             <button onClick={() => openModal("edit", student)} className="text-yellow-400">
@@ -330,6 +333,36 @@ function Students() {
                                             required
                                         />
                                     </div>
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium">
+                                            Role
+                                        </label>
+                                        <div className="mt-1 flex items-center space-x-4">
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    name="role"
+                                                    value="teacher"
+                                                    defaultChecked={currentStudent ? currentStudent.role === "teacher" : false}
+                                                    className="form-radio"
+                                                    required
+                                                />
+                                                <span className="ml-2">Teacher</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    name="role"
+                                                    value="user"
+                                                    defaultChecked={currentStudent ? currentStudent.role === "user" : true}
+                                                    className="form-radio"
+                                                    required
+                                                />
+                                                <span className="ml-2">User</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
                                     <div className="flex justify-between">
                                         <button
                                             type="button"

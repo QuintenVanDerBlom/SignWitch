@@ -35,197 +35,197 @@ function Exercise() {
             possibleAnswers: ['Hoeveel', 'Wanneer', 'Waar', 'Hoelang'],
             correctAnswer: 'Hoeveel'
         },
-        // {
-        //     id: 3,
-        //     question: ["Welkom,", "ik", "zal", "mij", "even", "___", "Mijn", "voornaam", "is", "___", "mijn", "naam", "is", "___", "Mijn", "achternaam", "is", "___"],
-        //     type: 'fill_in_the_blank',
-        //     category_id: 2,
-        //     possibleAnswers: ["voorstellen", "makkelijk", "naambordje", "niet", "moeilijk", "naam", "zelf"],
-        //     correctAnswer: ["voorstellen", "makkelijk", "naambordje", "niet moeilijk"]
-        // },
-        // {
-        //     id: 4,
-        //     question: ["De", "les", "begin", "ik", "met", "koffie", "drinken,", "thuis", "drink", "ik", "___"],
-        //     type: 'fill_in_the_blank',
-        //     category_id: 1,
-        //     possibleAnswers: ["thee", "water", "sap", "koffie", "drankje"],
-        //     correctAnswer: ["thee"]
-        // },
-        // {
-        //     id: 5,
-        //     question: ["Ik", "ben", "op", "tijd", "aanwezig", "voor", "de", "les", "en", "zet", "de", "tafels", "en", "stoelen", "goed", "in", "het", "___"],
-        //     type: 'fill_in_the_blank',
-        //     category_id: 1,
-        //     possibleAnswers: ["lokaal", "klas", "ruimte", "leslokaal", "zaal"],
-        //     correctAnswer: ["lokaal"]
-        // },
-        // {
-        //     id: 6,
-        //     question: ["Nu", "is", "de", "oefening", "klaar", "Was", "het", "___", "of", "___", "?" ],
-        //     type: 'fill_in_the_blank',
-        //     category_id: 2,
-        //     possibleAnswers: ["makkelijk", "moeilijk", "interessant", "saai", "leuk", "langzaam"],
-        //     correctAnswer: ["makkelijk", "moeilijk"]
-        // },
-        // // Multiple-choice vragen
-        // {
-        //     id: 12,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Hoeveel', 'Wanneer', 'Waar', 'Hoelang'],
-        //     correctAnswer: 'Wanneer'
-        // },
-        // {
-        //     id: 13,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Waar', 'Hoeveel', 'Hoelang', 'Wanneer'],
-        //     correctAnswer: 'Waar'
-        // },
-        // {
-        //     id: 14,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Hoelang', 'Wat', 'Hoeveel', 'Waar'],
-        //     correctAnswer: 'Hoelang'
-        // },
-        // {
-        //     id: 15,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Wat', 'Hoeveel', 'Waar', 'Hoelang'],
-        //     correctAnswer: 'Wat'
-        // },
-        // {
-        //     id: 16,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Hoeveel', 'Wat', 'Hoelang', 'Welke'],
-        //     correctAnswer: 'Hoeveel'
-        // },
-        // {
-        //     id: 17,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Welk', 'Waarom', 'Wat', 'Hoeveel'],
-        //     correctAnswer: 'Welk'
-        // },
-        // {
-        //     id: 18,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Tijdens de les', 'Na school', 'In de pauze', 'Thuis'],
-        //     correctAnswer: 'Tijdens de les'
-        // },
-        // {
-        //     id: 19,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Aanwezig', 'Afwezig', 'Ziek', 'Absent'],
-        //     correctAnswer: 'Aanwezig'
-        // },
-        // {
-        //     id: 20,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Makkelijk', 'Moeilijk', 'Gemiddeld', 'Eenvoudig'],
-        //     correctAnswer: 'Makkelijk'
-        // },
-        // {
-        //     id: 21,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Volgende', 'Vorige', 'Eerdere', 'Laatste'],
-        //     correctAnswer: 'Volgende'
-        // },
-        // {
-        //     id: 22,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Bedoeling', 'Doel', 'Motief', 'Verklaring'],
-        //     correctAnswer: 'Bedoeling'
-        // },
-        // {
-        //     id: 23,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Meenemen', 'Halen', 'Brengen', 'Leiden'],
-        //     correctAnswer: 'Meenemen'
-        // },
-        // {
-        //     id: 24,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Voorbeeld', 'Oefening', 'Uitleg', 'Les'],
-        //     correctAnswer: 'Voorbeeld'
-        // },
-        // {
-        //     id: 25,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Beginnen', 'Stoppen', 'Wachten', 'Voortgaan'],
-        //     correctAnswer: 'Beginnen'
-        // },
-        // {
-        //     id: 26,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Moeilijk', 'Gemakkelijk', 'Middelmatig', 'Verschillend'],
-        //     correctAnswer: 'Moeilijk'
-        // },
-        // {
-        //     id: 27,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Voorbereiden', 'Leiden', 'Plannen', 'Uitvoeren'],
-        //     correctAnswer: 'Voorbereiden'
-        // },
-        // {
-        //     id: 28,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Boek', 'Schrift', 'Map', 'Pen'],
-        //     correctAnswer: 'Boek'
-        // },
-        // {
-        //     id: 29,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Nu', 'Later', 'Eerder', 'Ooit'],
-        //     correctAnswer: 'Nu'
-        // },
-        // {
-        //     id: 30,
-        //     question: 'Welk gebaar zie je hier?',
-        //     type: 'multiple_choice',
-        //     category_id: 1,
-        //     possibleAnswers: ['Vorige', 'Heden', 'Toekomst', 'Verleden'],
-        //     correctAnswer: 'Vorige'
-        // }
-        // Voeg de rest van de vragen toe
+        {
+            id: 3,
+            question: ["Welkom,", "ik", "zal", "mij", "even", "___", "Mijn", "voornaam", "is", "___", "mijn", "naam", "is", "___", "Mijn", "achternaam", "is", "___"],
+            type: 'fill_in_the_blank',
+            category_id: 2,
+            possibleAnswers: ["voorstellen", "makkelijk", "naambordje", "niet", "moeilijk", "naam", "zelf"],
+            correctAnswer: ["voorstellen", "makkelijk", "naambordje", "niet moeilijk"]
+        },
+        {
+            id: 4,
+            question: ["De", "les", "begin", "ik", "met", "koffie", "drinken,", "thuis", "drink", "ik", "___"],
+            type: 'fill_in_the_blank',
+            category_id: 1,
+            possibleAnswers: ["thee", "water", "sap", "koffie", "drankje"],
+            correctAnswer: ["thee"]
+        },
+        {
+            id: 5,
+            question: ["Ik", "ben", "op", "tijd", "aanwezig", "voor", "de", "les", "en", "zet", "de", "tafels", "en", "stoelen", "goed", "in", "het", "___"],
+            type: 'fill_in_the_blank',
+            category_id: 1,
+            possibleAnswers: ["lokaal", "klas", "ruimte", "leslokaal", "zaal"],
+            correctAnswer: ["lokaal"]
+        },
+        {
+            id: 6,
+            question: ["Nu", "is", "de", "oefening", "klaar", "Was", "het", "___", "of", "___", "?" ],
+            type: 'fill_in_the_blank',
+            category_id: 2,
+            possibleAnswers: ["makkelijk", "moeilijk", "interessant", "saai", "leuk", "langzaam"],
+            correctAnswer: ["makkelijk", "moeilijk"]
+        },
+        // Multiple-choice vragen
+        {
+            id: 12,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Hoeveel', 'Wanneer', 'Waar', 'Hoelang'],
+            correctAnswer: 'Wanneer'
+        },
+        {
+            id: 13,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Waar', 'Hoeveel', 'Hoelang', 'Wanneer'],
+            correctAnswer: 'Waar'
+        },
+        {
+            id: 14,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Hoelang', 'Wat', 'Hoeveel', 'Waar'],
+            correctAnswer: 'Hoelang'
+        },
+        {
+            id: 15,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Wat', 'Hoeveel', 'Waar', 'Hoelang'],
+            correctAnswer: 'Wat'
+        },
+        {
+            id: 16,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Hoeveel', 'Wat', 'Hoelang', 'Welke'],
+            correctAnswer: 'Hoeveel'
+        },
+        {
+            id: 17,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Welk', 'Waarom', 'Wat', 'Hoeveel'],
+            correctAnswer: 'Welk'
+        },
+        {
+            id: 18,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Tijdens de les', 'Na school', 'In de pauze', 'Thuis'],
+            correctAnswer: 'Tijdens de les'
+        },
+        {
+            id: 19,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Aanwezig', 'Afwezig', 'Ziek', 'Absent'],
+            correctAnswer: 'Aanwezig'
+        },
+        {
+            id: 20,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Makkelijk', 'Moeilijk', 'Gemiddeld', 'Eenvoudig'],
+            correctAnswer: 'Makkelijk'
+        },
+        {
+            id: 21,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Volgende', 'Vorige', 'Eerdere', 'Laatste'],
+            correctAnswer: 'Volgende'
+        },
+        {
+            id: 22,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Bedoeling', 'Doel', 'Motief', 'Verklaring'],
+            correctAnswer: 'Bedoeling'
+        },
+        {
+            id: 23,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Meenemen', 'Halen', 'Brengen', 'Leiden'],
+            correctAnswer: 'Meenemen'
+        },
+        {
+            id: 24,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Voorbeeld', 'Oefening', 'Uitleg', 'Les'],
+            correctAnswer: 'Voorbeeld'
+        },
+        {
+            id: 25,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Beginnen', 'Stoppen', 'Wachten', 'Voortgaan'],
+            correctAnswer: 'Beginnen'
+        },
+        {
+            id: 26,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Moeilijk', 'Gemakkelijk', 'Middelmatig', 'Verschillend'],
+            correctAnswer: 'Moeilijk'
+        },
+        {
+            id: 27,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Voorbereiden', 'Leiden', 'Plannen', 'Uitvoeren'],
+            correctAnswer: 'Voorbereiden'
+        },
+        {
+            id: 28,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Boek', 'Schrift', 'Map', 'Pen'],
+            correctAnswer: 'Boek'
+        },
+        {
+            id: 29,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Nu', 'Later', 'Eerder', 'Ooit'],
+            correctAnswer: 'Nu'
+        },
+        {
+            id: 30,
+            question: 'Welk gebaar zie je hier?',
+            type: 'multiple_choice',
+            category_id: 1,
+            possibleAnswers: ['Vorige', 'Heden', 'Toekomst', 'Verleden'],
+            correctAnswer: 'Vorige'
+        }
     ]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState({ correct: 0, incorrect: 0 });
     const [isChecked, setIsChecked] = useState(false);
     const [toggle, setToggle] = useState(false);
+
 
     const currentQuestion = questions[currentQuestionIndex];
     const progressPercentage = ((currentQuestionIndex) / questions.length) * 100;
@@ -313,8 +313,7 @@ function Exercise() {
                         />
                     )
                 ) : (
-                    <Mul
-                        tipleChoice
+                    <MultipleChoice
                         question={currentQuestion}
                         onNext={handleNextQuestion}
                         setScore={setScore}
