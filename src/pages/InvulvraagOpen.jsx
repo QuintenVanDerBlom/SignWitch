@@ -66,10 +66,10 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                     {/* ✅ Toon de correcte zin na controle */}
                     {showCorrectAnswer ? (
                         <div className="text-center">
-                            <p className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
+                            <p className={`text-xl font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
                                 {isCorrect ? "Goed gedaan! ✅" : "Helaas ❌ het juiste antwoord is:"}
                             </p>
-                            <p className="text-lg font-semibold">
+                            <p className="text-xl font-semibold">
                                 {(() => {
                                     let correctIndex = 0;
                                     return exercise.question.map((word, index) =>
@@ -127,7 +127,7 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                 className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white" }`}
                 disabled={showCorrectAnswer}
             >
-                Controleer antwoord
+                Controleer het antwoord
             </button>
         </div>
     );

@@ -83,11 +83,11 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                         {/* 🔹 Toon de volledige correcte zin na controle */}
                         {showCorrectAnswer ? (
                             <div className="text-center"> {/* ✅ JSX heeft één hoofdelement nodig */}
-                                <p className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
+                                <p className={`text-xl font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
                                     {isCorrect ? "Goed gedaan! ✅" : "Helaas ❌ het juiste antwoord is:"}
                                 </p>
 
-                                <p className="text-lg font-semibold">
+                                <p className="text-xl font-semibold">
                                     {(() => {
                                         let fillIndex = 0; // Houd bij welke invulling we gebruiken
                                         return exercise.question.map((word, index) =>
@@ -136,7 +136,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                         className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white" }`}
                         disabled={showCorrectAnswer}
                     >
-                        Controleer antwoord
+                        Controleer het antwoord
                     </button>
 
                 {/* Feedback weergeven */}
