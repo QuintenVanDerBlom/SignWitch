@@ -39,7 +39,7 @@ function Dictionary() {
                 const response = await fetch("http://145.24.223.94:8000/signs", {
                     method: "GET",
                     headers: {
-                        "apiKey": "EHKG61Lr3Bq0PDncCoALn9hvG2LeHVBB", // Replace with your actual API key
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
                         "Accept": "application/json",
                     },
                 });

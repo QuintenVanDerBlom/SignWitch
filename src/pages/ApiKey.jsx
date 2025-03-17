@@ -6,7 +6,7 @@ function ApiKey() {
     const [formData, setFormData] = useState('')
     async function handleSubmit() {
         try {
-            const response = await fetch('http://localhost:8000/keygen', {
+            const response = await fetch('http://145.24.223.94:8000/keygen', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
