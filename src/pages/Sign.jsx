@@ -37,14 +37,13 @@ function Sign() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background-color px-6 py-10">
-            <h1 className="text-4xl tracking-wide text-gray-900 mb-4">{sign.title}</h1>
+        <div className="flex flex-col items-center min-h-screen bg-background-color px-6 py-10">
+            <h1 className="text-6xl tracking-wide text-gray-900 mb-4">{sign.title}</h1>
             {/* Video Section */}
-            <div className="w-full md:w-1/2 flex justify-center mb-8">
-                <video key={sign.title} width="640" height="360" controls
-                       className="rounded-lg shadow-lg">
-                    <source src={`../public/signs/${sign.title}.mp4`} type="video/mp4"/>
-                    Je browser ondersteunt deze video niet.
+            <div className="w-screen md:w-1/2 flex justify-center mb-8">
+                <video className="w-screen rounded-lg shadow-md border border-gray-300" controls>
+                    <source src={`../../public/signs/${sign.title}.mp4`} type="video/mp4"/>
+                    Your browser does not support the video tag.
                 </video>
             </div>
 

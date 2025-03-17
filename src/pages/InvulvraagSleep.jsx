@@ -26,6 +26,8 @@ const VideoPlayer = ({ videoId, playlistId }) => {
 
 function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
     const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(null));
+    const [isCorrect, setIsCorrect] = useState(null);
+    const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
 
 // ✅ Reset antwoorden bij een nieuwe vraag
     useEffect(() => {
@@ -34,8 +36,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
         setShowCorrectAnswer(false);
     }, [exercise]);
 
-    const [isCorrect, setIsCorrect] = useState(null);
-    const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+
 
     // 🎯 Woord wordt gesleept en neergezet
     const handleDrop = (index, item) => {
