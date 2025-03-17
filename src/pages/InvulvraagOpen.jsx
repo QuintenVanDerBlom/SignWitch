@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
+import { FaHeart } from "react-icons/fa"; // FontAwesome-iconen
+
 const VideoPlayer = ({ videoId, playlistId }) => {
     const videoUrl = `https://www.youtube.com/watch?v=hglEJkVy1L8`;
 
@@ -20,12 +22,20 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(""));
     const [isCorrect, setIsCorrect] = useState(null);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+    const [wrongAnswer, setWrongAnswer] = useState("");
+    let limitCheck = 2;
+    let [amountChecked, setAmountChecked] = useState(0);
+    useEffect(() => {
+        setWrongAnswer("Helaas ❌, probeer het nog een keer.")
+    }, [amountChecked]);
 
     useEffect(() => {
         // ✅ Reset state wanneer er een nieuwe vraag is
         setAnswers(Array(exercise.correctAnswer.length).fill(""));
         setIsCorrect(null);
         setShowCorrectAnswer(false);
+        setAmountChecked(0)
+        setWrongAnswer("")
     }, [exercise]);
 
     const handleChange = (index, value) => {
@@ -39,16 +49,22 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
         const correct = exercise.correctAnswer.every((word, i) =>
             word.toLowerCase().trim() === answers[i].toLowerCase().trim()
         );
-        setIsCorrect(correct);
+        setAmountChecked((prev) => prev + 1);
+        if(amountChecked < limitCheck && !correct) {
+            setAnswers(Array(exercise.question.length).fill(null));
+            setIsCorrect(null);
+        }else {
+            setIsCorrect(correct);
 
-        if (correct) {
-            setScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
-        } else {
-            setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
+            if (correct) {
+                setScore((prev) => ({...prev, correct: prev.correct + 1}));
+            } else {
+                setScore((prev) => ({...prev, incorrect: prev.incorrect + 1}));
+            }
+
+            setIsChecked(true);
+            setShowCorrectAnswer(true);
         }
-
-        setIsChecked(true);
-        setShowCorrectAnswer(true);
     };
 
     return (
@@ -87,6 +103,9 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                     ) : (
                         // 🔹 Normale vraag met invulvelden
                         <>
+                            <p className="text-lg text-center font-semibold text-red-500">
+                                {wrongAnswer}
+                            </p>
                             <p className="text-xl mb-6 text-center">
                                 {(() => {
                                     let placeIndex = 1;
@@ -124,11 +143,37 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
             </div>
             <button
                 onClick={checkAnswers}
-                className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white" }`}
+                className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white"}`}
                 disabled={showCorrectAnswer}
             >
                 Controleer antwoord
             </button>
+
+            <div className="flex flex-col items-center mb-2">
+                {!showCorrectAnswer ? (
+                    <>
+                        <h1 className="text-xl m-1 font-k2d">Kansen:</h1>
+                        <div className="flex flex-row justify-center gap-4">
+                            {[...Array(limitCheck + 1)].map((_, i) => (
+                                <FaHeart
+                                    key={i}
+                                    size={30}
+                                    className={i < amountChecked ? "text-gray-500" : "text-red-400"}
+                                />
+                            ))}
+                            {/*                <div*/}
+                            {/*                    className={`flex items-center justify-center w-16 h-16 rounded-full text-white text-2xl font-openSans */}
+                            {/*${limitCheck + 1 - amountChecked === 3 ? "bg-red-500" :*/}
+                            {/*                        limitCheck + 1 - amountChecked === 2 ? "bg-orange-500" :*/}
+                            {/*                            "bg-green-500"}`}*/}
+                            {/*                >*/}
+                            {/*                    {limitCheck + 1 - amountChecked}*/}
+                            {/*                </div>*/}
+
+                        </div>
+                    </>
+                ) : null}
+            </div>
         </div>
     );
 }
