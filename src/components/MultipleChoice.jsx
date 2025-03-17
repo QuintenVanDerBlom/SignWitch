@@ -43,7 +43,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
     return (
         <div className="flex flex-col items-center w-screen h-1/2">
             <h1 className="underline text-lg m-5">Kijk eerst naar de video. Welk gebaar zie je hier?</h1>
-            <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
+            <div className="flex flex-row w-full justify-between px-44 items-center">
                 <div className="flex justify-end ml-10">
                     <video key={question.correctAnswer.title} width="640" height="360" controls
                            className="rounded-lg shadow-lg">
