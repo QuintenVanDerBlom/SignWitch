@@ -19,6 +19,7 @@ import Inlog from "./pages/authentication/Inlog.jsx";
 import Profiel from "./pages/account/profiel.jsx";
 import ProfielFoto from "./pages/account/profielFoto.jsx";
 import Unauthorised from "./layouts/Unauthorised.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -73,7 +74,8 @@ const router = createBrowserRouter([
             // },
             {
                 path: '/studenten',
-                element: <Students/>
+                element: ( <ProtectedRoute allowedRoles={['teacher']}> <Students/> </ProtectedRoute>)
+                //element: <Students/>
             },
             {
                 path: '/unauthorised',

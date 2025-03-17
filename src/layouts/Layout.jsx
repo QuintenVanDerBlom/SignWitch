@@ -75,6 +75,7 @@ function Layout() {
                     console.log(data.users[i].email);
                     if (data.users[i].email === loginData.email) {
                         console.log('email staat in het systeem');
+                        console.log(data.users[i].role);
                         matchFound = true;
                         break;
                     }
