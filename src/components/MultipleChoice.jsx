@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-
+const shuffleArray = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]; // Swap
+    }
+    return shuffledArray;
+};
 function MultipleChoice({ question, setScore, setIsChecked }) {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [isCorrect, setIsCorrect] = useState(null);
@@ -13,10 +20,9 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
     const handleAnswerChange = (e) => {
         setSelectedAnswer(e.target.value);
     };
-
     const checkAnswer = () => {
         // Vergelijk het geselecteerde antwoord met het juiste antwoord
-        if (selectedAnswer === question.correctAnswer) {
+        if (selectedAnswer === question.correctAnswer.title) {
             setIsCorrect(true);
             setScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
         } else {
@@ -25,15 +31,23 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
         }
         setIsChecked(true); // ✅ Gebruiker heeft de vraag gecontroleerd
     };
+    const [shuffledChoices, setShuffledChoices] = useState([]);
+
+    // Gebruik useEffect om de keuzes slechts één keer te schudden bij het laden
+    useEffect(() => {
+        const allChoices = [...question.choices, { title: question.correctAnswer.title }];
+        const shuffled = shuffleArray(allChoices);
+        setShuffledChoices(shuffled);
+    }, [question]); // Dit zorgt ervoor dat de shuffle alleen gebeurt bij de eerste render of als de vraag verandert
 
     return (
         <div className="flex flex-col items-center w-screen h-1/2">
             <h1 className="underline text-lg m-5">Kijk eerst naar de video. Welk gebaar zie je hier?</h1>
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
-                    <video key={question.correctAnswer} width="640" height="360" controls
+                    <video key={question.correctAnswer.title} width="640" height="360" controls
                            className="rounded-lg shadow-lg">
-                        <source src={`../public/signs/${question.correctAnswer}.mp4`} type="video/mp4"/>
+                        <source src={`../public/signs/${question.correctAnswer.title}.mp4`} type="video/mp4"/>
                         Je browser ondersteunt deze video niet.
                     </video>
 
@@ -47,31 +61,32 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                             {isCorrect
                                 ? '✅ Juist, het antwoord is: '
                                 : '❌ Fout, het juiste antwoord is: '}
-                            <span className="font-bold">{question.correctAnswer}</span>
+                            <span className="font-bold">{question.correctAnswer.title}</span>
                         </p>
                     )}
 
-                    {question.possibleAnswers.map((option, i) => (
-                        <label
-                            key={i}
-                            className={`flex items-center space-x-3 p-2 rounded-md ${
-                                isCorrect === null ? 'hover:bg-gray-100' : ''
-                            }`}
-                        >
-                            <input
-                                type="radio"
-                                value={option}
-                                className="w-5 h-5 text-red-500 focus:ring-red-500"
-                                name="quiz"
-                                onChange={handleAnswerChange}
-                                checked={selectedAnswer === option}
-                                disabled={isCorrect !== null} // Voorkomt selectie na controle
-                            />
-                            <span className="text-lg text-gray-900">{option}</span>
-                        </label>
-                    ))}
+
+                        {shuffledChoices.map((option, i) => (
+                            <label
+                                key={i}
+                                className={`flex items-center space-x-3 p-2 rounded-md ${
+                                    isCorrect === null ? 'hover:bg-gray-100' : ''
+                                }`}
+                            >
+                                <input
+                                    type="radio"
+                                    value={option.title}
+                                    className="w-5 h-5 text-red-500 focus:ring-red-500"
+                                    name="quiz"
+                                    onChange={handleAnswerChange}
+                                    checked={selectedAnswer === option.title}
+                                    disabled={isCorrect !== null} // Voorkomt selectie na controle
+                                />
+                                <span className="text-lg text-gray-900">{option.title}</span>
+                            </label>
+                        ))}
+
                 </div>
-                <div></div>
             </div>
 
             <button
