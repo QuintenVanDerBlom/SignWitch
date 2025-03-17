@@ -12,7 +12,7 @@ function Sign() {
                 const response = await fetch(`http://145.24.223.94:8000/signs/${id}`, { // Gebruik de ID om de data op te halen
                     method: "GET",
                     headers: {
-                        "apiKey": "EHKG61Lr3Bq0PDncCoALn9hvG2LeHVBB", // Voeg de juiste API sleutel toe
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Voeg de juiste API sleutel toe
                         "Accept": "application/json",
                     },
                 });
@@ -37,12 +37,12 @@ function Sign() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background-color px-6 py-10">
-            <h1 className="text-4xl tracking-wide text-gray-900 mb-4">{sign.title}</h1>
+        <div className="flex flex-col items-center min-h-screen bg-background-color px-6 py-10">
+            <h1 className="text-6xl tracking-wide text-gray-900 mb-4">{sign.title}</h1>
             {/* Video Section */}
-            <div className="w-full md:w-1/2 flex justify-center mb-8">
-                <video className="w-full max-w-md rounded-lg shadow-md border border-gray-300" controls>
-                    <source src={sign.video_url} type="video/mp4"/>
+            <div className="w-screen md:w-1/2 flex justify-center mb-8">
+                <video className="w-screen rounded-lg shadow-md border border-gray-300" controls>
+                    <source src={`../../public/signs/${sign.title}.mp4`} type="video/mp4"/>
                     Your browser does not support the video tag.
                 </video>
             </div>

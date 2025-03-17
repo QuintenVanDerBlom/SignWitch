@@ -35,14 +35,14 @@ function Exercise() {
             possibleAnswers: ['Hoeveel', 'Wanneer', 'Waar', 'Hoelang'],
             correctAnswer: 'Hoeveel'
         },
-        {
-            id: 3,
-            question: ["Welkom,", "ik", "zal", "mij", "even", "___", "Mijn", "voornaam", "is", "___", "mijn", "naam", "is", "___", "Mijn", "achternaam", "is", "___"],
-            type: 'fill_in_the_blank',
-            category_id: 2,
-            possibleAnswers: ["voorstellen", "makkelijk", "naambordje", "niet", "moeilijk", "naam", "zelf"],
-            correctAnswer: ["voorstellen", "makkelijk", "naambordje", "niet moeilijk"]
-        },
+        // {
+        //     id: 3,
+        //     question: ["Welkom,", "ik", "zal", "mij", "even", "___", "Mijn", "voornaam", "is", "___", "mijn", "naam", "is", "___", "Mijn", "achternaam", "is", "___"],
+        //     type: 'fill_in_the_blank',
+        //     category_id: 2,
+        //     possibleAnswers: ["voorstellen", "makkelijk", "naambordje", "niet", "moeilijk", "naam", "zelf"],
+        //     correctAnswer: ["voorstellen", "makkelijk", "naambordje", "niet moeilijk"]
+        // },
         // {
         //     id: 4,
         //     question: ["De", "les", "begin", "ik", "met", "koffie", "drinken,", "thuis", "drink", "ik", "___"],

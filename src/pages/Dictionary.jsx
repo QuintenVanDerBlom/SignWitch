@@ -4,19 +4,23 @@ import { useNavigate } from "react-router-dom";
 
 function Dictionary() {
     const [signs, setSigns] = useState([]);
-    const categories = [
-        { id: 1, name: "Cijfers" },
-        { id: 2, name: "Letters" },
-        { id: 3, name: "Woorden" },
-        { id: 4, name: "Basis" },
-    ];
-    const lessons = [
-        { id: 1, name: "Les 1" },
-        { id: 2, name: "Les 2" },
-        { id: 3, name: "Les 3" },
-        { id: 4, name: "Les 4" },
-        { id: 5, name: "Les 5" },
-    ];
+    // const categories = [
+    //     { id: 1, name: "Cijfers" },
+    //     { id: 2, name: "Letters" },
+    //     { id: 3, name: "Woorden" },
+    //     { id: 4, name: "Basis" },
+    // ];
+    const [categories, setCategories] = useState([]);
+    const [lessons, setLessons] = useState([]);
+
+
+    // const lessons = [
+    //     { id: 1, name: "Les 1" },
+    //     { id: 2, name: "Les 2" },
+    //     { id: 3, name: "Les 3" },
+    //     { id: 4, name: "Les 4" },
+    //     { id: 5, name: "Les 5" },
+    // ];
 
     const navigate = useNavigate();
 
@@ -39,7 +43,7 @@ function Dictionary() {
                 const response = await fetch("http://145.24.223.94:8000/signs", {
                     method: "GET",
                     headers: {
-                        "apiKey": "EHKG61Lr3Bq0PDncCoALn9hvG2LeHVBB", // Replace with your actual API key
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
                         "Accept": "application/json",
                     },
                 });
@@ -61,12 +65,68 @@ function Dictionary() {
         fetchSigns();
     }, []);
 
+    useEffect(() => {
+        // Fetch the signs data from the API
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch("http://145.24.223.94:8000/categories", {
+                    method: "GET",
+                    headers: {
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
+                        "Accept": "application/json",
+                    },
+                });
+                const data = await response.json();
 
+                console.log("Fetched data:", data);
+
+                // Access the 'items' array and set it to the signs state
+                if (data && data.items && Array.isArray(data.items)) {
+                    setCategories(data.items); // Use the 'items' array from the response
+                } else {
+                    console.error("Unexpected data format:", data);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+    useEffect(() => {
+        // Fetch the signs data from the API
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch("http://145.24.223.94:8000/lessons", {
+                    method: "GET",
+                    headers: {
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
+                        "Accept": "application/json",
+                    },
+                });
+                const data = await response.json();
+
+                console.log("Fetched data:", data);
+
+                // Access the 'items' array and set it to the signs state
+                if (data && data.items && Array.isArray(data.items)) {
+                    setLessons(data.items); // Use the 'items' array from the response
+                    console.log(data.items);
+                } else {
+                    console.error("Unexpected data format:", data);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentSigns = selectedCategories.length > 0 || selectedLessons.length > 0
         ? signs.filter(sign => {
-            const isCategoryMatch = selectedCategories.length === 0 || selectedCategories.includes(sign.category_id);
-            const isLessonMatch = selectedLessons.length === 0 || selectedLessons.includes(sign.lesson_id);
+            const isCategoryMatch = selectedCategories.length === 0 || selectedCategories.includes(sign.category);
+            const isLessonMatch = selectedLessons.length === 0 || selectedLessons.includes(sign.lesson);
             return isCategoryMatch && isLessonMatch;
         }).slice(startIndex, startIndex + itemsPerPage)
         : signs.slice(startIndex, startIndex + itemsPerPage);
@@ -145,7 +205,7 @@ function Dictionary() {
                                 onChange={() => handleCategoryChange(category.id)}
                                 checked={selectedCategories.includes(category.id)}
                             />
-                            <span>{category.name}</span>
+                            <span>{category.categoryName}</span>
                         </label>
                     ))}
                 </div>
@@ -162,7 +222,7 @@ function Dictionary() {
                                 onChange={() => handleLessonChange(lesson.id)}
                                 checked={selectedLessons.includes(lesson.id)}
                             />
-                            <span>{lesson.name}</span>
+                            <span>{lesson.title}</span>
                         </label>
                     ))}
                 </div>
@@ -193,13 +253,12 @@ function Dictionary() {
                                     {favorites[realIndex] ? <FaStar/> : <FaStar className="text-gray-300"/>}
                                 </button>
 
-                                <img src={sign.image} alt={sign.title} className="w-24 h-24 mx-auto mb-2"/>
-                                <h2 className="text-xl font-semibold text-gray-800">{sign.title}</h2>
+                                {/*<img src={`../../public/signs/${sign.title}.mp4`} alt={sign.title} className="w-24 h-24 mx-auto mb-2"/>*/}
+                                <h2 className="text-xl font-semibold text-gray-800 m-2">{sign.title}</h2>
                                 <button
                                     onClick={() => navigate(`/woordenboek/woord/${sign._id}`)} // Make sure sign.id is available
                                     className="mt-auto bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition">
-                                    Meer Informatie
-                                </button>
+Bekijken                                </button>
                             </div>
                         );
                     })}
