@@ -60,6 +60,11 @@ function Layout() {
                                 Home
                             </Link>
                         </li>
+                        <li>
+                            <Link to="/flitskaarten" className="hover:underline transition-all">
+                                Flitskaarten
+                            </Link>
+                        </li>
                         <li className="relative group">
                             <button className="hover:underline transition-all flex items-center">
                                 <Link to="/lessen">Lessen ▼</Link>

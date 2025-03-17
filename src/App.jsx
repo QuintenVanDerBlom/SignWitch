@@ -18,6 +18,7 @@ import Register from "./pages/authentication/Register.jsx";
 import Inlog from "./pages/authentication/Inlog.jsx";
 import Profiel from "./pages/account/profiel.jsx";
 import ProfielFoto from "./pages/account/profielFoto.jsx";
+import FlashCards from "./pages/FlashCards.jsx";
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
             {
                 path: '/opdracht/:category_id/done',
                 element: <DoneExercise/>
+            },
+            {
+                path: '/flitskaarten',
+                element: <FlashCards/>
             },
             // {
             //     path: '/sportitem',
