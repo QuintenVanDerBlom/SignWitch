@@ -245,182 +245,65 @@ function Students() {
         setStudents((prevStudents) => [...prevStudents, ...newStudents]);
     };
 
+
+    const [roleFilter, setRoleFilter] = useState("user");
+
     return (
         <div className="flex flex-col p-12 min-h-screen mx-auto max-w-8xl">
-            {/* Main Content */}
+            {/* Header met filters en knoppen */}
             <div className="flex justify-between mb-4">
-                <h1 className="text-xl font-semibold">Studenten</h1>
+                <h1 className="text-xl font-semibold">
+                    {roleFilter === "user" ? "Studenten" : "Docenten"}
+                </h1>
+
                 <div className="flex space-x-4">
-                    {/* Import XML Button */}
-                    {/*<label className="bg-green-600 text-white py-2 px-4 rounded-lg cursor-pointer hover:bg-green-700 transition">*/}
-                    {/*    Importeer XML*/}
-                    {/*    <input*/}
-                    {/*        type="file"*/}
-                    {/*        accept=".xml"*/}
-                    {/*        onChange={handleXMLImport}*/}
-                    {/*        className="hidden"*/}
-                    {/*    />*/}
-                    {/*</label>*/}
+                    <button
+                        onClick={() => setRoleFilter("user")}
+                        className={`py-2 px-4 rounded-lg ${roleFilter === "user" ? "bg-blue-700 text-white" : "bg-gray-300"}`}
+                    >
+                        Studenten
+                    </button>
+                    <button
+                        onClick={() => setRoleFilter("teacher")}
+                        className={`py-2 px-4 rounded-lg ${roleFilter === "teacher" ? "bg-blue-700 text-white" : "bg-gray-300"}`}
+                    >
+                        Docenten
+                    </button>
                     <button
                         onClick={() => openModal("create")}
-                        className="bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition"
+                        className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition"
                     >
-                        Voeg Student Toe
-                    </button>
-                    {/* Nieuwe knop voor meerdere studenten */}
-                    <button
-                        onClick={() => openModal("multi")}
-                        className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition"
-                    >
-                        Voeg Meerdere Studenten Toe
+                        Voeg {roleFilter === "user" ? "Student" : "Docent"} Toe
                     </button>
                 </div>
             </div>
 
+            {/* Gebruikerslijst */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {students.map((student) => (
-                    <div key={student.id} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
-                        <h2 className="text-xl font-semibold">{student.username}</h2>
-                        <p className="text-sm text-gray-500">{student.email}</p>
-                        <p className="text-sm text-gray-500">{student._id}</p>
-                        <p className="text-sm text-gray-500">{student.role}</p>
-                        <p className="text-xs text-gray-400">{new Date(student.created_at).toLocaleDateString()}</p>
-                        <div className="absolute top-2 right-2 space-x-2">
-                            <button onClick={() => openModal("edit", student)} className="text-yellow-400">
-                                <FaEdit />
-                            </button>
-                            <button onClick={() => handleDelete(student._id)} className="text-red-400">
-                                <FaTrashAlt />
-                            </button>
+                {students.map((user) => {
+                    if (user.role !== roleFilter) return null; // Filter direct in map()
+
+                    return (
+                        <div key={user.id} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
+                            <h2 className="text-xl font-semibold">{user.username}</h2>
+                            <p className="text-sm text-gray-500">{user.email}</p>
+
+                            {/* Bewerken / Verwijderen Knoppen */}
+                            <div className="absolute top-2 right-2 space-x-2">
+                                <button onClick={() => openModal("edit", user)} className="text-yellow-400">
+                                    <FaEdit />
+                                </button>
+                                <button onClick={() => handleDelete(user.id)} className="text-red-400">
+                                    <FaTrashAlt />
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
-
-            {/* Modal voor Create/Edit/Multi */}
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-                        {(modalMode === "create" || modalMode === "edit") && (
-                            <>
-                                <h2 className="text-xl font-semibold mb-4">
-                                    {modalMode === "create" ? "Voeg Student Toe" : "Bewerk Student"}
-                                </h2>
-                                <form onSubmit={handleCreateOrUpdate}>
-                                    <div className="mb-4">
-                                        <label htmlFor="username" className="block text-sm font-medium">
-                                            Username
-                                        </label>
-                                        <input
-                                            id="username"
-                                            name="username"
-                                            type="text"
-                                            defaultValue={currentStudent ? currentStudent.username : ""}
-                                            className="w-full p-2 border rounded-lg mt-1"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="email" className="block text-sm font-medium">
-                                            Email
-                                        </label>
-                                        <input
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            defaultValue={currentStudent ? currentStudent.email : ""}
-                                            className="w-full p-2 border rounded-lg mt-1"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium">
-                                            Role
-                                        </label>
-                                        <div className="mt-1 flex items-center space-x-4">
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="role"
-                                                    value="teacher"
-                                                    defaultChecked={currentStudent ? currentStudent.role === "teacher" : false}
-                                                    className="form-radio"
-                                                    required
-                                                />
-                                                <span className="ml-2">Teacher</span>
-                                            </label>
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="role"
-                                                    value="user"
-                                                    defaultChecked={currentStudent ? currentStudent.role === "user" : true}
-                                                    className="form-radio"
-                                                    required
-                                                />
-                                                <span className="ml-2">User</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex justify-between">
-                                        <button
-                                            type="button"
-                                            onClick={closeModal}
-                                            className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
-                                        >
-                                            Annuleren
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-                                        >
-                                            {modalMode === "create" ? "Toevoegen" : "Bewerken"}
-                                        </button>
-                                    </div>
-                                </form>
-                            </>
-                        )}
-                        {modalMode === "multi" && (
-                            <>
-                                <h2 className="text-xl font-semibold mb-4">Voeg Meerdere Studenten Toe</h2>
-                                <form onSubmit={handleMultiSubmit}>
-                                    <div className="mb-4">
-                                        <label htmlFor="multiUsers" className="block text-sm font-medium">
-                                            Gebruikers
-                                        </label>
-                                        <input
-                                            id="multiUsers"
-                                            name="multiUsers"
-                                            type="text"
-                                            placeholder="1234567@hr.nl1234568@hr.nls.wesselsss@hr.nl"
-                                            className="w-full p-2 border rounded-lg mt-1"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <button
-                                            type="button"
-                                            onClick={closeModal}
-                                            className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
-                                        >
-                                            Annuleren
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-                                        >
-                                            Toevoegen
-                                        </button>
-                                    </div>
-                                </form>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
 
-export default Students;
+
+    export default Students;
