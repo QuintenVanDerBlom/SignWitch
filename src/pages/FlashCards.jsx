@@ -170,23 +170,23 @@ function FlashCards() {
             <div className="flex-1 p-6 ml-64 min-h-screen">
                 {/* Sidebar */}
                 <aside
-                    className="absolute top-[78px] left-0 w-64 h-[calc(100vh)] bg-background-color shadow-md border-r border-gray-400 flex flex-col overflow-y-auto p-5">
+                    className="absolute top-[78px] left-0 w-64 h-[calc(100vh)] bg-background-color dark:bg-background-color-dark shadow-md border-r border-gray-400 dark:border-gray-700 flex flex-col overflow-y-auto p-5">
                     {/* Search Bar */}
                     <div className="relative mb-4">
                         <input
                             type="text"
                             placeholder="Zoeken..."
-                            className="w-full p-2 border rounded-2xl focus:ring focus:ring-blue-300"
+                            className="w-full p-2 border rounded-2xl focus:ring focus:ring-blue-300 dark:focus:ring-blue-700"
                         />
                         <span className="absolute right-3 top-2.5 text-gray-500">🔍</span>
                     </div>
 
                     {/* Categories */}
-                    <h2 className="text-lg font-semibold mb-1">Categorieën</h2>
-                    <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-300"/>
+                    <h2 className="text-lg font-semibold mb-1 text-black dark:text-gray-200">Categorieën</h2>
+                    <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-400"/>
                     <div className="space-y-2 mb-4">
                         {categories.map((category) => (
-                            <label key={category.id} className="flex items-center space-x-2 text-gray-700">
+                            <label key={category.id} className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
                                 <input
                                     type="checkbox"
                                     className="w-4 h-4"
@@ -197,11 +197,11 @@ function FlashCards() {
                             </label>))}
                     </div>
 
-                    <h2 className="text-lg font-semibold mb-1">Lessen</h2>
-                    <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-300"/>
+                    <h2 className="text-lg font-semibold mb-1 text-black dark:text-gray-200">Lessen</h2>
+                    <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-500"/>
                     <div className="space-y-2 mb-4">
                         {lessons.map((lesson) => (
-                            <label key={lesson.id} className="flex items-center space-x-2 text-gray-700">
+                            <label key={lesson.id} className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
                                 <input
                                     type="checkbox"
                                     className="w-4 h-4"
@@ -218,11 +218,11 @@ function FlashCards() {
                         <input
                             type="text"
                             placeholder="Zoeken..."
-                            className="w-2/3 p-2 border rounded-2xl focus:ring focus:ring-blue-300"
+                            className="w-2/3 p-2 border rounded-2xl focus:ring focus:ring-blue-300 dark:focus:ring-blue-500"
                         />
                     </div>
 
-                    <div className="text-xl font-openSans flex justify-center">
+                    <div className="text-xl font-openSans flex justify-center text-black dark:text-gray-200">
                         <h1>
                             Hier kan je oefenen met flitskaarten. Klik op een kaart om de bijbehorende video te tonen.
                         </h1>
@@ -233,7 +233,7 @@ function FlashCards() {
                         {currentSigns.map((sign, index) => (
                             <div
                                 key={sign.id}
-                                className="relative w-2/3 h-96 bg-white shadow-lg rounded-lg border border-black flex flex-col items-center justify-center transition-transform duration-500"
+                                className="relative w-2/3 h-96 bg-white dark:bg-gray-600 shadow-lg rounded-lg border border-black flex flex-col items-center justify-center transition-transform duration-500"
                                 onClick={() => toggleFlip(index)}
                             >
                                 <button
@@ -243,10 +243,10 @@ function FlashCards() {
                                     }}
                                     className="absolute top-2 right-2 text-yellow-400 text-2xl"
                                 >
-                                    {favorites[index] ? <FaStar/> : <FaStar className="text-gray-300"/>}
+                                    {favorites[index] ? <FaStar/> : <FaStar className="text-gray-400 dark:text-gray-200"/>}
                                 </button>
                                 {!flipped[index] ? (
-                                    <h2 className="text-[3rem] font-semibold text-gray-800">{sign.title}</h2>
+                                    <h2 className="text-[3rem] font-semibold text-gray-800 dark:text-gray-200">{sign.title}</h2>
                                 ) : (
                                     <video className="w-[640px] h-[360px] rounded-lg shadow-lg overflow-hidden" controls>
                                         <source src={`../../public/signs/${sign.title}.mp4`} key={sign.title} type="video/mp4"/>
@@ -261,7 +261,7 @@ function FlashCards() {
                         <button
                             onClick={goToPreviousPage}
                             disabled={currentPage === 1}
-                            className={`px-8 py-3 rounded-lg ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-button-bg text-white hover:bg-button-bg-hover transition"}`}
+                            className={`px-8 py-3 rounded-lg ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-button-bg dark:bg-button-bg-dark text-white dark:text-gray-200 hover:bg-button-bg-hover dark:hover:bg-button-bg-hover-dark transition"}`}
                         >
                             Vorige
                         </button>
@@ -271,7 +271,7 @@ function FlashCards() {
                         <button
                             onClick={goToNextPage}
                             disabled={currentPage === filteredSigns.length}
-                            className={`px-8 py-3 rounded-lg ${currentPage === filteredSigns.length ? "bg-gray-300 cursor-not-allowed" : "bg-button-bg text-white hover:bg-button-bg-hover transition"}`}
+                            className={`px-8 py-3 rounded-lg ${currentPage === filteredSigns.length ? "bg-gray-300 cursor-not-allowed" : "bg-button-bg dark:bg-button-bg-dark text-white hover:bg-button-bg-hover dark:hover:bg-button-bg-hover-dark transition"}`}
                         >
                             Volgende
                         </button>

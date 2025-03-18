@@ -98,7 +98,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
     }, [question]); // Dit zorgt ervoor dat de shuffle alleen gebeurt bij de eerste render of als de vraag verandert
 
     return (
-        <div className="flex flex-col items-center w-screen h-1/2">
+        <div className="flex flex-col items-center w-screen h-1/2 text-black dark:text-gray-200">
             <h1 className="underline text-lg m-5">Kijk eerst naar de video. Welk gebaar zie je hier?</h1>
             <div className="flex flex-row w-full justify-between px-44 items-center">
                 <div className="flex justify-end ml-10">
@@ -127,7 +127,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                             <label
                                 key={i}
                                 className={`flex items-center space-x-3 p-2 rounded-md ${
-                                    isCorrect === null ? 'hover:bg-gray-100' : ''
+                                    isCorrect === null ? 'hover:bg-white dark:hover:bg-gray-900' : ''
                                 }`}
                             >
                                 <input
@@ -139,10 +139,9 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                                     checked={selectedAnswer === option.title}
                                     disabled={isCorrect !== null} // Voorkomt selectie na controle
                                 />
-                                <span className="text-lg text-gray-900">{option.title}</span>
+                                <span className="text-lg text-black dark:text-gray-200">{option.title}</span>
                             </label>
                         ))}
-
                 </div>
             </div>
 

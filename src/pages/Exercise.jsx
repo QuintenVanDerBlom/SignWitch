@@ -231,8 +231,8 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
     return (
         <div className="flex flex-col items-center ">
             <div className="flex flex-col items-center justify-center px-4 text-center">
-                <h2 className="pt-8 text-title-color text-3xl font-k2d">Opdracht {currentQuestionIndex + 1}</h2>
-                <p className="mt-4 text-2xl max-w-2xl font-openSans">
+                <h2 className="pt-8 text-title-color dark:text-gray-200 text-3xl font-k2d">Opdracht {currentQuestionIndex + 1}</h2>
+                <p className="mt-4 text-2xl max-w-2xl font-openSans text-black dark:text-gray-200">
                     {category.categoryName} {(currentQuestion && currentQuestion.type === 'drag') ? 'Invulvraag' : currentQuestion && currentQuestion.type === 'multiple_choice' ? 'Multiple Choice' : 'Open vraag'}
                 </p>
             </div>

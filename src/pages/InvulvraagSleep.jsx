@@ -140,7 +140,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
         <DndProvider backend={HTML5Backend}>
 
-            <div className="flex flex-col items-center w-screen h-1/2">
+            <div className="flex flex-col items-center w-screen h-1/2 text-black dark:text-gray-200">
 
                 <h1 className="underline text-xl m-2">Sleep in de juiste volgorde</h1>
 
@@ -217,13 +217,13 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                 <div className="flex flex-col items-center mb-2">
                     {!showCorrectAnswer ? (
                         <>
-                            <h1 className="text-xl m-1 font-k2d">Kansen:</h1>
+                            <h1 className="text-xl m-1 font-k2d text-black dark:text-gray-200">Kansen:</h1>
                             <div className="flex flex-row justify-center gap-4">
                                 {[...Array(limitCheck + 1)].map((_, i) => (
                                     <FaHeart
                                         key={i}
                                         size={30}
-                                        className={i < amountChecked ? "text-gray-500" : "text-red-400"}
+                                        className={i < amountChecked ? "text-gray-500 dark:text-white" : "text-red-400"}
                                     />
                                 ))}
                                 {/*                <div*/}

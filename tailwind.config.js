@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,19 +8,58 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-nav-bar': '#D3104C',
-        'button-bg-hover': '#BB0D43',
-        'button-bg': '#BB0D43',
-        'inline-link': '#C77DFF',
-        'clicked-link': '#7B2CBF',
-        'progress-ND': '#D2D2D2',
-        'progress-Done': '#2D941D',
-        'button-login': '#003340',
-        'button-login-hover': '#003340',
-        'login-container': '#B51F4A',
-        'lesson-container':'#B51F4A',
-        'background-color': '#F7EFE3',
-        'title-color': '#003340',
+        'bg-nav-bar':{
+          DEFAULT: '#D3104C',
+          dark: '#65102A'
+        },
+        'button-bg-hover': {
+          DEFAULT: '#BB0D43',
+          dark: '#65102A',
+        },
+        'button-bg': {
+          DEFAULT: '#BB0D43',
+          dark: '#65102A',
+        },
+        'inline-link': {
+          DEFAULT:'#C77DFF',
+          dark: '#65102A',
+        },
+        'clicked-link': {
+          DEFAULT: '#7B2CBF',
+          dark: '#65102A',
+        },
+        'progress-ND': {
+          DEFAULT: '#D2D2D2',
+          dark: '#65102A',
+        },
+        'progress-Done': {
+          DEFAULT: '#2D941D',
+          dark: '#34792A',
+        },
+        'button-login': {
+          DEFAULT: '#003340',
+          dark: '#091A32',
+        },
+        'button-login-hover': {
+          DEFAULT: '#003340',
+          dark: '#091A32',
+        },
+        'login-container': {
+          DEFAULT: '#B51F4A',
+          dark: '#65102A',
+        },
+        'lesson-container': {
+          DEFAULT: '#B51F4A',
+          dark: '#65102A',
+        },
+        'background-color': {
+          DEFAULT: '#F7EFE3',
+          dark: '#525252',
+        },
+        'title-color': {
+          DEFAULT: '#003340',
+          dark: '#026F8B',
+        },
       },
       fontFamily: {
         k2d: ['K2D', 'sans-serif'],
