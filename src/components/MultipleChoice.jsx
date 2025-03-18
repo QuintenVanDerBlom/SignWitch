@@ -109,7 +109,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                 <div className="w-96 mr-10">
                     {isCorrect !== null && (
                         <p
-                            className={`text-lg font-semibold ${isCorrect ? 'text-green-500' : 'text-red-500'}`}
+                            className={`text-xl font-semibold ${isCorrect ? 'text-green-500' : 'text-red-500'}`}
                         >
                             {isCorrect
                                 ? '✅ Juist, het antwoord is: '
@@ -148,7 +148,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                 className={`mt-4 px-4 py-2 rounded-lg shadow-md ${selectedAnswer === null || isCorrect !== null ? 'bg-gray-400 cursor-not-allowed' : 'bg-progress-Done text-white'}`}
                 disabled={selectedAnswer === null || isCorrect !== null}
             >
-                Controleer antwoord
+                Controleer het antwoord
             </button>
 
         </div>
