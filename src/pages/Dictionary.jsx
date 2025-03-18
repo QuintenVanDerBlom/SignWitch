@@ -27,11 +27,12 @@ function Dictionary() {
     useEffect(() => {
         const fetchSigns = async () => {
             try {
-                const response = await fetch(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`, {
+                const response = await fetch(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}&category=${selectedCategories}`, {
                     method: "GET",
                     headers: {
                         "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz",
                         "Accept": "application/json",
+                        "Accept-version": "v2",
                     },
                 });
                 const data = await response.json();
@@ -39,9 +40,8 @@ function Dictionary() {
                 if (data && data.items) {
                     setSigns(data.items);
                     setTotalPages(data.pagination.totalPages); // Totaal aantal pagina's
-                    console.log(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}`)
-
-                    // setTotalPages(data.totalPages || Math.ceil(data.total / itemsPerPage));
+                    console.log(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}&category=${selectedCategories}`)
+                    console.log(data.items)
                 } else {
                     console.error("Unexpected data format:", data);
                 }
@@ -219,11 +219,13 @@ function Dictionary() {
         setSelectedCategories((prev) => {
             if (prev.includes(categoryId)) {
                 // Remove category if already selected
+
                 return prev.filter(id => id !== categoryId);
             } else {
-                // Add category if not already selected
+
                 return [...prev, categoryId];
             }
+
         });
     };
 
