@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa"; // Importing star icon
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 
 function Dictionary() {
     const [signs, setSigns] = useState([]);
     const [categories, setCategories] = useState([]);
     const [lessons, setLessons] = useState([]);
+    const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+    const [searchTerm, setSearchTerm] = useState(""); // Zoekterm
 
     const navigate = useNavigate();
-
+    const loginData = useOutletContext();
+    const [userID, setUserID] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 20;
-    const totalPages = Math.ceil(signs.length / itemsPerPage);
+    const [totalPages, setTotalPages] = useState(1); // Totaal aantal pagina's
     const [fadeClass, setFadeClass] = useState("opacity-0 translate-y-4");
-    const [favorites, setFavorites] = useState({}); // Store favorite states
+    const [favorites, setFavorites] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]); // Track selected categories
     const [selectedLessons, setSelectedLessons] = useState([]); // Track selected lessons
 
@@ -24,7 +27,7 @@ function Dictionary() {
     useEffect(() => {
         const fetchSigns = async () => {
             try {
-                const response = await fetch(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}`, {
+                const response = await fetch(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`, {
                     method: "GET",
                     headers: {
                         "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz",
@@ -35,6 +38,9 @@ function Dictionary() {
 
                 if (data && data.items) {
                     setSigns(data.items);
+                    setTotalPages(data.pagination.totalPages); // Totaal aantal pagina's
+                    console.log(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}`)
+
                     // setTotalPages(data.totalPages || Math.ceil(data.total / itemsPerPage));
                 } else {
                     console.error("Unexpected data format:", data);
@@ -45,8 +51,12 @@ function Dictionary() {
         };
 
         fetchSigns();
-    }, [currentPage, selectedCategories, selectedLessons]);
-
+    }, [currentPage, selectedCategories, searchTerm]);
+    const handleInputChange = (event) => {
+        const { value } = event.target;
+        setSearchTerm(value);
+        setCurrentPage(1);
+    };
     useEffect(() => {
         // Fetch the signs data from the API
         const fetchCategories = async () => {
@@ -87,9 +97,6 @@ function Dictionary() {
                     },
                 });
                 const data = await response.json();
-
-                console.log("Fetched data:", data);
-
                 // Access the 'items' array and set it to the signs state
                 if (data && data.items && Array.isArray(data.items)) {
                     setLessons(data.items); // Use the 'items' array from the response
@@ -104,6 +111,76 @@ function Dictionary() {
 
         fetchLessons();
     }, []);
+    useEffect(() => {
+        // Fetch the signs data from the API
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`http://145.24.223.94:8000/users/${loginData.email}`, {
+                    method: "GET",
+                    headers: {
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
+                        "Accept": "application/json",
+                    },
+                });
+                const data = await response.json();
+
+                // Access the 'items' array and set it to the signs state
+                    setFavorites(data.signsSaved)
+                    setUserID(data._id)
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    async function toggleFavorite(id) {
+        try {
+            // Zoek de favoriet in de lijst
+            const favoriteItem = favorites.find(fav => fav.sign_id === id);
+            const newSavedStatus = favoriteItem ? !favoriteItem.saved : true; // Als het item nog niet bestaat, stel het in op true
+            setCurrentPage(1); // Reset naar de eerste pagina
+
+            // Werk de lokale 'favorites' state bij
+            setFavorites(prevFavorites => {
+                const newFavorites = prevFavorites.map(fav => {
+                    if (fav.sign_id === id) {
+                        return { ...fav, saved: newSavedStatus };
+                    }
+                    return fav;
+                });
+                if (!favoriteItem) {
+                    newFavorites.push({ sign_id: id, saved: newSavedStatus }); // Als het nog niet bestaat, voeg het toe
+                }
+                return newFavorites;
+            });
+
+            // Stuur de PATCH request naar de server
+            const response = await fetch(`http://145.24.223.94:8000/users/${userID}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Vervang met je daadwerkelijke API-sleutel
+                },
+                body: JSON.stringify({
+                    signId: id, // Voeg signId toe
+                    saved: newSavedStatus
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Fout bij updaten van favoriet");
+            }
+
+            console.log(`Favoriet ${id} succesvol geüpdatet!`);
+        } catch (error) {
+            console.error("Fout bij het updaten van favoriet:", error);
+        }
+    }
+
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentSigns = selectedCategories.length > 0 || selectedLessons.length > 0
         ? signs.filter(sign => {
@@ -116,8 +193,11 @@ function Dictionary() {
     const goToNextPage = () => {
         if (currentPage < totalPages) {
             setFadeClass("opacity-0 translate-y-4");
-            setTimeout(() => setCurrentPage(currentPage + 1), 200);
+            setCurrentPage(prevPage => prevPage + 1)
+            console.log("in de if");
+
         }
+        console.log(currentPage);
     };
 
     const goToPreviousPage = () => {
@@ -127,12 +207,12 @@ function Dictionary() {
         }
     };
 
-    const toggleFavorite = (index) => {
-        setFavorites((prev) => ({
-            ...prev,
-            [index]: !prev[index], // Toggle favorite state
-        }));
-    };
+    // const toggleFavorite = (index) => {
+    //     setFavorites((prev) => ({
+    //         ...prev,
+    //         [index]: !prev[index], // Toggle favorite state
+    //     }));
+    // };
 
     const handleCategoryChange = (categoryId) => {
         setCurrentPage(1); // Reset to page 1 when category changes
@@ -159,6 +239,9 @@ function Dictionary() {
             }
         });
     };
+    const filteredSigns = showFavoritesOnly
+        ? signs.filter((sign) => favorites.some(favorite => favorite.sign_id === sign._id && favorite.saved === true))
+        : signs;
 
     return (
         <div className="flex-1 p-6 ml-64 min-h-screen">
@@ -212,51 +295,63 @@ function Dictionary() {
 
             {/* Main Content */}
             <div className="flex-1 p-6">
-                <div className="flex justify-center mb-4">
+                <div className="flex flex-col justify-center items-center mb-4 w-full">
                     <input
                         type="text"
                         placeholder="Zoeken..."
-                        className="w-2/3 p-2 border rounded-2xl focus:ring focus:ring-blue-300"
+                        value={searchTerm}
+                        onChange={handleInputChange}
+                        className="p-2 border rounded-2xl focus:ring focus:ring-blue-300 w-full"
                     />
+                    <button
+                        onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                        className="mt-4 px-4 py-2 rounded-lg bg-blue-500 text-white w-64 hover:bg-blue-600 transition"
+                    >
+                        {showFavoritesOnly ? "Toon alle tekens" : "Toon alleen favorieten"}
+                    </button>
                 </div>
 
                 {/* Grid for Signs with Simple Transition */}
                 <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ${fadeClass}`}>
-                    {currentSigns.map((sign, index) => {
-                        const realIndex = startIndex + index;
+                    {filteredSigns.slice().map((sign) => {
+
+                        const isFavorite = favorites.some(favorite => favorite.sign_id === sign._id && favorite.saved === true);
                         return (
-                            <div key={realIndex}
+                            <div key={sign._id}
                                  className="relative p-4 text-center bg-white shadow-md rounded-lg border border-black flex flex-col">
                                 {/* Favorite Icon in Top Right */}
                                 <button
-                                    onClick={() => toggleFavorite(realIndex)}
+                                    onClick={() => toggleFavorite(sign._id)}
                                     className="absolute top-2 right-2 text-yellow-400 text-2xl"
                                 >
-                                    {favorites[realIndex] ? <FaStar/> : <FaStar className="text-gray-300"/>}
+                                    <FaStar className={isFavorite ? "text-yellow-400" : "text-gray-300"}/>
                                 </button>
 
-                                {/*<img src={`../../public/signs/${sign.title}.mp4`} alt={sign.title} className="w-24 h-24 mx-auto mb-2"/>*/}
                                 <h2 className="text-xl font-semibold text-gray-800 m-2">{sign.title}</h2>
+
                                 <button
                                     onClick={() =>
                                         navigate(`/woordenboek/woord/${sign._id}?category_ids=${selectedCategories.join(',')}&lesson_ids=${selectedLessons.join(',')}`)
                                     }
                                     className="mt-auto bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition">
-Bekijken                                </button>
+                                    Bekijken
+                                </button>
                             </div>
                         );
                     })}
+
+
                 </div>
 
                 {/* Pagination Controls */}
                 <div className="flex justify-center mt-6 space-x-4">
-                    <button onClick={goToPreviousPage} disabled={currentPage === 1}
-                            className="px-4 py-2 rounded-lg bg-gray-300">
+                    <button onClick={goToPreviousPage} disabled={currentPage <= 1}
+                            className="px-4 py-2 rounded-lg bg-blue-600 text-white">
                         Vorige
                     </button>
                     <span>Pagina {currentPage} van {totalPages}</span>
-                    <button onClick={goToNextPage} disabled={currentPage === totalPages}
-                            className="px-4 py-2 rounded-lg bg-gray-300">
+                    <button onClick={goToNextPage} disabled={currentPage >= totalPages}
+                            className="px-4 py-2 rounded-lg bg-blue-600 text-white">
                         Volgende
                     </button>
                 </div>
