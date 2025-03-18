@@ -19,6 +19,7 @@ function Exercise() {
 
     const [signs, setSigns] = useState([]);
     const [questions, setQuestions] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {

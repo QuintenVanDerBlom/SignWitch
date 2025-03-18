@@ -27,6 +27,7 @@ const VideoPlayer = ({ videoUrl }) => {
 function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
     const correctAnswer = exercise.answer.split(/[\s,]+/);
     const [videoURL, setVideoURL] = useState("");
+    const [options, setOptions] = useState([]);
     const [answers, setAnswers] = useState(Array(correctAnswer.length).fill(null));
     const exerciseQuestion = exercise.question.split(/[\s,]+/);
     const [isCorrect, setIsCorrect] = useState(null);
@@ -95,7 +96,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                 const allAnswers = [...correctAnswers, ...wrongAnswers]
                     .sort(() => Math.random() - 0.5); // Shuffle de antwoorden
 
-                setAnswers(allAnswers);
+                setOptions(allAnswers);
 
             } catch (error) {
                 setError(error.message);
@@ -107,15 +108,13 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
     // 🎯 Woord wordt gesleept en neergezet
     const handleDrop = (index, item) => {
-        console.log(item);
         setAnswers((prevAnswers) => {
             const newAnswers = [...prevAnswers];
-            if (!newAnswers.includes(item.text)) {
-                newAnswers[index] = item.text;
-            }
+            newAnswers[index] = item.text; // Plaats het gesleepte woord op de juiste plaats
             return newAnswers;
         });
     };
+
 
     // ✅ Controleer of de antwoorden kloppen
     const checkAnswers = () => {
@@ -197,7 +196,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                         {/* 🔹 Alleen tonen als het juiste antwoord nog NIET is getoond */}
                         {!showCorrectAnswer && (
                             <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                                {answers.map((word, index) => (
+                                {options.map((word, index) => (
                                     // console.log(index),
                                     <DraggableWord key={index} text={word}/>
                                 ))}
@@ -267,6 +266,7 @@ const DraggableWord = ({text}) => {
     );
 };
 
+
 // 📌 DropZone component (voor de lege plekken)
 const DropZone = ({index, onDrop, children}) => {
     const [{isOver}, drop] = useDrop(() => ({
@@ -284,9 +284,10 @@ const DropZone = ({index, onDrop, children}) => {
                 isOver ? "border-blue-500 bg-blue-100" : "border-gray-400"
             }`}
         >
-            {children || "___"}
+            {children || "___"} {/* Toon het juiste antwoord als het er is */}
         </span>
     );
 };
+
 
 export default InvulVraagSleep;
