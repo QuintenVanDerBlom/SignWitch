@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import {useOutletContext} from "react-router-dom";
 const shuffleArray = (array) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -10,6 +11,30 @@ const shuffleArray = (array) => {
 function MultipleChoice({ question, setScore, setIsChecked }) {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [isCorrect, setIsCorrect] = useState(null);
+    const loginData = useOutletContext();
+    const [userID, setUserID] = useState("");
+    useEffect(() => {
+        // Fetch the signs data from the API
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`http://145.24.223.94:8000/users/${loginData.email}`, {
+                    method: "GET",
+                    headers: {
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
+                        "Accept": "application/json",
+                    },
+                });
+                const data = await response.json();
+
+                // Access the 'items' array and set it to the signs state
+                setUserID(data._id)
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     useEffect(() => {
         // Reset bij een nieuwe vraag
@@ -20,6 +45,33 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
     const handleAnswerChange = (e) => {
         setSelectedAnswer(e.target.value);
     };
+
+    async function setFavorite(id) {
+        try{
+
+            // Stuur de PATCH request naar de server
+            const response = await fetch(`http://145.24.223.94:8000/users/${userID}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Vervang met je daadwerkelijke API-sleutel
+                },
+                body: JSON.stringify({
+                    signId: id, // Voeg signId toe
+                    "saved": `${!id.favorite}`,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Fout bij updaten van favoriet");
+            }
+
+            console.log(`Favoriet ${id} succesvol geüpdatet!`);
+        } catch (error) {
+            console.error("Fout bij het updaten van favoriet:", error);
+        }
+    }
     const checkAnswer = () => {
         // Vergelijk het geselecteerde antwoord met het juiste antwoord
         if (selectedAnswer === question.correctAnswer.title) {
@@ -28,7 +80,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
         } else {
             setIsCorrect(false);
             setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
-
+            setFavorite(question.correctAnswer._id);
         }
         setIsChecked(true); // ✅ Gebruiker heeft de vraag gecontroleerd
     };

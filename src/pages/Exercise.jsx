@@ -191,20 +191,22 @@ function Exercise() {
                             setIsChecked={setIsChecked}
                         />
                     )
-                ) : currentQuestion.type === 'multiple_choice' ? (
+                ) : currentQuestion && currentQuestion.type && currentQuestion.type === 'multiple_choice' ? (
                     <MultipleChoice
                         question={currentQuestion}
                         onNext={handleNextQuestion}
                         setScore={setScore}
                         setIsChecked={setIsChecked}
                     />
-                ):(
+                ): currentQuestion && currentQuestion.type && currentQuestion.type === 'open_question' ?(
                     <OpenVraag
                         exercise={currentQuestion}
                         onNext={handleNextQuestion}
                         setScore={setScore}
                         setIsChecked={setIsChecked}
                         />
+                ):(
+                    <p>loading...</p>
                 )}
             </div>
 
