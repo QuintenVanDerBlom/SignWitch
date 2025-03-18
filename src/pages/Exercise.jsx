@@ -32,6 +32,28 @@ function Exercise() {
                 const data = await response.json();
                 setCategory(data)
                 setLesson(data.lesson)
+                const lessonSigns = data.items.lessonSigns;
+
+                // Directly loop through the lessonSigns without using state yet
+                lessonSigns.forEach(sign => {
+                    fetch(`http://145.24.223.94:8000/exercises/multiplechoice/${sign._id}`, {
+                        method: 'GET', // Hier is de GET methode ook nodig
+                        headers: {
+                            'Accept': 'application/json',
+                            'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz', // Zorg ervoor dat je dezelfde API key gebruikt
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            setQuestions(prevQuestions => [...prevQuestions, { ...data, type: 'multiple_choice' }]);
+                        })
+                        .catch(error => {
+                            console.error("Er is een fout opgetreden bij het ophalen van de vraag:", error);
+                        });
+                });
+
+                // Set the signs state only after the loop
+                setSigns(lessonSigns);
                 // console.log(data.lesson)
             } catch (error) {
                 setError(error.message);  // Zet de fout in de state in
@@ -60,28 +82,7 @@ function Exercise() {
                 }
 
                 const data = await response.json();
-                const lessonSigns = data.items.lessonSigns;
-
-                // Directly loop through the lessonSigns without using state yet
-                lessonSigns.forEach(sign => {
-                    fetch(`http://145.24.223.94:8000/exercises/multiplechoice/${sign._id}`, {
-                        method: 'GET', // Hier is de GET methode ook nodig
-                        headers: {
-                            'Accept': 'application/json',
-                            'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz', // Zorg ervoor dat je dezelfde API key gebruikt
-                        },
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            setQuestions(prevQuestions => [...prevQuestions, { ...data, type: 'multiple_choice' }]);
-                        })
-                        .catch(error => {
-                            console.error("Er is een fout opgetreden bij het ophalen van de vraag:", error);
-                        });
-                });
-
-                // Set the signs state only after the loop
-                setSigns(lessonSigns);
+                console.log(data)
             } catch (error) {
                 setError(error.message);  // Zet de fout in de state in
             }
@@ -89,43 +90,43 @@ function Exercise() {
 
         fetchData();
     }, [lesson]);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`http://145.24.223.94:8000/exercises`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-
-                // Hier kun je de filtering op category_id toevoegen
-                const filteredExercises = data.items.filter(exercise => {
-                    return exercise.category === category_id;
-                });
-
-                // Voeg de gefilterde oefeningen toe aan de questions state
-                filteredExercises.forEach(exercise => {
-                    setQuestions(prevQuestions => [
-                        ...prevQuestions,
-                        { ...exercise }
-                    ]);
-                });
-
-            } catch (error) {
-                setError(error.message);  // Zet de fout in de state in
-            }
-        };
-
-        fetchData();
-    }, []);  // Dit zorgt ervoor dat de fetch opnieuw wordt uitgevoerd als lessonSigns verandert
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await fetch(`http://145.24.223.94:8000/exercises`, {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     'Accept': 'application/json',
+    //                     'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
+    //                 },
+    //             });
+    //
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+    //
+    //             const data = await response.json();
+    //
+    //             // Hier kun je de filtering op category_id toevoegen
+    //             const filteredExercises = data.items.filter(exercise => {
+    //                 return exercise.category === category_id;
+    //             });
+    //
+    //             // Voeg de gefilterde oefeningen toe aan de questions state
+    //             filteredExercises.forEach(exercise => {
+    //                 setQuestions(prevQuestions => [
+    //                     ...prevQuestions,
+    //                     { ...exercise }
+    //                 ]);
+    //             });
+    //
+    //         } catch (error) {
+    //             setError(error.message);  // Zet de fout in de state in
+    //         }
+    //     };
+    //
+    //     fetchData();
+    // }, []);  // Dit zorgt ervoor dat de fetch opnieuw wordt uitgevoerd als lessonSigns verandert
 
     console.log(questions)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -172,7 +173,7 @@ function Exercise() {
             </div>
 
             <div className="flex flex-col items-center w-screen">
-                {currentQuestion && currentQuestion.type && currentQuestion.type === 'drag' ? (
+                {currentQuestion && currentQuestion.type && currentQuestion.type === 'fill_in_the_blank' ? (
                     toggle ? (
                         <InvulvraagOpen
                             exercise={currentQuestion}
