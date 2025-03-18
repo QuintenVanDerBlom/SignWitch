@@ -7,6 +7,8 @@ function Students() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentStudent, setCurrentStudent] = useState(null);
     const [modalMode, setModalMode] = useState(""); // "create", "edit" of "multi"
+    const [view, setView] = useState("students"); // "students" of "teachers"
+
 
     const fetchStudents = async () => {
         try {
@@ -62,7 +64,7 @@ function Students() {
         const newStudent = {
             username: formData.get("username"),
             email: formData.get("email"),
-            role: "user", // Voorbeeld: standaard 'user'
+            role: formData.get("role"),
         };
 
         if (modalMode === "create") {
@@ -227,11 +229,13 @@ function Students() {
             const studentNode = studentsNodes[i];
             const username = studentNode.getElementsByTagName("username")[0]?.textContent;
             const email = studentNode.getElementsByTagName("email")[0]?.textContent;
+            const role = studentNode.getElementsByTagName("role")[0]?.textContent;
 
             if (username && email) {
                 studentsArray.push({
                     username: username,
                     email: email,
+                    role: role,
                     created_date: new Date().toISOString(),
                 });
             }
@@ -247,7 +251,20 @@ function Students() {
         <div className="flex flex-col p-12 min-h-screen mx-auto max-w-8xl">
             {/* Main Content */}
             <div className="flex justify-between mb-4">
-                <h1 className="text-xl font-semibold">Studenten</h1>
+                <div className="flex justify-center mb-6">
+                    <button
+                        className={`py-2 px-6 rounded-l-lg ${view === "students" ? "bg-blue-600 text-white" : "bg-gray-300"}`}
+                        onClick={() => setView("students")}
+                    >
+                        Studenten
+                    </button>
+                    <button
+                        className={`py-2 px-6 rounded-r-lg ${view === "teachers" ? "bg-blue-600 text-white" : "bg-gray-300"}`}
+                        onClick={() => setView("teachers")}
+                    >
+                        Docenten
+                    </button>
+                </div>
                 <div className="flex space-x-4">
                     {/* Import XML Button */}
                     {/*<label className="bg-green-600 text-white py-2 px-4 rounded-lg cursor-pointer hover:bg-green-700 transition">*/}
@@ -263,7 +280,7 @@ function Students() {
                         onClick={() => openModal("create")}
                         className="bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition"
                     >
-                        Voeg Student Toe
+                        Voeg Gebruiker Toe
                     </button>
                     {/* Nieuwe knop voor meerdere studenten */}
                     <button
@@ -276,18 +293,18 @@ function Students() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {students.map((student) => (
-                    <div key={student.id} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
-                        <h2 className="text-xl font-semibold">{student.username}</h2>
-                        <p className="text-sm text-gray-500">{student.email}</p>
-                        <p className="text-sm text-gray-500">{student._id}</p>
-                        <p className="text-xs text-gray-400">{new Date(student.created_at).toLocaleDateString()}</p>
+                {students.filter(user => user.role === (view === "students" ? "user" : "teacher")).map((user) => (
+                    <div key={user._id} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
+                        <h2 className="text-xl font-semibold">{user.username}</h2>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                        <p className="text-sm text-gray-500">{user.role}</p>
+                        <p className="text-xs text-gray-400">{new Date(user.created_at).toLocaleDateString()}</p>
                         <div className="absolute top-2 right-2 space-x-2">
-                            <button onClick={() => openModal("edit", student)} className="text-yellow-400">
-                                <FaEdit />
+                            <button onClick={() => openModal("edit", user)} className="text-yellow-400">
+                                <FaEdit/>
                             </button>
-                            <button onClick={() => handleDelete(student._id)} className="text-red-400">
-                                <FaTrashAlt />
+                            <button onClick={() => handleDelete(user._id)} className="text-red-400">
+                                <FaTrashAlt/>
                             </button>
                         </div>
                     </div>
@@ -301,7 +318,7 @@ function Students() {
                         {(modalMode === "create" || modalMode === "edit") && (
                             <>
                                 <h2 className="text-xl font-semibold mb-4">
-                                    {modalMode === "create" ? "Voeg Student Toe" : "Bewerk Student"}
+                                    {modalMode === "create" ? "Voeg Gebruiker Toe" : "Bewerk Student"}
                                 </h2>
                                 <form onSubmit={handleCreateOrUpdate}>
                                     <div className="mb-4">
@@ -330,6 +347,36 @@ function Students() {
                                             required
                                         />
                                     </div>
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium">
+                                            Role
+                                        </label>
+                                        <div className="mt-1 flex items-center space-x-4">
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    name="role"
+                                                    value="teacher"
+                                                    defaultChecked={currentStudent ? currentStudent.role === "teacher" : false}
+                                                    className="form-radio"
+                                                    required
+                                                />
+                                                <span className="ml-2">Teacher</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    name="role"
+                                                    value="user"
+                                                    defaultChecked={currentStudent ? currentStudent.role === "user" : true}
+                                                    className="form-radio"
+                                                    required
+                                                />
+                                                <span className="ml-2">User</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
                                     <div className="flex justify-between">
                                         <button
                                             type="button"
