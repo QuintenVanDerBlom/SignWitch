@@ -128,7 +128,6 @@
                         >
                             {lessons.map((lesson, i) => {
                                 // The active card is defined as the one at position (index + 3)
-                                console.log(progress)
                                 const lessonProgress =
                                             progress.find((p) => p.lesson_id === lesson._id)?.progress || 0;
 

@@ -32,7 +32,6 @@ function Lessons() {
         fetchData();
     }, []);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
 
-    const loginData = useOutletContext();
 
     return (
         <div className="flex justify-center py-5 flex-col items-center">
