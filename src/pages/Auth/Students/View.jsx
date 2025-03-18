@@ -172,7 +172,7 @@ function Students() {
 
         // 3. Bouw een array van objecten
         const bodyArray = emails.map((email) => ({
-            username: "username",
+            username: "Gebruiker",
             email: email,
             role: "user",
         }));
@@ -297,8 +297,10 @@ function Students() {
                     <div key={user._id} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
                         <h2 className="text-xl font-semibold">{user.username}</h2>
                         <p className="text-sm text-gray-500">{user.email}</p>
-                        <p className="text-sm text-gray-500">{user.role}</p>
-                        <p className="text-xs text-gray-400">{new Date(user.created_at).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-500">
+                            {user.role === 'teacher' ? 'Docent' : user.role === 'user' ? 'Student' : ''}
+                        </p>
+                        <p className="text-xs text-gray-400">{new Date(user.created_at).toLocaleDateString('nl-NL')}</p>
                         <div className="absolute top-2 right-2 space-x-2">
                             <button onClick={() => openModal("edit", user)} className="text-yellow-400">
                                 <FaEdit/>
@@ -323,7 +325,7 @@ function Students() {
                                 <form onSubmit={handleCreateOrUpdate}>
                                     <div className="mb-4">
                                         <label htmlFor="username" className="block text-sm font-medium">
-                                            Username
+                                            Gebruikersnaam
                                         </label>
                                         <input
                                             id="username"
@@ -349,7 +351,7 @@ function Students() {
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-sm font-medium">
-                                            Role
+                                            Rol
                                         </label>
                                         <div className="mt-1 flex items-center space-x-4">
                                             <label className="inline-flex items-center">
@@ -361,7 +363,7 @@ function Students() {
                                                     className="form-radio"
                                                     required
                                                 />
-                                                <span className="ml-2">Teacher</span>
+                                                <span className="ml-2">Docent</span>
                                             </label>
                                             <label className="inline-flex items-center">
                                                 <input
@@ -372,7 +374,7 @@ function Students() {
                                                     className="form-radio"
                                                     required
                                                 />
-                                                <span className="ml-2">User</span>
+                                                <span className="ml-2">Student</span>
                                             </label>
                                         </div>
                                     </div>
@@ -398,6 +400,7 @@ function Students() {
                         {modalMode === "multi" && (
                             <>
                                 <h2 className="text-xl font-semibold mb-4">Voeg Meerdere Studenten Toe</h2>
+                                <p className="text-sm  mb-4">Voeg hier meerdere studenten tegelijk toe, dit kan er zo ongeveer uitzien: "12345678@hr.nl12345679@hr.nl"</p>
                                 <form onSubmit={handleMultiSubmit}>
                                     <div className="mb-4">
                                         <label htmlFor="multiUsers" className="block text-sm font-medium">
@@ -407,7 +410,7 @@ function Students() {
                                             id="multiUsers"
                                             name="multiUsers"
                                             type="text"
-                                            placeholder="1234567@hr.nl1234568@hr.nls.wesselsss@hr.nl"
+                                            placeholder="Emails"
                                             className="w-full p-2 border rounded-lg mt-1"
                                             required
                                         />
