@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import InvulVraagSleep from "./InvulvraagSleep.jsx";
 import MultipleChoice from "../components/MultipleChoice.jsx";
 import InvulvraagOpen from "./InvulvraagOpen.jsx";
+import OpenVraag from "./OpenVraag.jsx";
 
 
 function Exercise() {
@@ -189,13 +190,20 @@ function Exercise() {
                             setIsChecked={setIsChecked}
                         />
                     )
-                ) : currentQuestion && currentQuestion.type === 'multiple_choice' ? (
+                ) : currentQuestion.type === 'multiple_choice' ? (
                     <MultipleChoice
                         question={currentQuestion}
                         onNext={handleNextQuestion}
                         setScore={setScore}
                         setIsChecked={setIsChecked}
                     />
+                ):(
+                    <OpenVraag
+                        exercise={currentQuestion}
+                        onNext={handleNextQuestion}
+                        setScore={setScore}
+                        setIsChecked={setIsChecked}
+                        />
                 ) : (
                     <p>Loading...</p> // Je kunt een loading state toevoegen voor het geval de vraag nog niet is geladen
                 )}
