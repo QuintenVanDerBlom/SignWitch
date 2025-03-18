@@ -4,28 +4,13 @@ import { useNavigate } from "react-router-dom";
 
 function Dictionary() {
     const [signs, setSigns] = useState([]);
-    // const categories = [
-    //     { id: 1, name: "Cijfers" },
-    //     { id: 2, name: "Letters" },
-    //     { id: 3, name: "Woorden" },
-    //     { id: 4, name: "Basis" },
-    // ];
     const [categories, setCategories] = useState([]);
     const [lessons, setLessons] = useState([]);
-
-
-    // const lessons = [
-    //     { id: 1, name: "Les 1" },
-    //     { id: 2, name: "Les 2" },
-    //     { id: 3, name: "Les 3" },
-    //     { id: 4, name: "Les 4" },
-    //     { id: 5, name: "Les 5" },
-    // ];
 
     const navigate = useNavigate();
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 12;
+    const itemsPerPage = 20;
     const totalPages = Math.ceil(signs.length / itemsPerPage);
     const [fadeClass, setFadeClass] = useState("opacity-0 translate-y-4");
     const [favorites, setFavorites] = useState({}); // Store favorite states
@@ -37,23 +22,20 @@ function Dictionary() {
     }, [currentPage]);
 
     useEffect(() => {
-        // Fetch the signs data from the API
         const fetchSigns = async () => {
             try {
-                const response = await fetch("http://145.24.223.94:8000/signs", {
+                const response = await fetch(`http://145.24.223.94:8000/signs?page=${currentPage}&limit=${itemsPerPage}`, {
                     method: "GET",
                     headers: {
-                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz",
                         "Accept": "application/json",
                     },
                 });
                 const data = await response.json();
 
-                console.log("Fetched data:", data);
-
-                // Access the 'items' array and set it to the signs state
-                if (data && data.items && Array.isArray(data.items)) {
-                    setSigns(data.items); // Use the 'items' array from the response
+                if (data && data.items) {
+                    setSigns(data.items);
+                    // setTotalPages(data.totalPages || Math.ceil(data.total / itemsPerPage));
                 } else {
                     console.error("Unexpected data format:", data);
                 }
@@ -63,7 +45,7 @@ function Dictionary() {
         };
 
         fetchSigns();
-    }, []);
+    }, [currentPage, selectedCategories, selectedLessons]);
 
     useEffect(() => {
         // Fetch the signs data from the API
@@ -95,7 +77,7 @@ function Dictionary() {
     }, []);
     useEffect(() => {
         // Fetch the signs data from the API
-        const fetchCategories = async () => {
+        const fetchLessons = async () => {
             try {
                 const response = await fetch("http://145.24.223.94:8000/lessons", {
                     method: "GET",
@@ -120,7 +102,7 @@ function Dictionary() {
             }
         };
 
-        fetchCategories();
+        fetchLessons();
     }, []);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentSigns = selectedCategories.length > 0 || selectedLessons.length > 0
@@ -256,7 +238,9 @@ function Dictionary() {
                                 {/*<img src={`../../public/signs/${sign.title}.mp4`} alt={sign.title} className="w-24 h-24 mx-auto mb-2"/>*/}
                                 <h2 className="text-xl font-semibold text-gray-800 m-2">{sign.title}</h2>
                                 <button
-                                    onClick={() => navigate(`/woordenboek/woord/${sign._id}`)} // Make sure sign.id is available
+                                    onClick={() =>
+                                        navigate(`/woordenboek/woord/${sign._id}?category_ids=${selectedCategories.join(',')}&lesson_ids=${selectedLessons.join(',')}`)
+                                    }
                                     className="mt-auto bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition">
 Bekijken                                </button>
                             </div>
@@ -266,21 +250,13 @@ Bekijken                                </button>
 
                 {/* Pagination Controls */}
                 <div className="flex justify-center mt-6 space-x-4">
-                    <button
-                        onClick={goToPreviousPage}
-                        disabled={currentPage === 1}
-                        className={`px-4 py-2 rounded-lg ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-button-bg text-white hover:bg-button-bg-hover transition"}`}
-                    >
+                    <button onClick={goToPreviousPage} disabled={currentPage === 1}
+                            className="px-4 py-2 rounded-lg bg-gray-300">
                         Vorige
                     </button>
-                    <span className="text-lg font-semibold">
-                        Pagina {currentPage} van {totalPages}
-                    </span>
-                    <button
-                        onClick={goToNextPage}
-                        disabled={currentPage === totalPages}
-                        className={`px-4 py-2 rounded-lg ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-button-bg text-white hover:bg-button-bg-hover transition"}`}
-                    >
+                    <span>Pagina {currentPage} van {totalPages}</span>
+                    <button onClick={goToNextPage} disabled={currentPage === totalPages}
+                            className="px-4 py-2 rounded-lg bg-gray-300">
                         Volgende
                     </button>
                 </div>
