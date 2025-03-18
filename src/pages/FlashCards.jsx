@@ -241,7 +241,7 @@ function FlashCards() {
                                         e.stopPropagation();
                                         toggleFavorite(index);
                                     }}
-                                    className="absolute top-2 right-2 text-yellow-400 dark:text-yellow-400 text-2xl"
+                                    className="absolute top-2 right-2 text-yellow-400 text-2xl"
                                 >
                                     {favorites[index] ? <FaStar/> : <FaStar className="text-gray-400 dark:text-gray-200"/>}
                                 </button>
