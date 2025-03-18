@@ -79,15 +79,15 @@ function Home() {
     return (
         <>
             <div className="flex flex-col items-center justify-center px-4 text-center">
-                <h2 className="pt-16 text-6xl font-k2d"> Hallo {loginData ? loginData.name : "gebruiker"}</h2>
-                <p className="pb-20 mt-4 text-2xl max-w-2xl font-openSans">
+                <h2 className="pt-16 text-6xl font-k2d text-black dark:text-gray-200"> Hallo {loginData ? loginData.name : "gebruiker"}</h2>
+                <p className="pb-20 mt-4 text-2xl max-w-2xl font-openSans text-black dark:text-gray-200">
                     Welkom op de website van gebarentaal voor intake. Hier kan je extra oefeningen doen rondom gebarentaal.
                     Kies een les en ga aan de slag.
                 </p>
             </div>
 
             <div className="flex items-center justify-center gap-10">
-                <button onClick={prevLesson} className="text-4xl">
+                <button onClick={prevLesson} className="text-4xl text-black dark:text-gray-200">
                     ←
                 </button>
 
@@ -140,12 +140,12 @@ function Home() {
                                             ></circle>
                                         </svg>
                                         <div className="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2">
-                      <span className={`${textSize} font-bold text-black`}>
+                      <span className={`${textSize} font-bold text-black dark:text-gray-200`}>
                         {lesson.progress}%
                       </span>
                                         </div>
                                     </div>
-                                    <h2 className="text-4xl p-4 font-k2d">{lesson.title}</h2>
+                                    <h2 className="text-4xl p-4 font-k2d text-black dark:text-gray-200">{lesson.title}</h2>
                                     {lesson.progress === 100 ? (
                                         <Link to={`/les/${lesson.id}`}>
                                             <button
@@ -177,7 +177,7 @@ function Home() {
                     </motion.div>
                 </div>
 
-                <button onClick={nextLesson} className="text-4xl">
+                <button onClick={nextLesson} className="text-4xl text-black dark:text-gray-200">
                     →
                 </button>
             </div>
