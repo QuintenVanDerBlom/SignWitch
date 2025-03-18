@@ -58,7 +58,7 @@ export default {
         },
         'title-color': {
           DEFAULT: '#003340',
-          dark: '#091A32',
+          dark: '#026F8B',
         },
       },
       fontFamily: {
