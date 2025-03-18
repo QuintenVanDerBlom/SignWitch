@@ -5,6 +5,14 @@ function Sign() {
     const { id } = useParams(); // Haal de ID op uit de URL
     const [sign, setSign] = useState(null); // Staat voor het specifieke sign
     const [loading, setLoading] = useState(true); // Loading state
+    const getQueryParam = (param) => {
+        const urlParams = new URLSearchParams(location.search);
+        return urlParams.get(param);
+    };
+
+    // Haal category_ids en lesson_ids op uit de URL
+    const categoryIds = getQueryParam('category_ids')?.split(',') || [];
+    const lessonIds = getQueryParam('lesson_ids')?.split(',') || [];
 
     useEffect(() => {
         const fetchSignDetails = async () => {
@@ -57,9 +65,11 @@ function Sign() {
                 </p>
 
                 {/* Back Button */}
-                <a href="/woordenboek" className="inline-block bg-button-bg text-white px-6 py-3 rounded-lg
-                    hover:bg-button-bg-hover transition duration-300 shadow-md">
-                    ← Woordenboek
+                <a
+                    href={`/woordenboek?category_ids=${categoryIds.join(',')}&lesson_ids=${lessonIds.join(',')}`}
+                    className="inline-block bg-button-bg text-white px-6 py-3 rounded-lg"
+                >
+                    Terug naar woordenboek
                 </a>
             </div>
         </div>
