@@ -27,7 +27,11 @@ const VideoPlayer = ({ videoId, playlistId }) => {
 
 
 function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
-    const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(null));
+    const arrayQuestion = exercise.question.split(" ");
+    const arrayAnswers = exercise.answer.includes(", ") ? exercise.answer.split(", ") : [exercise.answer];
+
+    const [answers, setAnswers] = useState(Array(arrayAnswers.length).fill(null));
+
     const [isCorrect, setIsCorrect] = useState(null);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
     const [wrongAnswer, setWrongAnswer] = useState("");
@@ -39,7 +43,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
 // ✅ Reset antwoorden bij een nieuwe vraag
     useEffect(() => {
-        setAnswers(Array(exercise.correctAnswer.length).fill(null));
+        setAnswers(Array(arrayAnswers.length).fill(null));
         setIsCorrect(null);
         setShowCorrectAnswer(false);
         setAmountChecked(0)
@@ -64,7 +68,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
         const correct = exercise.correctAnswer.every((word, i) => word === answers.filter(a => a !== null)[i]);
         setAmountChecked((prev) => prev + 1);
         if(amountChecked < limitCheck && !correct) {
-            setAnswers(Array(exercise.question.length).fill(null));
+            setAnswers(Array(arrayQuestion.length).fill(null));
             setIsCorrect(null);
         }else{
             setIsCorrect(correct);
@@ -106,10 +110,10 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                                 <p className="text-lg font-semibold">
                                     {(() => {
                                         let fillIndex = 0; // Houd bij welke invulling we gebruiken
-                                        return exercise.question.map((word, index) =>
-                                                word === "___" ? (
+                                        return arrayQuestion.map((word, index) =>
+                                                word === "___" || word === "___?" || word === "___." ? (
                                                     <span key={index} className="font-bold text-blue-600">
-                    {exercise.correctAnswer[fillIndex++]} {/* Gebruik en verhoog de teller */}
+                    {exercise.answer[fillIndex++]} {/* Gebruik en verhoog de teller */}
                 </span>
                                                 ) : (
                                                     <span key={index} className="mr-1">{word}</span>
@@ -124,8 +128,8 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                                 <p className="text-lg font-semibold text-red-500">
                                     {wrongAnswer}
                                 </p>
-                                {exercise.question.map((word, index) =>
-                                    word === "___" ? (
+                                {arrayQuestion.map((word, index) =>
+                                    word === "___" || word === "___?" || word === "___." ? (
                                         <DropZone key={index} index={index} onDrop={handleDrop}>
                                             {answers[index]}
                                         </DropZone>
@@ -140,7 +144,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                         {/* 🔹 Alleen tonen als het juiste antwoord nog NIET is getoond */}
                         {!showCorrectAnswer && (
                             <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                                {exercise.possibleAnswers.map((word, index) => (
+                                {answers.map((word, index) => (
                                     <DraggableWord key={index} text={word}/>
                                 ))}
                             </div>
