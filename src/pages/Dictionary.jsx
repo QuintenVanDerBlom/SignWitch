@@ -32,7 +32,7 @@ function Dictionary() {
                     headers: {
                         "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz",
                         "Accept": "application/json",
-                        "Accept-version": "v2",
+                        // "Accept-version": "v2",
                     },
                 });
                 const data = await response.json();
@@ -251,14 +251,14 @@ function Dictionary() {
             <aside
                 className="absolute top-[78px] left-0 w-64 h-[calc(100vh)] bg-background-color dark:bg-background-color-dark shadow-md border-r border-gray-400 dark:border-gray-600 flex flex-col overflow-y-auto p-5">
                 {/* Search Bar */}
-                <div className="relative mb-4">
-                    <input
-                        type="text"
-                        placeholder="Zoeken..."
-                        className="w-full p-2 border rounded-2xl focus:ring focus:ring-blue-300"
-                    />
-                    <span className="absolute right-3 top-2.5 text-gray-600 dark:text-gray-200">🔍</span>
-                </div>
+                {/*<div className="relative mb-4">*/}
+                {/*    <input*/}
+                {/*        type="text"*/}
+                {/*        placeholder="Zoeken..."*/}
+                {/*        className="w-full p-2 border rounded-2xl focus:ring focus:ring-blue-300"*/}
+                {/*    />*/}
+                {/*    <span className="absolute right-3 top-2.5 text-gray-600 dark:text-gray-200">🔍</span>*/}
+                {/*</div>*/}
 
                 {/* Categories */}
                 <h2 className="text-lg font-semibold mb-1 text-black dark:text-gray-200">Categorieën</h2>
