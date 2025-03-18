@@ -66,8 +66,8 @@ function Lesson() {
 
     return (
         <div className="flex justify-center py-5 flex-col items-center">
-            <h1 className="text-title-color text-4xl font-k2d">{lesson.title}</h1>
-            <p className="font-openSans w-1/2 text-center">
+            <h1 className="text-title-color dark:text-gray-200 text-4xl font-k2d">{lesson.title}</h1>
+            <p className="font-openSans w-1/2 text-center text-black dark:text-gray-300">
                 Hier kan je de gebaren leren van de thema's die zijn behandeld in de les.
                 En van de gebaren die staan in het werkboek.
             </p>

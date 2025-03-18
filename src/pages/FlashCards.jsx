@@ -186,7 +186,7 @@ function FlashCards() {
                     <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-400"/>
                     <div className="space-y-2 mb-4">
                         {categories.map((category) => (
-                            <label key={category.id} className="flex items-center space-x-2 text-gray-700 dark:text-gray-200">
+                            <label key={category.id} className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
                                 <input
                                     type="checkbox"
                                     className="w-4 h-4"
@@ -197,11 +197,11 @@ function FlashCards() {
                             </label>))}
                     </div>
 
-                    <h2 className="text-lg font-semibold mb-1">Lessen</h2>
+                    <h2 className="text-lg font-semibold mb-1 text-black dark:text-gray-200">Lessen</h2>
                     <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-500"/>
                     <div className="space-y-2 mb-4">
                         {lessons.map((lesson) => (
-                            <label key={lesson.id} className="flex items-center space-x-2 text-gray-700">
+                            <label key={lesson.id} className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
                                 <input
                                     type="checkbox"
                                     className="w-4 h-4"

@@ -164,7 +164,7 @@ function Dictionary() {
         <div className="flex-1 p-6 ml-64 min-h-screen">
             {/* Sidebar */}
             <aside
-                className="absolute top-[78px] left-0 w-64 h-[calc(100vh)] bg-background-color shadow-md border-r border-gray-400 flex flex-col overflow-y-auto p-5">
+                className="absolute top-[78px] left-0 w-64 h-[calc(100vh)] bg-background-color dark:bg-background-color-dark shadow-md border-r border-gray-400 dark:border-gray-600 flex flex-col overflow-y-auto p-5">
                 {/* Search Bar */}
                 <div className="relative mb-4">
                     <input
@@ -172,15 +172,15 @@ function Dictionary() {
                         placeholder="Zoeken..."
                         className="w-full p-2 border rounded-2xl focus:ring focus:ring-blue-300"
                     />
-                    <span className="absolute right-3 top-2.5 text-gray-500">🔍</span>
+                    <span className="absolute right-3 top-2.5 text-gray-600 dark:text-gray-200">🔍</span>
                 </div>
 
                 {/* Categories */}
-                <h2 className="text-lg font-semibold mb-1">Categorieën</h2>
+                <h2 className="text-lg font-semibold mb-1 text-black dark:text-gray-200">Categorieën</h2>
                 <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-300"/>
                 <div className="space-y-2 mb-4">
                     {categories.map((category) => (
-                        <label key={category.id} className="flex items-center space-x-2 text-gray-700">
+                        <label key={category.id} className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
                             <input
                                 type="checkbox"
                                 className="w-4 h-4"
@@ -193,11 +193,11 @@ function Dictionary() {
                 </div>
 
                 {/* Lessons */}
-                <h2 className="text-lg font-semibold mb-1">Lessen</h2>
+                <h2 className="text-lg font-semibold mb-1 text-black dark:text-gray-200">Lessen</h2>
                 <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-300"/>
                 <div className="space-y-2 mb-4">
                     {lessons.map((lesson) => (
-                        <label key={lesson.id} className="flex items-center space-x-2 text-gray-700">
+                        <label key={lesson.id} className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
                             <input
                                 type="checkbox"
                                 className="w-4 h-4"
@@ -226,7 +226,7 @@ function Dictionary() {
                         const realIndex = startIndex + index;
                         return (
                             <div key={realIndex}
-                                 className="relative p-4 text-center bg-white shadow-md rounded-lg border border-black flex flex-col">
+                                 className="relative p-4 text-center bg-white dark:bg-gray-300 shadow-md rounded-lg border border-black flex flex-col">
                                 {/* Favorite Icon in Top Right */}
                                 <button
                                     onClick={() => toggleFavorite(realIndex)}
@@ -241,7 +241,7 @@ function Dictionary() {
                                     onClick={() =>
                                         navigate(`/woordenboek/woord/${sign._id}?category_ids=${selectedCategories.join(',')}&lesson_ids=${selectedLessons.join(',')}`)
                                     }
-                                    className="mt-auto bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition">
+                                    className="mt-auto bg-button-bg dark:bg-button-bg-dark text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover-dark dark:hover:bg-button-bg-hover transition">
 Bekijken                                </button>
                             </div>
                         );
@@ -251,12 +251,12 @@ Bekijken                                </button>
                 {/* Pagination Controls */}
                 <div className="flex justify-center mt-6 space-x-4">
                     <button onClick={goToPreviousPage} disabled={currentPage === 1}
-                            className="px-4 py-2 rounded-lg bg-gray-300">
+                            className="px-4 py-2 rounded-lg bg-gray-300 text-black">
                         Vorige
                     </button>
                     <span>Pagina {currentPage} van {totalPages}</span>
                     <button onClick={goToNextPage} disabled={currentPage === totalPages}
-                            className="px-4 py-2 rounded-lg bg-gray-300">
+                            className="px-4 py-2 rounded-lg bg-gray-300 text-black">
                         Volgende
                     </button>
                 </div>
