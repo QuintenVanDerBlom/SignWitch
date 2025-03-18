@@ -8,9 +8,7 @@ const ITEM_TYPE = "WORD";
 import React from "react";
 import ReactPlayer from "react-player";
 
-const VideoPlayer = ({ videoId, playlistId }) => {
-    const videoUrl = `https://youtu.be/hglEJkVy1L8?t=18`;
-
+const VideoPlayer = ({ videoUrl }) => {
     return (
         <div className="flex justify-end ml-10">
             <div className="w-[640px] h-[360px] rounded-lg shadow-lg overflow-hidden">
@@ -27,10 +25,15 @@ const VideoPlayer = ({ videoId, playlistId }) => {
 
 
 function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
-    const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(null));
+    const correctAnswer = exercise.answer.split(/[\s,]+/);
+    const [videoURL, setVideoURL] = useState("");
+    const [answers, setAnswers] = useState(Array(correctAnswer.length).fill(null));
+    const exerciseQuestion = exercise.question.split(/[\s,]+/);
     const [isCorrect, setIsCorrect] = useState(null);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
     const [wrongAnswer, setWrongAnswer] = useState("");
+    const [error, setError] = useState(null);
+
     let limitCheck = 2;
     let [amountChecked, setAmountChecked] = useState(0);
     useEffect(() => {
@@ -39,19 +42,74 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
 // ✅ Reset antwoorden bij een nieuwe vraag
     useEffect(() => {
-        setAnswers(Array(exercise.correctAnswer.length).fill(null));
+        setAnswers(Array(correctAnswer.length).fill(null));
         setIsCorrect(null);
         setShowCorrectAnswer(false);
         setAmountChecked(0)
         setWrongAnswer("")
+        setVideoURL(exercise.video)
     }, [exercise]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://145.24.223.94:8000/categories/${exercise.category}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                const categorySign = data.categorySigns[0];
+                if (!categorySign) return;
+
+                const multipleChoiceResponse = await fetch(`http://145.24.223.94:8000/exercises/multiplechoice/${categorySign._id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
+                    },
+                });
+
+                if (!multipleChoiceResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const multipleChoiceData = await multipleChoiceResponse.json();
+
+                // Pak de correcte antwoorden uit de huidige oefening
+                const correctAnswers = exercise.answer.split(/[\s,]+/);
+
+                // Pak de foute antwoorden uit de multiplechoice API
+                const wrongAnswers = multipleChoiceData.choices
+                    .map(choice => choice.title)
+                    .filter(choice => !correctAnswers.includes(choice)); // Vermijd dubbele correcte antwoorden
+
+                // Combineer correct en fout, en shuffle het resultaat
+                const allAnswers = [...correctAnswers, ...wrongAnswers]
+                    .sort(() => Math.random() - 0.5); // Shuffle de antwoorden
+
+                setAnswers(allAnswers);
+
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // 🎯 Woord wordt gesleept en neergezet
     const handleDrop = (index, item) => {
+        console.log(item);
         setAnswers((prevAnswers) => {
             const newAnswers = [...prevAnswers];
-
             if (!newAnswers.includes(item.text)) {
                 newAnswers[index] = item.text;
             }
@@ -61,10 +119,10 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
 
     // ✅ Controleer of de antwoorden kloppen
     const checkAnswers = () => {
-        const correct = exercise.correctAnswer.every((word, i) => word === answers.filter(a => a !== null)[i]);
+        const correct = correctAnswer.every((word, i) => word === answers.filter(a => a !== null)[i]);
         setAmountChecked((prev) => prev + 1);
         if(amountChecked < limitCheck && !correct) {
-            setAnswers(Array(exercise.question.length).fill(null));
+            setAnswers(Array(exerciseQuestion.length).fill(null));
             setIsCorrect(null);
         }else{
             setIsCorrect(correct);
@@ -90,8 +148,7 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                 <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                     <div className="flex justify-end ml-10">
                         <VideoPlayer
-                            videoId="hglEJkVy1L8" // <-- Dit is de video die moet starten
-                            playlistId="PLP8IosJB9PlUueQCTSe82RoQRSB3rGyTe"
+                            videoUrl = {videoURL}
                         />
                     </div>
 
@@ -106,10 +163,10 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                                 <p className="text-xl font-semibold">
                                     {(() => {
                                         let fillIndex = 0; // Houd bij welke invulling we gebruiken
-                                        return exercise.question.map((word, index) =>
-                                                word === "___" ? (
+                                        return exerciseQuestion.map((word, index) =>
+                                                word === "___" || word === "___?" || word === "___." ? (
                                                     <span key={index} className="font-bold text-blue-600">
-                    {exercise.correctAnswer[fillIndex++]} {/* Gebruik en verhoog de teller */}
+                    {correctAnswer[fillIndex++]} {/* Gebruik en verhoog de teller */}
                 </span>
                                                 ) : (
                                                     <span key={index} className="mr-1">{word}</span>
@@ -124,8 +181,8 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                                 <p className="text-lg font-semibold text-red-500">
                                     {wrongAnswer}
                                 </p>
-                                {exercise.question.map((word, index) =>
-                                    word === "___" ? (
+                                {exerciseQuestion.map((word, index) =>
+                                    word === "___" || word === "___?" || word === "___." ? (
                                         <DropZone key={index} index={index} onDrop={handleDrop}>
                                             {answers[index]}
                                         </DropZone>
@@ -140,7 +197,8 @@ function InvulVraagSleep({ exercise, setScore, setIsChecked }) {
                         {/* 🔹 Alleen tonen als het juiste antwoord nog NIET is getoond */}
                         {!showCorrectAnswer && (
                             <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                                {exercise.possibleAnswers.map((word, index) => (
+                                {answers.map((word, index) => (
+                                    // console.log(index),
                                     <DraggableWord key={index} text={word}/>
                                 ))}
                             </div>

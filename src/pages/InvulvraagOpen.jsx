@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { FaHeart } from "react-icons/fa"; // FontAwesome-iconen
 
-const VideoPlayer = ({ videoId, playlistId }) => {
-    const videoUrl = `https://www.youtube.com/watch?v=hglEJkVy1L8`;
-
+const VideoPlayer = ({ videoUrl }) => {
     return (
         <div className="flex justify-end ml-10">
             <div className="w-[640px] h-[360px] rounded-lg shadow-lg overflow-hidden">
@@ -19,7 +17,9 @@ const VideoPlayer = ({ videoId, playlistId }) => {
     );
 };
 function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
-    const [answers, setAnswers] = useState(Array(exercise.correctAnswer.length).fill(""));
+    const correctAnswer = exercise.answer.split(", ");
+    const exerciseQuestion = exercise.question.split(/[\s,]+/);
+    const [answers, setAnswers] = useState(Array(correctAnswer.length).fill(""));
     const [isCorrect, setIsCorrect] = useState(null);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
     const [wrongAnswer, setWrongAnswer] = useState("");
@@ -31,7 +31,7 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
 
     useEffect(() => {
         // ✅ Reset state wanneer er een nieuwe vraag is
-        setAnswers(Array(exercise.correctAnswer.length).fill(""));
+        setAnswers(Array(correctAnswer.length).fill(""));
         setIsCorrect(null);
         setShowCorrectAnswer(false);
         setAmountChecked(0)
@@ -46,12 +46,12 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
 
     // ✅ Controleer of de antwoorden kloppen
     const checkAnswers = () => {
-        const correct = exercise.correctAnswer.every((word, i) =>
+        const correct = correctAnswer.every((word, i) =>
             word.toLowerCase().trim() === answers[i].toLowerCase().trim()
         );
         setAmountChecked((prev) => prev + 1);
         if(amountChecked < limitCheck && !correct) {
-            setAnswers(Array(exercise.question.length).fill(null));
+            setAnswers(Array(exerciseQuestion.length).fill(null));
             setIsCorrect(null);
         }else {
             setIsCorrect(correct);
@@ -73,8 +73,7 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
                     <VideoPlayer
-                        videoId="hglEJkVy1L8" // <-- Dit is de video die moet starten
-                        playlistId="PLP8IosJB9PlUueQCTSe82RoQRSB3rGyTe"
+                        videoUrl={exercise.video}
                     />
                 </div>
 
@@ -88,10 +87,10 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                             <p className="text-xl font-semibold">
                                 {(() => {
                                     let correctIndex = 0;
-                                    return exercise.question.map((word, index) =>
-                                        word === "___" ? (
+                                    return exerciseQuestion.map((word, index) =>
+                                        word === "___" || word === "___."|| word === "___?"? (
                                             <span key={index} className="font-bold text-blue-600">
-                                                {exercise.correctAnswer[correctIndex++]}
+                                                {correctAnswer[correctIndex++]}
                                             </span>
                                         ) : (
                                             ` ${word} `
@@ -109,8 +108,8 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                             <p className="text-xl mb-6 text-center">
                                 {(() => {
                                     let placeIndex = 1;
-                                    return exercise.question.map((word, index) =>
-                                        word === "___" ? (
+                                    return exerciseQuestion.map((word, index) =>
+                                        word === "___" || word === "___."|| word === "___?" ? (
                                             <span key={index} className="underline"> __{placeIndex++}__ </span>
                                         ) : (
                                             ` ${word} `
@@ -121,7 +120,7 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
 
                             {/* ✅ Correcte invulvelden behouden bij meerdere vragen */}
                             <div className="flex flex-col gap-6 items-center">
-                                {exercise.correctAnswer.map((_, index) => (
+                                {correctAnswer.map((_, index) => (
                                     <div key={index} className="mb-6 text-center">
                                         <input
                                             type="text"

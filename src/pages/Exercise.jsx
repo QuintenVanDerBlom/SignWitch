@@ -12,7 +12,7 @@ function Exercise() {
 
     const { category_id } = useParams();
 
-        const [category, setCategory] = useState([]);
+    const [category, setCategory] = useState([]);
     const [error, setError] = useState(null);
     const [lesson, setLesson] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -127,45 +127,45 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
 
         fetchData();
     }, [lesson]);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await fetch(`http://145.24.223.94:8000/exercises`, {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     'Accept': 'application/json',
-    //                     'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
-    //                 },
-    //             });
-    //
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
-    //
-    //             const data = await response.json();
-    //
-    //             // Hier kun je de filtering op category_id toevoegen
-    //             const filteredExercises = data.items.filter(exercise => {
-    //                 return exercise.category === category_id;
-    //             });
-    //
-    //             // Voeg de gefilterde oefeningen toe aan de questions state
-    //             filteredExercises.forEach(exercise => {
-    //                 setQuestions(prevQuestions => [
-    //                     ...prevQuestions,
-    //                     { ...exercise }
-    //                 ]);
-    //             });
-    //
-    //         } catch (error) {
-    //             setError(error.message);  // Zet de fout in de state in
-    //         }
-    //     };
-    //
-    //     fetchData();
-    // }, []);  // Dit zorgt ervoor dat de fetch opnieuw wordt uitgevoerd als lessonSigns verandert
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://145.24.223.94:8000/exercises`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
+                    },
+                });
 
-    console.log(questions)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                // Hier kun je de filtering op category_id toevoegen
+                const filteredExercises = data.items.filter(exercise => {
+                    return exercise.category === category_id;
+                });
+
+                // Voeg de gefilterde oefeningen toe aan de questions state
+                filteredExercises.forEach(exercise => {
+                    setQuestions(prevQuestions => [
+                        ...prevQuestions,
+                        { ...exercise }
+                    ]);
+                });
+
+            } catch (error) {
+                setError(error.message);  // Zet de fout in de state in
+            }
+        };
+
+        fetchData();
+    }, []);  // Dit zorgt ervoor dat de fetch opnieuw wordt uitgevoerd als lessonSigns verandert
+
+    // console.log(questions)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState({ correct: 0, incorrect: 0 });
     const [isChecked, setIsChecked] = useState(false);
@@ -214,7 +214,7 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
             navigate(`/opdracht/${category_id}/done`, { state: { score } });
             const calc = 1/categories.length * 100
             updateProgress(lesson, calc)
-            console.log(calc)
+            // console.log(calc)
         } else {
             setCurrentQuestionIndex(nextIndex);
             setToggle(!toggle);
@@ -232,12 +232,12 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
             <div className="flex flex-col items-center justify-center px-4 text-center">
                 <h2 className="pt-8 text-title-color text-3xl font-k2d">Opdracht {currentQuestionIndex + 1}</h2>
                 <p className="mt-4 text-2xl max-w-2xl font-openSans">
-                    {category.categoryName} {(currentQuestion && currentQuestion.type === 'fill_in_the_blank') ? 'Invulvraag' : 'Multiple Choice'}
+                    {category.categoryName} {(currentQuestion && currentQuestion.type === 'drag') ? 'Invulvraag' : currentQuestion && currentQuestion.type === 'multiple_choice' ? 'Multiple Choice' : 'Open vraag'}
                 </p>
             </div>
 
             <div className="flex flex-col items-center w-screen">
-                {currentQuestion && currentQuestion.type && currentQuestion.type === 'fill_in_the_blank' ? (
+                {currentQuestion && currentQuestion.type && currentQuestion.type === 'drag' ? (
                     toggle ? (
                         <InvulvraagOpen
                             exercise={currentQuestion}
@@ -248,6 +248,7 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
                     ) : (
                         <InvulVraagSleep
                             exercise={currentQuestion}
+                            category_id={category_id}
                             onNext={handleNextQuestion}
                             setScore={setScore}
                             setIsChecked={setIsChecked}

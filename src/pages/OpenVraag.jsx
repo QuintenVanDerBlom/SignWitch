@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { FaHeart } from "react-icons/fa";
 
-const VideoPlayer = ({ videoId, playlistId }) => {
-    const videoUrl = `https://www.youtube.com/watch?v=hglEJkVy1L8`;
+const VideoPlayer = ({ videoUrl }) => {
 
     return (
         <div className="flex justify-end ml-10">
@@ -15,6 +14,8 @@ const VideoPlayer = ({ videoId, playlistId }) => {
 };
 
 function OpenVraag({ exercise, setScore, setIsChecked }) {
+
+
     const [answers, setAnswers] = useState("");
     const [isCorrect, setIsCorrect] = useState(null);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
@@ -44,7 +45,7 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
             return;
         }
 
-        const correct = exercise.correctAnswer.toLowerCase().trim() === answers.toLowerCase().trim();
+        const correct = exercise.answer.toLowerCase().trim() === answers.toLowerCase().trim();
         setAmountChecked((prev) => prev + 1);
 
         if (amountChecked < limitCheck && !correct) {
@@ -69,7 +70,7 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
             <h1 className="underline text-lg m-5">Vul de juiste woorden in</h1>
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
-                    <VideoPlayer videoId="hglEJkVy1L8" playlistId="PLP8IosJB9PlUueQCTSe82RoQRSB3rGyTe" />
+                    <VideoPlayer videoUrl={exercise.video} />
                 </div>
 
                 <div className="w-1/2 mr-10">
@@ -78,7 +79,7 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
                             <p className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
                                 {isCorrect ? "Goed gedaan! het juiste antwoord is: ✅" : "Helaas ❌ het juiste antwoord is:"}
                             </p>
-                            <p className="text-lg font-semibold">{exercise.correctAnswer}</p>
+                            <p className="text-lg font-semibold">{exercise.answer}</p>
                         </div>
                     ) : (
                         <>
