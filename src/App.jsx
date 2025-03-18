@@ -21,6 +21,7 @@ import ProfielFoto from "./pages/account/profielFoto.jsx";
 import FlashCards from "./pages/FlashCards.jsx";
 import Unauthorised from "./layouts/Unauthorised.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 const router = createBrowserRouter([
     {
@@ -102,10 +103,10 @@ const router = createBrowserRouter([
             //     path: '/delete',
             //     element: <SportItemDeleted/>
             // },
-            // {
-            //     path: '/*',
-            //     element: <NotFound/>
-            // }
+            {
+                path: '/*',
+                element: <NotFound/>
+            },
             {
                 path: '/keygen',
                 element: <ApiKey/>
