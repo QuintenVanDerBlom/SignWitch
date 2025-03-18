@@ -110,7 +110,7 @@ function Layout() {
                     </Link>
 
                     {/* Navigatie */}
-                    <ul className="flex space-x-10 text-white dark:text-gray-200 text-xl items-center font-openSans">
+                    <ul className="flex space-x-16 text-white dark:text-gray-200 text-xl items-center font-openSans">
                         <li>
                             <Link to="/" className="hover:underline transition-all">
                                 Home

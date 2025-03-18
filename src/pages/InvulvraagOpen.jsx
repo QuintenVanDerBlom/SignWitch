@@ -68,8 +68,8 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     };
 
     return (
-        <div className="flex flex-col items-center w-screen h-1/2">
-            <h1 className="underline text-lg m-5">Vul de juiste woorden in</h1>
+        <div className="flex flex-col items-center w-screen h-1/2 ">
+            <h1 className="underline text-lg m-5 text-black dark:text-gray-200">Vul de juiste woorden in</h1>
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
                     <VideoPlayer
@@ -82,15 +82,15 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                     {/* ✅ Toon de correcte zin na controle */}
                     {showCorrectAnswer ? (
                         <div className="text-center">
-                            <p className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
+                            <p className={`text-lg font-semibold  ${isCorrect ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-300"}`}>
                                 {isCorrect ? "Goed gedaan! ✅" : "Helaas ❌ het juiste antwoord is:"}
                             </p>
-                            <p className="text-lg font-semibold">
+                            <p className="text-lg font-semibold text-black dark:text-gray-200">
                                 {(() => {
                                     let correctIndex = 0;
                                     return exercise.question.map((word, index) =>
                                         word === "___" ? (
-                                            <span key={index} className="font-bold text-blue-600">
+                                            <span key={index} className="font-bold text-blue-600 dark:text-blue-400">
                                                 {exercise.correctAnswer[correctIndex++]}
                                             </span>
                                         ) : (
@@ -106,7 +106,7 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                             <p className="text-lg text-center font-semibold text-red-500">
                                 {wrongAnswer}
                             </p>
-                            <p className="text-xl mb-6 text-center">
+                            <p className="text-xl mb-6 text-center text-black dark:text-gray-200">
                                 {(() => {
                                     let placeIndex = 1;
                                     return exercise.question.map((word, index) =>
@@ -152,13 +152,13 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
             <div className="flex flex-col items-center mb-2">
                 {!showCorrectAnswer ? (
                     <>
-                        <h1 className="text-xl m-1 font-k2d">Kansen:</h1>
+                        <h1 className="text-xl m-1 font-k2d text-black dark:text-gray-200">Kansen:</h1>
                         <div className="flex flex-row justify-center gap-4">
                             {[...Array(limitCheck + 1)].map((_, i) => (
                                 <FaHeart
                                     key={i}
                                     size={30}
-                                    className={i < amountChecked ? "text-gray-500" : "text-red-400"}
+                                    className={i < amountChecked ? "text-gray-500 dark:text-white" : "text-red-400"}
                                 />
                             ))}
                             {/*                <div*/}
