@@ -46,7 +46,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
         setSelectedAnswer(e.target.value);
     };
 
-    async function setFavorite(id) {
+    async function setFavorite(id, isSaved) {
         try{
 
             // Stuur de PATCH request naar de server
@@ -59,7 +59,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                 },
                 body: JSON.stringify({
                     signId: id, // Voeg signId toe
-                    "saved": `${!id.favorite}`,
+                    saved: isSaved,
                 })
             });
 
@@ -72,16 +72,20 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
             console.error("Fout bij het updaten van favoriet:", error);
         }
     }
+    const [isSaved, setIsSaved] = useState(false);
     const checkAnswer = () => {
         // Vergelijk het geselecteerde antwoord met het juiste antwoord
         if (selectedAnswer === question.correctAnswer.title) {
             setIsCorrect(true);
             setScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
+            setIsSaved(false)
+
         } else {
             setIsCorrect(false);
             setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
-            setFavorite(question.correctAnswer._id);
+            setIsSaved(true)
         }
+        setFavorite(question.correctAnswer._id, isSaved);
         setIsChecked(true); // ✅ Gebruiker heeft de vraag gecontroleerd
     };
     const [shuffledChoices, setShuffledChoices] = useState([]);

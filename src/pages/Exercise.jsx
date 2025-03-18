@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useOutletContext, useParams} from "react-router-dom";
 import InvulVraagSleep from "./InvulvraagSleep.jsx";
 import MultipleChoice from "../components/MultipleChoice.jsx";
 import InvulvraagOpen from "./InvulvraagOpen.jsx";
@@ -7,11 +7,15 @@ import OpenVraag from "./OpenVraag.jsx";
 
 
 function Exercise() {
+    const loginData = useOutletContext();
+    const [userID, setUserID] = useState("");
+
     const { category_id } = useParams();
 
         const [category, setCategory] = useState([]);
     const [error, setError] = useState(null);
     const [lesson, setLesson] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     const [signs, setSigns] = useState([]);
     const [questions, setQuestions] = useState([]);
@@ -34,7 +38,6 @@ function Exercise() {
                 setCategory(data)
                 setLesson(data.lesson)
                 const categorySigns = data.categorySigns;
-
                 // Directly loop through the lessonSigns without using state yet
                 categorySigns.forEach(sign => {
                     fetch(`http://145.24.223.94:8000/exercises/multiplechoice/${sign._id}`, {
@@ -63,8 +66,40 @@ function Exercise() {
 
         fetchData();
     }, []);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
+const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
+    useEffect(() => {
 
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`http://145.24.223.94:8000/users/${loginData.email}`, {
+                    method: "GET",
+                    headers: {
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
+                        "Accept": "application/json",
+                    },
+                });
+                const data = await response.json();
 
+                // Access the 'items' array and set it to the signs state
+                setUserID(data._id)
+                const lessonprogress = data.lessonProgress; // De array met de voortgang van de lessen
+                // Filter de juiste les op basis van lesson_id
+                const lessonP = lessonprogress.find(progress => progress.lesson_id === lesson);
+                if (lessonP) {
+                   setCurrentLessonProgress(lessonP.progress); // De progress voor de juiste les
+                    console.log('Huidige voortgang:', currentLessonProgress);
+                    return currentLessonProgress; // De progress teruggeven
+                } else {
+                    console.log('Geen voortgang gevonden voor deze les');
+                    return null; // Fallback als er geen les wordt gevonden
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchUser();
+    }, []);
     useEffect(() => {
         if (lesson.length === 0) return; // Voorkom een onnodige fetch als lesson nog niet geladen is
 
@@ -83,7 +118,8 @@ function Exercise() {
                 }
 
                 const data = await response.json();
-                console.log(data)
+                setCategories(data.items.lessonCategories)
+
             } catch (error) {
                 setError(error.message);  // Zet de fout in de state in
             }
@@ -141,7 +177,31 @@ function Exercise() {
     // 🔄 Volgende vraag
     const navigate = useNavigate(); // Voeg deze regel toe binnen de function
     const [answeredQuestions, setAnsweredQuestions] = useState({}); // Bijhouden welke vragen al beantwoord zijn
+    async function updateProgress(id, addProgress) {
+        try{
+            // Stuur de PATCH request naar de server
+            const response = await fetch(`http://145.24.223.94:8000/users/${userID}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Vervang met je daadwerkelijke API-sleutel
+                },
+                body: JSON.stringify({
+                    lessonId: id, // Voeg signId toe
+                    progress: (currentLessonProgress + addProgress),
+                })
+            });
 
+            if (!response.ok) {
+                throw new Error("Fout bij updaten van progress");
+            }
+
+            console.log(`Favoriet ${id} succesvol geüpdatet!`);
+        } catch (error) {
+            console.error("Fout bij het updaten van favoriet:", error);
+        }
+    }
     const handleNextQuestion = () => {
         setAnsweredQuestions((prev) => ({
             ...prev,
@@ -152,7 +212,9 @@ function Exercise() {
         const nextIndex = currentQuestionIndex + 1;
         if (nextIndex >= questions.length) {
             navigate(`/opdracht/${category_id}/done`, { state: { score } });
-
+            const calc = 1/categories.length * 100
+            updateProgress(lesson, calc)
+            console.log(calc)
         } else {
             setCurrentQuestionIndex(nextIndex);
             setToggle(!toggle);
