@@ -50,7 +50,8 @@ function FlashCards() {
 
                 // Access the 'items' array and set it to the signs state
                 if (data && data.items && Array.isArray(data.items)) {
-                    setSigns(data.items); // Use the 'items' array from the response
+                    const shuffledSigns = shuffleSigns(data.items);
+                    setSigns(shuffledSigns);  // Use the 'items' array from the response
                 } else {
                     console.error("Unexpected data format:", data);
                 }
@@ -163,6 +164,14 @@ function FlashCards() {
                 return [...prev, lessonId];
             }
         });
+    };
+
+    const shuffleSigns = (signs) => {
+        for (let i = signs.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [signs[i], signs[j]] = [signs[j], signs[i]];
+        }
+        return signs;
     };
 
 
