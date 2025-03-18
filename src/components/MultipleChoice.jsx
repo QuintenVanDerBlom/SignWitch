@@ -28,6 +28,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
         } else {
             setIsCorrect(false);
             setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
+
         }
         setIsChecked(true); // ✅ Gebruiker heeft de vraag gecontroleerd
     };

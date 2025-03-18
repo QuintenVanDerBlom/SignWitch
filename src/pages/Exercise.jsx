@@ -33,10 +33,10 @@ function Exercise() {
                 const data = await response.json();
                 setCategory(data)
                 setLesson(data.lesson)
-                const lessonSigns = data.items.lessonSigns;
+                const categorySigns = data.categorySigns;
 
                 // Directly loop through the lessonSigns without using state yet
-                lessonSigns.forEach(sign => {
+                categorySigns.forEach(sign => {
                     fetch(`http://145.24.223.94:8000/exercises/multiplechoice/${sign._id}`, {
                         method: 'GET', // Hier is de GET methode ook nodig
                         headers: {
@@ -54,7 +54,7 @@ function Exercise() {
                 });
 
                 // Set the signs state only after the loop
-                setSigns(lessonSigns);
+                setSigns(categorySigns);
                 // console.log(data.lesson)
             } catch (error) {
                 setError(error.message);  // Zet de fout in de state in
@@ -152,6 +152,7 @@ function Exercise() {
         const nextIndex = currentQuestionIndex + 1;
         if (nextIndex >= questions.length) {
             navigate(`/opdracht/${category_id}/done`, { state: { score } });
+
         } else {
             setCurrentQuestionIndex(nextIndex);
             setToggle(!toggle);
@@ -204,8 +205,6 @@ function Exercise() {
                         setScore={setScore}
                         setIsChecked={setIsChecked}
                         />
-                ) : (
-                    <p>Loading...</p> // Je kunt een loading state toevoegen voor het geval de vraag nog niet is geladen
                 )}
             </div>
 
