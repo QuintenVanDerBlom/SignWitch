@@ -104,34 +104,6 @@ function Profiel() {
                         />
                     </div>
 
-                    {/* Achternaam */}
-                    <div>
-                        <label htmlFor="lastName" className="block text-sm">Achternaam</label>
-                        <input
-                            id="lastName"
-                            type="text"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="w-full p-2 rounded-lg text-black"
-                            aria-required="true"
-                        />
-                    </div>
-
-                    {/* Studentnummer (niet bewerkbaar) */}
-                    <div>
-                        <label htmlFor="studentId" className="block text-sm">Studentnummer</label>
-                        <input
-                            id="studentId"
-                            type="text"
-                            value="1061234"
-                            disabled
-                            className="w-full p-2 rounded-lg bg-gray-300 text-gray-700 cursor-not-allowed"
-                            aria-disabled="true"
-                            aria-describedby="studentIdDescription"
-                        />
-                        <span id="studentIdDescription" className="sr-only">Studentnummer kan niet worden bewerkt</span>
-                    </div>
-
                     {/* E-mail (niet bewerkbaar) */}
                     <div>
                         <label htmlFor="email" className="block text-sm">E-mail</label>
