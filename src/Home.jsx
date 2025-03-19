@@ -106,6 +106,10 @@
             return () => window.removeEventListener("keydown", handleKeyDown);
         }, [index]);
 
+        if (!loginData) {
+            return <div>Loading...</div>;
+        }
+
     return (
         <>
             <div className="flex flex-col items-center justify-center px-4 text-center">
