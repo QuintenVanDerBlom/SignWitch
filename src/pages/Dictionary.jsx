@@ -326,7 +326,7 @@ function Dictionary() {
                                     onClick={() => toggleFavorite(sign._id)}
                                     className="absolute top-2 right-2 text-yellow-400 text-2xl"
                                 >
-                                    <FaStar className={isFavorite ? "text-yellow-400" : "text-gray-300"}/>
+                                    <FaStar className={isFavorite ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}/>
                                 </button>
 
                                 <h2 className="text-xl font-semibold text-gray-800 m-2">{sign.title}</h2>
