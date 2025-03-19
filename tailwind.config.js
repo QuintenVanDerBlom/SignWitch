@@ -33,7 +33,7 @@ export default {
           dark: '#65102A',
         },
         'progress-Done': {
-          DEFAULT: '#2D941D',
+          DEFAULT: '#257017',
           dark: '#34792A',
         },
         'button-login': {
