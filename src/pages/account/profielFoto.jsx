@@ -22,7 +22,6 @@ const avatars = [
     "/public/18.png",
     "/public/19.png",
     "/public/20.png",
-
 ];
 
 export default function ProfielFoto() {
@@ -39,6 +38,7 @@ export default function ProfielFoto() {
                 <a
                     href="/account/profiel"
                     className="absolute top-4 right-4 text-red-500 text-2xl hover:text-red-700"
+                    aria-label="Sluiten"
                 >
                     ❌
                 </a>
@@ -48,25 +48,32 @@ export default function ProfielFoto() {
                     {avatars.map((avatar, index) => (
                         <div
                             key={index}
-                            className={`w-28 rounded-full cursor-pointer overflow-hidden border-4 ${
+                            className={`w-28 rounded-full cursor-pointer overflow-hidden border-4 transition-colors ${
                                 selectedAvatar === avatar ? "border-button-bg" : "border-transparent"
                             }`}
                             onClick={() => setSelectedAvatar(avatar)}
+                            tabIndex="0" // Zorg ervoor dat de avatars focusbaar zijn voor toetsenbordgebruikers
+                            role="button" // Geeft aan dat dit een interactief element is
+                            aria-label={`Selecteer avatar ${index + 1}`} // Beschrijvende tekst
                         >
-                            <img src={avatar} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+                            <img
+                                src={avatar}
+                                alt={`Avatar afbeelding ${index + 1}`} // Meer beschrijvende alt tekst
+                                className="w-full h-full object-cover"
+                            />
                         </div>
                     ))}
                 </div>
 
                 {/* Bevestigen-knop */}
-                <a
-                    href="/account/profiel"
-                    className="flex items-center justify-center mt-6 w-48 h-12 bg-button-login text-white py-2 rounded-lg hover:bg-button-login-hover mx-auto"
+                <button
+                    type="button"
+                    onClick={() => window.location.href = "/account/profiel"}
+                    className="flex items-center justify-center mt-6 w-48 h-12 bg-button-login text-white py-2 rounded-lg hover:bg-button-login-hover mx-auto focus:outline-none focus:ring-4 focus:ring-button-login-dark"
+                    aria-label="Avatar bevestigen"
                 >
                     Bevestigen
-                </a>
-
-
+                </button>
             </div>
         </div>
     );

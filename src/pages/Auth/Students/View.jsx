@@ -110,7 +110,7 @@ function Students() {
                 putData.append("role", newStudent.role);
 
                 const response = await fetch(`http://145.24.223.94:8000/users/${userId}`, {
-                    method: "PUT", // Of 'PATCH' als jouw API dat verlangt
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                         Accept: "application/json",
@@ -149,8 +149,6 @@ function Students() {
             if (!response.ok) {
                 console.error("Fout bij verwijderen user:", response.status, await response.text());
             } else {
-                console.log("Gebruiker verwijderd");
-                // Lokaal uit je state halen of opnieuw fetchen
                 setStudents(students.filter((student) => student._id !== userId));
             }
         } catch (error) {
@@ -253,12 +251,14 @@ function Students() {
             <div className="flex justify-between mb-4">
                 <div className="flex justify-center mb-6">
                     <button
+                        aria-pressed={view === "students"}
                         className={`py-2 px-6 rounded-l-lg ${view === "students" ? "bg-blue-600 text-white" : "bg-gray-300"}`}
                         onClick={() => setView("students")}
                     >
                         Studenten
                     </button>
                     <button
+                        aria-pressed={view === "teachers"}
                         className={`py-2 px-6 rounded-r-lg ${view === "teachers" ? "bg-blue-600 text-white" : "bg-gray-300"}`}
                         onClick={() => setView("teachers")}
                     >
@@ -266,26 +266,18 @@ function Students() {
                     </button>
                 </div>
                 <div className="flex space-x-4">
-                    {/* Import XML Button */}
-                    {/*<label className="bg-green-600 text-white py-2 px-4 rounded-lg cursor-pointer hover:bg-green-700 transition">*/}
-                    {/*    Importeer XML*/}
-                    {/*    <input*/}
-                    {/*        type="file"*/}
-                    {/*        accept=".xml"*/}
-                    {/*        onChange={handleXMLImport}*/}
-                    {/*        className="hidden"*/}
-                    {/*    />*/}
-                    {/*</label>*/}
                     <button
                         onClick={() => openModal("create")}
-                        className="bg-button-bg text-white dark:bg-button-bg-dark dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-button-bg-hover-dark dark:hover:bg-button-bg-hover transition"
+                        className="bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition"
+                        aria-label="Voeg gebruiker toe"
                     >
                         Voeg Gebruiker Toe
                     </button>
                     {/* Nieuwe knop voor meerdere studenten */}
                     <button
                         onClick={() => openModal("multi")}
-                        className="bg-blue-700 dark:bg-blue-800 text-white dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700 transition"
+                        className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition"
+                        aria-label="Voeg meerdere studenten toe"
                     >
                         Voeg Meerdere Studenten Toe
                     </button>
@@ -302,11 +294,19 @@ function Students() {
                         </p>
                         <p className="text-xs text-gray-400 dark:text-black">{new Date(user.created_at).toLocaleDateString('nl-NL')}</p>
                         <div className="absolute top-2 right-2 space-x-2">
-                            <button onClick={() => openModal("edit", user)} className="text-yellow-400">
-                                <FaEdit/>
+                            <button
+                                onClick={() => openModal("edit", user)}
+                                className="text-yellow-400"
+                                aria-label={`Bewerk ${user.username}`}
+                            >
+                                <FaEdit />
                             </button>
-                            <button onClick={() => handleDelete(user._id)} className="text-red-400">
-                                <FaTrashAlt/>
+                            <button
+                                onClick={() => handleDelete(user._id)}
+                                className="text-red-400"
+                                aria-label={`Verwijder ${user.username}`}
+                            >
+                                <FaTrashAlt />
                             </button>
                         </div>
                     </div>
@@ -334,11 +334,12 @@ function Students() {
                                             defaultValue={currentStudent ? currentStudent.username : ""}
                                             className="w-full p-2 border rounded-lg mt-1"
                                             required
+                                            aria-label="Gebruikersnaam"
                                         />
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="email" className="block text-sm font-medium">
-                                            Email
+                                            E-mail
                                         </label>
                                         <input
                                             id="email"
@@ -347,87 +348,40 @@ function Students() {
                                             defaultValue={currentStudent ? currentStudent.email : ""}
                                             className="w-full p-2 border rounded-lg mt-1"
                                             required
+                                            aria-label="E-mail"
                                         />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-sm font-medium">
+                                        <label htmlFor="role" className="block text-sm font-medium">
                                             Rol
                                         </label>
-                                        <div className="mt-1 flex items-center space-x-4">
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="role"
-                                                    value="teacher"
-                                                    defaultChecked={currentStudent ? currentStudent.role === "teacher" : false}
-                                                    className="form-radio"
-                                                    required
-                                                />
-                                                <span className="ml-2">Docent</span>
-                                            </label>
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="role"
-                                                    value="user"
-                                                    defaultChecked={currentStudent ? currentStudent.role === "user" : true}
-                                                    className="form-radio"
-                                                    required
-                                                />
-                                                <span className="ml-2">Student</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex justify-between">
-                                        <button
-                                            type="button"
-                                            onClick={closeModal}
-                                            className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
-                                        >
-                                            Annuleren
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-                                        >
-                                            {modalMode === "create" ? "Toevoegen" : "Bewerken"}
-                                        </button>
-                                    </div>
-                                </form>
-                            </>
-                        )}
-                        {modalMode === "multi" && (
-                            <>
-                                <h2 className="text-xl font-semibold mb-4">Voeg Meerdere Studenten Toe</h2>
-                                <p className="text-sm  mb-4">Voeg hier meerdere studenten tegelijk toe, dit kan er zo ongeveer uitzien: "12345678@hr.nl12345679@hr.nl"</p>
-                                <form onSubmit={handleMultiSubmit}>
-                                    <div className="mb-4">
-                                        <label htmlFor="multiUsers" className="block text-sm font-medium">
-                                            Gebruikers
-                                        </label>
-                                        <input
-                                            id="multiUsers"
-                                            name="multiUsers"
-                                            type="text"
-                                            placeholder="Emails"
+                                        <select
+                                            id="role"
+                                            name="role"
+                                            defaultValue={currentStudent ? currentStudent.role : "user"}
                                             className="w-full p-2 border rounded-lg mt-1"
                                             required
-                                        />
+                                            aria-label="Rol"
+                                        >
+                                            <option value="user">Student</option>
+                                            <option value="teacher">Docent</option>
+                                        </select>
                                     </div>
-                                    <div className="flex justify-between">
+                                    <div className="flex justify-end space-x-4">
                                         <button
                                             type="button"
                                             onClick={closeModal}
-                                            className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
+                                            className="bg-gray-300 text-white py-2 px-4 rounded-lg"
+                                            aria-label="Annuleer"
                                         >
-                                            Annuleren
+                                            Annuleer
                                         </button>
                                         <button
                                             type="submit"
-                                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                                            className="bg-blue-600 text-white py-2 px-4 rounded-lg"
+                                            aria-label="Sla op"
                                         >
-                                            Toevoegen
+                                            {modalMode === "create" ? "Voeg Toe" : "Update"}
                                         </button>
                                     </div>
                                 </form>
