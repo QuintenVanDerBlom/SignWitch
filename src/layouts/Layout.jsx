@@ -91,7 +91,7 @@ function Layout() {
                 <nav className="container mx-auto flex justify-between items-center">
                     {/* Logo / Titel */}
                     <Link to="/" className="text-white dark:text-gray-200 text-3xl tracking-wide flex ">
-                        <img src="../../public/hrlogo.svg" alt="logo" className="h-10 mr-4" />
+                        <img src="/hrlogo.svg" alt="logo" className="h-10 mr-4" />
                         Gebarentaal bij intake
                     </Link>
 
