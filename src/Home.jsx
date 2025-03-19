@@ -19,6 +19,7 @@
         const [lessons, setLessons] = useState([]);
         const [error, setError] = useState(null);
         const [progress, setProgress] = useState([]);
+        const [name, setName] = useState('')
         useEffect(() => {
             const fetchData = async () => {
                 try {
@@ -63,6 +64,7 @@
                     const data = await response.json();
                     setProgress(data.lessonProgress);  // Stel de lessons in de state in
                     console.log(data.lessonProgress)
+                    setName(data.username)
                 } catch (error) {
                     setError(error.message);  // Zet de fout in de state in
                 }
@@ -107,7 +109,8 @@
     return (
         <>
             <div className="flex flex-col items-center justify-center px-4 text-center">
-                <h2 className="pt-16 text-6xl font-k2d text-black dark:text-gray-200"> Hallo {loginData ? loginData.name : "gebruiker"}</h2>
+                <h2 className="pt-16 text-6xl font-k2d text-black dark:text-gray-200"> Hallo { name !== "" ? name : (loginData.name ? loginData.name : "Gebruiker") }
+                </h2>
                 <p className="pb-20 mt-4 text-2xl max-w-2xl font-openSans text-black dark:text-gray-200">
                     Welkom op de website van gebarentaal voor intake. Hier kan je extra oefeningen doen rondom gebarentaal.
                     Kies een les en ga aan de slag.
