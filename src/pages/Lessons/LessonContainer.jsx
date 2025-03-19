@@ -1,12 +1,11 @@
 import { Link } from "react-router";
-import {useEffect, useState} from "react";
-import {useOutletContext} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 function LessonContainer({ lesson }) {
     const [error, setError] = useState(null);
     const [progress, setProgress] = useState([]);
     const [savedSigns, setSavedSigns] = useState([]);
-
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -34,6 +33,7 @@ function LessonContainer({ lesson }) {
 
         fetchUser();
     }, []);
+
     const loginData = useOutletContext();
     const lessonProgress =
         progress.find((p) => p.lesson_id === lesson._id)?.progress || 0;
@@ -71,7 +71,6 @@ function LessonContainer({ lesson }) {
 
     useEffect(() => {
         if (lessonSigns.length > 0 && savedSigns.length > 0) {
-
             // Check hoeveel opgeslagen tekens in de categorie zitten
             const count = savedSigns.filter(sign =>
                 lessonSigns.some(catSign => catSign._id === sign.sign_id)
@@ -82,29 +81,47 @@ function LessonContainer({ lesson }) {
     }, [lessonSigns, savedSigns]);
 
     return (
-
         <div
             className="bg-lesson-container dark:bg-lesson-container-dark text-white p-4 rounded-lg shadow-lg w-96 h-36 m-10 flex flex-col justify-between transition-transform duration-200 hover:scale-105">
             <div className="flex flex-row justify-between">
                 <div></div>
                 <h2 className="text-center font-k2d text-2xl">{lesson.title}</h2>
-                <div className="">➝</div>
+                <Link
+                    to={`/lessons/${lesson._id}`}
+                    aria-label={`Bekijk de details van de les: ${lesson.title}`}
+                    className="text-2xl"
+                >
+                    ➝
+                </Link>
             </div>
 
             {/* Toegevoegde tekst boven de progress bar */}
-            <p className="text-center text-xl mt-2">{signCount}/{lessonSigns.length} nog oefenen</p>
+            <p className="text-center text-xl mt-2" aria-live="polite">
+                {signCount}/{lessonSigns.length} nog oefenen
+            </p>
 
             {/* Progress bar */}
-            <div className="w-full bg-white h-10 rounded-md border border-black">
+            <div
+                className="w-full bg-white h-10 rounded-md border border-black"
+                role="progressbar"
+                aria-valuenow={lessonProgress}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label="Voortgang van de les"
+            >
                 <div
                     className="bg-progress-Done dark:bg-progress-Done-dark h-10 rounded-md border border-black"
                     style={{ width: `${lessonProgress}%` }}
                 ></div>
             </div>
+
+            {error && (
+                <div role="alert" className="text-red-500 mt-4">
+                    <strong>Er is een fout opgetreden: </strong>{error}
+                </div>
+            )}
         </div>
-        // </Link>
     );
 }
 
-
-export default LessonContainer
+export default LessonContainer;

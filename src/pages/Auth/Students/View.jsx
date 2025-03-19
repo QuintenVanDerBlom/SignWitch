@@ -12,7 +12,6 @@ function Students() {
 
     const fetchStudents = async () => {
         try {
-            // GET-verzoek sturen
             const response = await fetch("http://145.24.223.94:8000/users", {
                 method: "GET",
                 headers: {
@@ -22,24 +21,16 @@ function Students() {
             });
             const data = await response.json();
 
-            // Controleren of het goed gaat
             if (!response.ok) {
                 console.error("Fout bij ophalen users:", response.status, await response.text());
                 return;
             }
 
-            // JSON parsen
-            //const data = await response.json();
-
-            // Resultaat loggen en in state zetten
-            console.log("Data van de API:", data);
-            // setStudents(data);
             setStudents(data.users);
         } catch (error) {
             console.error("Er ging iets mis:", error);
         }
     };
-
 
     useEffect(() => {
         fetchStudents();
@@ -60,7 +51,6 @@ function Students() {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        // Object met nieuwe waarden
         const newStudent = {
             username: formData.get("username"),
             email: formData.get("email"),
@@ -68,7 +58,6 @@ function Students() {
         };
 
         if (modalMode === "create") {
-            // === CREATE ===
             try {
                 const postData = new URLSearchParams();
                 postData.append("username", newStudent.username);
@@ -90,27 +79,21 @@ function Students() {
                 } else {
                     const data = await response.json();
                     console.log("Gebruiker aangemaakt via API:", data);
-                    // Eventueel direct opnieuw fetchen of toevoegen aan state
-                    // Voorbeeld: opnieuw fetchen om de lijst te updaten
                     fetchStudents();
                 }
             } catch (error) {
                 console.error("Error in POST request:", error);
             }
         } else if (modalMode === "edit" && currentStudent) {
-            // === EDIT ===
             try {
-                // Gebruiker ID uit currentStudent (API geeft '_id' terug)
                 const userId = currentStudent._id;
-
-                // x-www-form-urlencoded body maken
                 const putData = new URLSearchParams();
                 putData.append("username", newStudent.username);
                 putData.append("email", newStudent.email);
                 putData.append("role", newStudent.role);
 
                 const response = await fetch(`http://145.24.223.94:8000/users/${userId}`, {
-                    method: "PUT", // Of 'PATCH' als jouw API dat verlangt
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                         Accept: "application/json",
@@ -124,8 +107,6 @@ function Students() {
                 } else {
                     const data = await response.json();
                     console.log("Gebruiker bijgewerkt via API:", data);
-                    // Hier kun je de lokale state bijwerken, of opnieuw fetchen
-                    // Bijv. opnieuw fetchen om zeker te weten dat je de actuele data hebt
                     fetchStudents();
                 }
             } catch (error) {
@@ -149,102 +130,11 @@ function Students() {
             if (!response.ok) {
                 console.error("Fout bij verwijderen user:", response.status, await response.text());
             } else {
-                console.log("Gebruiker verwijderd");
-                // Lokaal uit je state halen of opnieuw fetchen
                 setStudents(students.filter((student) => student._id !== userId));
             }
         } catch (error) {
             console.error("Error in DELETE request:", error);
         }
-    };
-
-    // Hier is de logica voor "Meerdere studenten" (multi) ongewijzigd:
-    const handleMultiSubmit = async (e) => {
-        e.preventDefault();
-
-        // 1. Haal de ruwe input op
-        const formData = new FormData(e.target);
-        const users = formData.get("multiUsers");
-
-        // 2. Splits op '@hr.nl' (voorbeeld) of gebruik jouw eigen parse-logica
-        const parts = users.split("@hr.nl");
-        const emails = parts.slice(0, -1).map((part) => part.trim() + "@hr.nl");
-
-        // 3. Bouw een array van objecten
-        const bodyArray = emails.map((email) => ({
-            username: "Gebruiker",
-            email: email,
-            role: "user",
-        }));
-
-        try {
-            // 4. Verstuur als JSON-array naar de API
-            const response = await fetch("http://145.24.223.94:8000/users", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    apikey: "pinda", // Jouw API-key
-                },
-                body: JSON.stringify(bodyArray),
-            });
-
-            if (!response.ok) {
-                // Eventueel foutafhandeling
-                console.error("Fout bij het aanmaken van meerdere users:", response.status, await response.text());
-            } else {
-                // Bij succes: verwerk de response of update je state
-                const data = await response.json();
-                console.log("Succesvol aangemaakt via API:", data);
-            }
-        } catch (error) {
-            console.error("Error in POST request:", error);
-        }
-
-        // 5. Sluit de modal (als alles klaar is)
-        closeModal();
-    };
-
-
-    const handleXMLImport = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const xmlContent = event.target.result;
-            const parsedStudents = parseXML(xmlContent);
-            insertStudentsFromXML(parsedStudents);
-        };
-        reader.readAsText(file);
-    };
-
-    const parseXML = (xmlContent) => {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlContent, "application/xml");
-        const studentsNodes = xmlDoc.getElementsByTagName("student");
-
-        const studentsArray = [];
-        for (let i = 0; i < studentsNodes.length; i++) {
-            const studentNode = studentsNodes[i];
-            const username = studentNode.getElementsByTagName("username")[0]?.textContent;
-            const email = studentNode.getElementsByTagName("email")[0]?.textContent;
-            const role = studentNode.getElementsByTagName("role")[0]?.textContent;
-
-            if (username && email) {
-                studentsArray.push({
-                    username: username,
-                    email: email,
-                    role: role,
-                    created_date: new Date().toISOString(),
-                });
-            }
-        }
-        return studentsArray;
-    };
-
-    const insertStudentsFromXML = (newStudents) => {
-        setStudents((prevStudents) => [...prevStudents, ...newStudents]);
     };
 
     return (
@@ -253,12 +143,14 @@ function Students() {
             <div className="flex justify-between mb-4">
                 <div className="flex justify-center mb-6">
                     <button
+                        aria-pressed={view === "students"}
                         className={`py-2 px-6 rounded-l-lg ${view === "students" ? "bg-blue-600 text-white" : "bg-gray-300"}`}
                         onClick={() => setView("students")}
                     >
                         Studenten
                     </button>
                     <button
+                        aria-pressed={view === "teachers"}
                         className={`py-2 px-6 rounded-r-lg ${view === "teachers" ? "bg-blue-600 text-white" : "bg-gray-300"}`}
                         onClick={() => setView("teachers")}
                     >
@@ -266,26 +158,17 @@ function Students() {
                     </button>
                 </div>
                 <div className="flex space-x-4">
-                    {/* Import XML Button */}
-                    {/*<label className="bg-green-600 text-white py-2 px-4 rounded-lg cursor-pointer hover:bg-green-700 transition">*/}
-                    {/*    Importeer XML*/}
-                    {/*    <input*/}
-                    {/*        type="file"*/}
-                    {/*        accept=".xml"*/}
-                    {/*        onChange={handleXMLImport}*/}
-                    {/*        className="hidden"*/}
-                    {/*    />*/}
-                    {/*</label>*/}
                     <button
                         onClick={() => openModal("create")}
                         className="bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition"
+                        aria-label="Voeg gebruiker toe"
                     >
                         Voeg Gebruiker Toe
                     </button>
-                    {/* Nieuwe knop voor meerdere studenten */}
                     <button
                         onClick={() => openModal("multi")}
                         className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition"
+                        aria-label="Voeg meerdere studenten toe"
                     >
                         Voeg Meerdere Studenten Toe
                     </button>
@@ -302,11 +185,19 @@ function Students() {
                         </p>
                         <p className="text-xs text-gray-400">{new Date(user.created_at).toLocaleDateString('nl-NL')}</p>
                         <div className="absolute top-2 right-2 space-x-2">
-                            <button onClick={() => openModal("edit", user)} className="text-yellow-400">
-                                <FaEdit/>
+                            <button
+                                onClick={() => openModal("edit", user)}
+                                className="text-yellow-400"
+                                aria-label={`Bewerk ${user.username}`}
+                            >
+                                <FaEdit />
                             </button>
-                            <button onClick={() => handleDelete(user._id)} className="text-red-400">
-                                <FaTrashAlt/>
+                            <button
+                                onClick={() => handleDelete(user._id)}
+                                className="text-red-400"
+                                aria-label={`Verwijder ${user.username}`}
+                            >
+                                <FaTrashAlt />
                             </button>
                         </div>
                     </div>
@@ -334,11 +225,12 @@ function Students() {
                                             defaultValue={currentStudent ? currentStudent.username : ""}
                                             className="w-full p-2 border rounded-lg mt-1"
                                             required
+                                            aria-label="Gebruikersnaam"
                                         />
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="email" className="block text-sm font-medium">
-                                            Email
+                                            E-mail
                                         </label>
                                         <input
                                             id="email"
@@ -347,87 +239,40 @@ function Students() {
                                             defaultValue={currentStudent ? currentStudent.email : ""}
                                             className="w-full p-2 border rounded-lg mt-1"
                                             required
+                                            aria-label="E-mail"
                                         />
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-sm font-medium">
+                                        <label htmlFor="role" className="block text-sm font-medium">
                                             Rol
                                         </label>
-                                        <div className="mt-1 flex items-center space-x-4">
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="role"
-                                                    value="teacher"
-                                                    defaultChecked={currentStudent ? currentStudent.role === "teacher" : false}
-                                                    className="form-radio"
-                                                    required
-                                                />
-                                                <span className="ml-2">Docent</span>
-                                            </label>
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="role"
-                                                    value="user"
-                                                    defaultChecked={currentStudent ? currentStudent.role === "user" : true}
-                                                    className="form-radio"
-                                                    required
-                                                />
-                                                <span className="ml-2">Student</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex justify-between">
-                                        <button
-                                            type="button"
-                                            onClick={closeModal}
-                                            className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
-                                        >
-                                            Annuleren
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-                                        >
-                                            {modalMode === "create" ? "Toevoegen" : "Bewerken"}
-                                        </button>
-                                    </div>
-                                </form>
-                            </>
-                        )}
-                        {modalMode === "multi" && (
-                            <>
-                                <h2 className="text-xl font-semibold mb-4">Voeg Meerdere Studenten Toe</h2>
-                                <p className="text-sm  mb-4">Voeg hier meerdere studenten tegelijk toe, dit kan er zo ongeveer uitzien: "12345678@hr.nl12345679@hr.nl"</p>
-                                <form onSubmit={handleMultiSubmit}>
-                                    <div className="mb-4">
-                                        <label htmlFor="multiUsers" className="block text-sm font-medium">
-                                            Gebruikers
-                                        </label>
-                                        <input
-                                            id="multiUsers"
-                                            name="multiUsers"
-                                            type="text"
-                                            placeholder="Emails"
+                                        <select
+                                            id="role"
+                                            name="role"
+                                            defaultValue={currentStudent ? currentStudent.role : "user"}
                                             className="w-full p-2 border rounded-lg mt-1"
                                             required
-                                        />
+                                            aria-label="Rol"
+                                        >
+                                            <option value="user">Student</option>
+                                            <option value="teacher">Docent</option>
+                                        </select>
                                     </div>
-                                    <div className="flex justify-between">
+                                    <div className="flex justify-end space-x-4">
                                         <button
                                             type="button"
                                             onClick={closeModal}
-                                            className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400"
+                                            className="bg-gray-300 text-white py-2 px-4 rounded-lg"
+                                            aria-label="Annuleer"
                                         >
-                                            Annuleren
+                                            Annuleer
                                         </button>
                                         <button
                                             type="submit"
-                                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                                            className="bg-blue-600 text-white py-2 px-4 rounded-lg"
+                                            aria-label="Sla op"
                                         >
-                                            Toevoegen
+                                            {modalMode === "create" ? "Voeg Toe" : "Update"}
                                         </button>
                                     </div>
                                 </form>
