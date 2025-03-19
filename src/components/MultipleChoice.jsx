@@ -104,7 +104,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                 <div className="flex justify-end ml-10">
                     <video key={question.correctAnswer.title} width="640" height="360" controls
                            className="rounded-lg shadow-lg">
-                        <source src={`../public/signs/${question.correctAnswer.title}.mp4`} type="video/mp4"/>
+                        <source src={`/vids/${question.correctAnswer.title}.mp4`} type="video/mp4"/>
                         Je browser ondersteunt deze video niet.
                     </video>
 
