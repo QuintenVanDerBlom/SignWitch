@@ -16,8 +16,8 @@ function NotFound() {
                         />
                     </div>
                 </div>
-            <h1 className="text-2xl p-10 w-2/3">Het ziet ernaar uit dat de pagina die je hebt bezocht niet bestaat. Klik op een knop in de navigatiebalk of de onderstaande knop om verder te leren.</h1>
-            <button onClick={() => window.history.back()} className="text-blue-500 underline text-3xl">
+            <h1 className="text-2xl p-10 w-2/3 text-black dark:text-gray-200">Het ziet ernaar uit dat de pagina die je hebt bezocht niet bestaat. Klik op een knop in de navigatiebalk of de onderstaande knop om verder te leren.</h1>
+            <button onClick={() => window.history.back()} className="text-inline-link dark:text-inline-link-dark underline text-3xl">
                 Breng me terug naar waar ik was
             </button>
             </div>
