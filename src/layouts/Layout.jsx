@@ -45,7 +45,7 @@ function Layout() {
         }
 
         if (loginData == null) {
-            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://145.24.223.94:8000/";
         } else {
             const response = await fetch(`https://cmgt.hr.nl/api/validate-sso-token`, {
                 method: 'GET',
@@ -89,7 +89,7 @@ function Layout() {
 
             } else {
                 console.log('token invalide');
-                window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+                window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://145.24.223.94:8000/";
             }
         }
     }
