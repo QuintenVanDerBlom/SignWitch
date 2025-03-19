@@ -278,14 +278,14 @@ function Students() {
                     {/*</label>*/}
                     <button
                         onClick={() => openModal("create")}
-                        className="bg-button-bg text-white py-2 px-4 rounded-lg hover:bg-button-bg-hover transition"
+                        className="bg-button-bg text-white dark:bg-button-bg-dark dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-button-bg-hover-dark dark:hover:bg-button-bg-hover transition"
                     >
                         Voeg Gebruiker Toe
                     </button>
                     {/* Nieuwe knop voor meerdere studenten */}
                     <button
                         onClick={() => openModal("multi")}
-                        className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition"
+                        className="bg-blue-700 dark:bg-blue-800 text-white dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700 transition"
                     >
                         Voeg Meerdere Studenten Toe
                     </button>
@@ -294,13 +294,13 @@ function Students() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {students.filter(user => user.role === (view === "students" ? "user" : "teacher")).map((user) => (
-                    <div key={user._id} className="relative p-4 text-center bg-white shadow-md rounded-lg border">
+                    <div key={user._id} className="relative p-4 text-center bg-white dark:bg-gray-300 shadow-md rounded-lg border">
                         <h2 className="text-xl font-semibold">{user.username}</h2>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 dark:text-black">{user.email}</p>
+                        <p className="text-sm text-gray-500 dark:text-black">
                             {user.role === 'teacher' ? 'Docent' : user.role === 'user' ? 'Student' : ''}
                         </p>
-                        <p className="text-xs text-gray-400">{new Date(user.created_at).toLocaleDateString('nl-NL')}</p>
+                        <p className="text-xs text-gray-400 dark:text-black">{new Date(user.created_at).toLocaleDateString('nl-NL')}</p>
                         <div className="absolute top-2 right-2 space-x-2">
                             <button onClick={() => openModal("edit", user)} className="text-yellow-400">
                                 <FaEdit/>
