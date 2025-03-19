@@ -32,7 +32,7 @@ function Layout() {
     const [isAuthorised, setIsAuthorised] = useState(true);
 
     useEffect(() => {
-        checkAuth();
+        //checkAuth();
     }, []);
 
     async function checkAuth() {
