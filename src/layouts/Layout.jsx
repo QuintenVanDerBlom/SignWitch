@@ -159,7 +159,7 @@ function Layout() {
 
             {/* Main Content */}
             <main className="min-h-screen bg-background-color dark:bg-background-color-dark">
-                {/*<Outlet loginData={loginData}/>*/}
+                <Outlet loginData={loginData}/>
                 <Outlet context={loginData}/>
             </main>
 
