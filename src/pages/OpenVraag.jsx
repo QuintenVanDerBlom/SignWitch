@@ -3,19 +3,23 @@ import ReactPlayer from "react-player";
 import { FaHeart } from "react-icons/fa";
 
 const VideoPlayer = ({ videoUrl }) => {
-
     return (
         <div className="flex justify-end ml-10">
             <div className="w-[640px] h-[360px] rounded-lg shadow-lg overflow-hidden">
-                <ReactPlayer url={videoUrl} controls width="100%" height="100%" />
+                <ReactPlayer
+                    url={videoUrl}
+                    controls
+                    width="100%"
+                    height="100%"
+                    aria-label="Bekijk de educatieve video"
+                    role="region" // Toegevoegd voor duidelijke semantiek
+                />
             </div>
         </div>
     );
 };
 
 function OpenVraag({ exercise, setScore, setIsChecked }) {
-
-
     const [answers, setAnswers] = useState("");
     const [isCorrect, setIsCorrect] = useState(null);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
@@ -67,7 +71,7 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
 
     return (
         <div className="flex flex-col items-center w-screen h-1/2">
-            <h1 className="underline text-lg m-5">Vul de juiste woorden in</h1>
+            <h1 className="underline text-lg m-5" id="question-heading">Vul de juiste woorden in</h1>
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
                     <VideoPlayer videoUrl={exercise.video} />
@@ -76,15 +80,18 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
                 <div className="w-1/2 mr-10">
                     {showCorrectAnswer ? (
                         <div className="text-center">
-                            <p className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}>
+                            <p
+                                className={`text-lg font-semibold ${isCorrect ? "text-green-600" : "text-red-500"}`}
+                                aria-live="assertive"
+                            >
                                 {isCorrect ? "Goed gedaan! het juiste antwoord is: ✅" : "Helaas ❌ het juiste antwoord is:"}
                             </p>
-                            <p className="text-lg font-semibold">{exercise.answer}</p>
+                            <p className="text-lg font-semibold" aria-labelledby="correct-answer">{exercise.answer}</p>
                         </div>
                     ) : (
                         <>
                             <p className="text-lg text-center font-semibold text-red-500">{wrongAnswer}</p>
-                            <p className="text-xl mb-6 text-center">{exercise.question}</p>
+                            <p className="text-xl mb-6 text-center" id="question-text">{exercise.question}</p>
 
                             <div className="flex flex-col gap-6 items-center">
                                 <div className="mb-6 text-center">
@@ -93,6 +100,9 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
                                         onChange={(e) => handleChange(e.target.value)}
                                         className="border-4 border-button-bg mx-1 w-96 h-40 text-lg p-4 bg-gray-100 rounded-lg shadow"
                                         placeholder="Schrijf hier je antwoord..."
+                                        aria-labelledby="answer-input"
+                                        aria-required="true" // Geeft aan dat dit veld vereist is
+                                        aria-invalid={wrongAnswer ? "true" : "false"} // Markeert foutieve antwoorden
                                     />
                                 </div>
                             </div>
@@ -102,12 +112,10 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
             </div>
             <button
                 onClick={checkAnswers}
-                className={`mt-4 px-4 py-2 rounded-lg shadow-md ${
-                    showCorrectAnswer || !answers.trim()
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-progress-Done text-white"
-                }`}
+                className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer || !answers.trim() ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white"}`}
                 disabled={showCorrectAnswer || !answers.trim()}
+                aria-label="Controleer je antwoord"
+                aria-disabled={showCorrectAnswer || !answers.trim()}
             >
                 Controleer antwoord
             </button>
@@ -122,6 +130,7 @@ function OpenVraag({ exercise, setScore, setIsChecked }) {
                                     key={i}
                                     size={30}
                                     className={i < amountChecked ? "text-gray-500" : "text-red-400"}
+                                    aria-hidden="true" // Zodat schermlezers deze iconen kunnen negeren
                                 />
                             ))}
                         </div>

@@ -11,11 +11,13 @@ const VideoPlayer = ({ videoUrl }) => {
                     controls
                     width="100%"
                     height="100%"
+                    aria-label="Video player"
                 />
             </div>
         </div>
     );
 };
+
 function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     const correctAnswer = exercise.answer.split(", ");
     const exerciseQuestion = exercise.question.split(/[\s,]+/);
@@ -25,8 +27,9 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     const [wrongAnswer, setWrongAnswer] = useState("");
     let limitCheck = 2;
     let [amountChecked, setAmountChecked] = useState(0);
+
     useEffect(() => {
-        setWrongAnswer("Helaas ❌, probeer het nog een keer.")
+        setWrongAnswer("Helaas ❌, probeer het nog een keer.");
     }, [amountChecked]);
 
     useEffect(() => {
@@ -34,8 +37,8 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
         setAnswers(Array(correctAnswer.length).fill(""));
         setIsCorrect(null);
         setShowCorrectAnswer(false);
-        setAmountChecked(0)
-        setWrongAnswer("")
+        setAmountChecked(0);
+        setWrongAnswer("");
     }, [exercise]);
 
     const handleChange = (index, value) => {
@@ -68,8 +71,8 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
     };
 
     return (
-        <div className="flex flex-col items-center w-screen h-1/2 ">
-            <h1 className="underline text-lg m-5 text-black dark:text-gray-200">Vul de juiste woorden in</h1>
+        <div className="flex flex-col items-center w-screen h-1/2" aria-live="polite">
+            <h1 className="underline text-lg m-5 text-black dark:text-gray-200" id="exercise-question">Vul de juiste woorden in</h1>
             <div className="flex flex-row w-full justify-between px-20 items-center gap-10">
                 <div className="flex justify-end ml-10">
                     <VideoPlayer
@@ -81,14 +84,14 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                     {/* ✅ Toon de correcte zin na controle */}
                     {showCorrectAnswer ? (
                         <div className="text-center">
-                            <p className={`text-xl font-semibold  ${isCorrect ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-300"}`}>
+                            <p className={`text-xl font-semibold ${isCorrect ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-300"}`} role="alert">
                                 {isCorrect ? "Goed gedaan! ✅" : "Helaas ❌ het juiste antwoord is:"}
                             </p>
                             <p className="text-xl font-semibold text-black dark:text-gray-200">
                                 {(() => {
                                     let correctIndex = 0;
                                     return exerciseQuestion.map((word, index) =>
-                                        word === "___" || word === "___."|| word === "___?"? (
+                                        word === "___" || word === "___." || word === "___?" ? (
                                             <span key={index} className="font-bold text-blue-600 dark:text-blue-400">
                                                 {correctAnswer[correctIndex++]}
                                             </span>
@@ -100,7 +103,6 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                             </p>
                         </div>
                     ) : (
-                        // 🔹 Normale vraag met invulvelden
                         <>
                             <p className="text-lg text-center font-semibold text-red-500">
                                 {wrongAnswer}
@@ -109,7 +111,7 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                                 {(() => {
                                     let placeIndex = 1;
                                     return exerciseQuestion.map((word, index) =>
-                                        word === "___" || word === "___."|| word === "___?" ? (
+                                        word === "___" || word === "___." || word === "___?" ? (
                                             <span key={index} className="underline"> __{placeIndex++}__ </span>
                                         ) : (
                                             ` ${word} `
@@ -128,22 +130,21 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                                             onChange={(e) => handleChange(index, e.target.value)}
                                             className="border-b-4 border-button-bg mx-1 w-72 text-center text-lg p-4 bg-gray-100 rounded-lg shadow"
                                             placeholder={` (${index + 1})`}
+                                            aria-label={`Vul het woord in voor het gat ${index + 1}`}
+                                            aria-invalid={isCorrect === false ? "true" : "false"}
                                         />
                                     </div>
                                 ))}
                             </div>
-
-                            {/* Controleer-knop */}
-
                         </>
                     )}
                 </div>
-
             </div>
             <button
                 onClick={checkAnswers}
                 className={`mt-4 px-4 py-2 rounded-lg shadow-md ${showCorrectAnswer ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-progress-Done text-white"}`}
                 disabled={showCorrectAnswer}
+                aria-label="Controleer het antwoord"
             >
                 Controleer het antwoord
             </button>
@@ -158,17 +159,9 @@ function InvulvraagOpen({ exercise, setScore, setIsChecked }) {
                                     key={i}
                                     size={30}
                                     className={i < amountChecked ? "text-gray-500 dark:text-white" : "text-red-400"}
+                                    aria-label={`Kans ${i + 1}`}
                                 />
                             ))}
-                            {/*                <div*/}
-                            {/*                    className={`flex items-center justify-center w-16 h-16 rounded-full text-white text-2xl font-openSans */}
-                            {/*${limitCheck + 1 - amountChecked === 3 ? "bg-red-500" :*/}
-                            {/*                        limitCheck + 1 - amountChecked === 2 ? "bg-orange-500" :*/}
-                            {/*                            "bg-green-500"}`}*/}
-                            {/*                >*/}
-                            {/*                    {limitCheck + 1 - amountChecked}*/}
-                            {/*                </div>*/}
-
                         </div>
                     </>
                 ) : null}

@@ -1,6 +1,6 @@
-import {Link} from "react-router";
-import {useOutletContext} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { Link } from "react-router";
+import { useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function CategoryContainer({ category }) {
     const loginData = useOutletContext();
@@ -13,7 +13,7 @@ function CategoryContainer({ category }) {
                 const response = await fetch(`http://145.24.223.94:8000/users/${loginData.email}`, {
                     method: "GET",
                     headers: {
-                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Zorg dat je hier je API key gebruikt
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz",
                         "Accept": "application/json",
                     },
                 });
@@ -25,7 +25,6 @@ function CategoryContainer({ category }) {
                 const data = await response.json();
                 setUserID(data._id);
 
-                // Filter alleen de gesavede signs (waar saved: true is)
                 const filteredSigns = data.signsSaved?.filter(sign => sign.saved === true) || [];
                 setSavedSigns(filteredSigns);
                 console.log("filteredSigns", filteredSigns);
@@ -37,6 +36,7 @@ function CategoryContainer({ category }) {
 
         fetchUser();
     }, []);
+
     const [signCount, setSignCount] = useState(0);
     const [categorySigns, setCategorySigns] = useState([]);
 
@@ -56,7 +56,6 @@ function CategoryContainer({ category }) {
                 }
 
                 const data = await response.json();
-                // Opslaan in state
                 setCategorySigns(data.categorySigns);
             } catch (error) {
                 console.error("Error fetching category signs:", error);
@@ -68,8 +67,6 @@ function CategoryContainer({ category }) {
 
     useEffect(() => {
         if (categorySigns.length > 0 && savedSigns.length > 0) {
-
-            // Check hoeveel opgeslagen tekens in de categorie zitten
             const count = savedSigns.filter(sign =>
                 categorySigns.some(catSign => catSign._id === sign.sign_id)
             ).length;
@@ -78,20 +75,27 @@ function CategoryContainer({ category }) {
         }
     }, [categorySigns, savedSigns]);
 
-
     return (
-
         <div
             className="bg-lesson-container dark:bg-lesson-container-dark text-white p-4 rounded-lg shadow-lg w-96 h-36 m-10 flex flex-col justify-between items-center transition-transform duration-200 hover:scale-105">
             <div className="flex w-72 flex-row justify-between">
                 <div></div>
-                <h2 className="text-center font-k2d text-xl">{category.categoryName}</h2>
-                <div className="">➝</div>
+                <h2 className="text-center font-k2d text-xl" aria-live="polite">{category.categoryName}</h2> {/* Gebruik aria-live voor dynamische inhoud */}
+                <Link
+                    to={`/category/${category.id}`}
+                    aria-label={`Bekijk de details van de categorie ${category.categoryName}`}
+                    tabindex="0" // Zorg ervoor dat het element toegankelijk is via toetsenbord
+                >
+                    <div className="text-2xl">➝</div>
+                </Link>
             </div>
-            <p className="m-5 text-xl">{signCount}/{categorySigns.length} nog oefenen</p>
+
+            <p className="m-5 text-xl" aria-live="polite">
+                {signCount}/{categorySigns.length} nog oefenen
+                <span className="sr-only"> van de {categorySigns.length} beschikbare tekens in deze categorie</span> {/* Verbetering voor visuele ondersteuning */}
+            </p> {/* Dynamische inhoud zichtbaar maken voor schermlezers */}
         </div>
     );
 }
 
-
-export default CategoryContainer
+export default CategoryContainer;
