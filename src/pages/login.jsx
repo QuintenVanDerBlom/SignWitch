@@ -25,15 +25,15 @@ function Login() {
 
     return (
         <div>
-            <h1>Welkom op de loginpagina</h1>
+            <h1 className="text-black dark:text-gray-200">Welkom op de loginpagina</h1>
             {loginData ? (
                 <div>
-                    <p><strong>Naam:</strong> {loginData.name}</p>
-                    <p><strong>Email:</strong> {loginData.email}</p>
-                    <p><strong>Token:</strong> {loginData.token}</p>
+                    <p className="text-black dark:text-gray-200"><strong>Naam:</strong> {loginData.name}</p>
+                    <p className="text-black dark:text-gray-200"><strong>Email:</strong> {loginData.email}</p>
+                    <p className="text-black dark:text-gray-200"><strong>Token:</strong> {loginData.token}</p>
                 </div>
             ) : (
-                <p>Redirecting to login...</p>
+                <p className="text-black dark:text-gray-200">Redirecting to login...</p>
             )}
         </div>
     );

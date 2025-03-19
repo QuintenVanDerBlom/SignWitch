@@ -3,6 +3,7 @@ import {FaUserCircle} from "react-icons/fa";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Unauthorised from "./Unauthorised.jsx";
+import DarkModeToggle from "../components/DarkModeToggle.jsx";
 
 
 function Layout() {
@@ -99,17 +100,17 @@ function Layout() {
 
 
     return (
-        <div className="min-h-screen text-black">
+        <div className="min-h-screen text-black ">
             {/* Header */}
-            <header className="bg-bg-nav-bar shadow-lg py-4">
+            <header className="bg-bg-nav-bar dark:bg-bg-nav-bar-dark shadow-lg py-4">
                 <nav className="container mx-auto flex justify-between items-center">
                     {/* Logo / Titel */}
-                    <Link to="/" className="text-white text-3xl tracking-wide flex ">
+                    <Link to="/" className="text-white dark:text-gray-200 text-3xl tracking-wide flex ">
                         <img src="../../public/hrlogo.svg" alt="logo" className="h-10 mr-4"/> Gebarentaal bij intake
                     </Link>
 
                     {/* Navigatie */}
-                    <ul className="flex space-x-20 text-white text-xl items-center font-openSans">
+                    <ul className="flex space-x-16 text-white dark:text-gray-200 text-xl items-center font-openSans">
                         <li>
                             <Link to="/" className="hover:underline transition-all">
                                 Home
@@ -122,18 +123,18 @@ function Layout() {
                         </li>
                         <li className="relative group">
                             <button className="hover:underline transition-all flex items-center">
-                                <Link to="/lessen">Lessen ▼</Link>
+                                <Link to="/lessen">Lessen</Link>
                             </button>
                             {/* Dropdown */}
-                            <ul className="absolute hidden group-hover:block bg-bg-nav-bar text-white mt-0 py-2 w-40 shadow-md rounded-lg">
-                                {lessons.map(lesson => (<li><Link to={`/les/${lesson.id}`}
-                                                                  className="block px-4 py-2 hover:bg-button-bg-hover">{lesson.title}</Link>
-                                </li>))}
-                            </ul>
+                            {/*<ul className="absolute hidden group-hover:block bg-bg-nav-bar dark:bg-bg-nav-bar-dark text-white dark:text-gray-200 mt-0 py-2 w-40 shadow-md rounded-lg">*/}
+                            {/*    {lessons.map(lesson => (<li><Link to={`/les/${lesson.id}`}*/}
+                            {/*                                      className="block px-4 py-2 hover:bg-button-bg-hover dark:hover:bg-button-bg-dark">{lesson.title}</Link>*/}
+                            {/*    </li>))}*/}
+                            {/*</ul>*/}
                         </li>
                         <li className="relative group">
                             <button className="hover:underline transition-all flex items-center">
-                                <Link to="/woordenboek">Woordenboek ▼</Link>
+                                <Link to="/woordenboek">Woordenboek</Link>
                             </button>
                             {/*/!* Dropdown *!/*/}
                             {/*<ul className="absolute hidden group-hover:block bg-bg-nav-bar text-white mt-0 py-2 w-40 shadow-md rounded-lg">*/}
@@ -147,6 +148,9 @@ function Layout() {
                               className="text-gray-200 text-3xl bg-gray-600 rounded-full p-2 hover:bg-gray-500">
                             <FaUserCircle/>
                         </Link>
+
+                        {/* Dark Mode Toggle */}
+                        <DarkModeToggle/>
                     </ul>
 
 
@@ -154,7 +158,7 @@ function Layout() {
             </header>
 
             {/* Main Content */}
-            <main className="min-h-screen bg-background-color">
+            <main className="min-h-screen bg-background-color dark:bg-background-color-dark">
                 {/*<Outlet loginData={loginData}/>*/}
                 <Outlet context={loginData}/>
             </main>
