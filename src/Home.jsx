@@ -155,7 +155,7 @@
                                                     cy="18"
                                                     r="16"
                                                     fill="none"
-                                                    className="stroke-current text-gray-200"
+                                                    className="stroke-current text-gray-200 dark:text-gray-400"
                                                     strokeWidth="2"
                                                 ></circle>
                                                 <circle

@@ -135,6 +135,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                                     value={option.title}
                                     className="w-5 h-5 text-red-500 focus:ring-red-500"
                                     name="quiz"
+                                    aria-label={option.title}
                                     onChange={handleAnswerChange}
                                     checked={selectedAnswer === option.title}
                                     disabled={isCorrect !== null} // Voorkomt selectie na controle
