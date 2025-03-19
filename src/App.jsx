@@ -18,6 +18,10 @@ import Register from "./pages/authentication/Register.jsx";
 import Inlog from "./pages/authentication/Inlog.jsx";
 import Profiel from "./pages/account/profiel.jsx";
 import ProfielFoto from "./pages/account/profielFoto.jsx";
+import FlashCards from "./pages/FlashCards.jsx";
+import Unauthorised from "./layouts/Unauthorised.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 const router = createBrowserRouter([
     {
@@ -66,13 +70,22 @@ const router = createBrowserRouter([
                 path: '/opdracht/:category_id/done',
                 element: <DoneExercise/>
             },
+            {
+                path: '/flitskaarten',
+                element: <FlashCards/>
+            },
             // {
             //     path: '/sportitem',
             //     element: <SportItemList/>
             // },
             {
                 path: '/studenten',
-                element: <Students/>
+                element: ( <ProtectedRoute allowedRoles={['teacher']}> <Students/> </ProtectedRoute>)
+                //element: <Students/>
+            },
+            {
+                path: '/unauthorised',
+                element: <Unauthorised/>
             },
             // {
             //     path: '/sportitem/create',
@@ -90,10 +103,10 @@ const router = createBrowserRouter([
             //     path: '/delete',
             //     element: <SportItemDeleted/>
             // },
-            // {
-            //     path: '/*',
-            //     element: <NotFound/>
-            // }
+            {
+                path: '/*',
+                element: <NotFound/>
+            },
             {
                 path: '/keygen',
                 element: <ApiKey/>
