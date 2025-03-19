@@ -6,6 +6,7 @@ import { useOutletContext, useSearchParams } from "react-router-dom";
 function Lessons() {
     const [lessons, setLessons] = useState([]);
     const [error, setError] = useState(null);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -32,24 +33,28 @@ function Lessons() {
         fetchData();
     }, []);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
 
-
     return (
-        <div className="flex justify-center py-5 flex-col items-center">
+        <main className="flex justify-center py-5 flex-col items-center">
             <h1 className="text-title-color text-4xl font-k2d dark:text-gray-200">Lessen</h1>
-            <p className="font-openSans w-1/2 text-center text-black dark:text-gray-300">Hier kan je alle lessen vinden. Deze lessen komen overeen met de lessen in het werkboek.
-            En als je erop klikt dan ga je naar de verschillende thema's.</p>
-            <div className="flex flex-wrap justify-center mx-10">
+            <p className="font-openSans w-1/2 text-center text-black dark:text-gray-300">
+                Hier kan je alle lessen vinden. Deze lessen komen overeen met de lessen in het werkboek.
+                Als je erop klikt dan ga je naar de verschillende thema's.
+            </p>
+
+            {/* Foutmelding voor schermlezers */}
+            {error && <div role="alert" className="text-red-500">{error}</div>}
+
+            <section className="flex flex-wrap justify-center mx-10">
                 {lessons.map(lesson => (
-                    <Link to={`/les/${lesson.id}`} key={lesson.id}>
+                    <Link
+                        to={`/les/${lesson.id}`}
+                        key={lesson.id}
+                        aria-label={`Klik om naar de les over ${lesson.title} te gaan`}>
                         <LessonContainer lesson={lesson} />
                     </Link>
                 ))}
-            </div>
-            {/*<div>*/}
-            {/*    <h1>Lessons</h1>*/}
-            {/*    {loginData ? <p>Token: {loginData.token}</p> : <p>Loading...</p>}*/}
-            {/*</div>*/}
-        </div>
+            </section>
+        </main>
     );
 }
 

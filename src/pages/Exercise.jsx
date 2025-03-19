@@ -1,10 +1,9 @@
-import {useEffect, useState} from "react";
-import {useNavigate, useOutletContext, useParams} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import InvulVraagSleep from "./InvulvraagSleep.jsx";
 import MultipleChoice from "../components/MultipleChoice.jsx";
 import InvulvraagOpen from "./InvulvraagOpen.jsx";
 import OpenVraag from "./OpenVraag.jsx";
-
 
 function Exercise() {
     const loginData = useOutletContext();
@@ -36,16 +35,15 @@ function Exercise() {
                 }
 
                 const data = await response.json();
-                setCategory(data)
-                setLesson(data.lesson)
+                setCategory(data);
+                setLesson(data.lesson);
                 const categorySigns = data.categorySigns;
-                // Directly loop through the lessonSigns without using state yet
                 categorySigns.forEach(sign => {
                     fetch(`http://145.24.223.94:8000/exercises/multiplechoice/${sign._id}`, {
-                        method: 'GET', // Hier is de GET methode ook nodig
+                        method: 'GET',
                         headers: {
                             'Accept': 'application/json',
-                            'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz', // Zorg ervoor dat je dezelfde API key gebruikt
+                            'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
                         },
                     })
                         .then(response => response.json())
@@ -57,17 +55,16 @@ function Exercise() {
                         });
                 });
 
-                // Set the signs state only after the loop
                 setSigns(categorySigns);
-                // console.log(data.lesson)
             } catch (error) {
-                setError(error.message);  // Zet de fout in de state in
+                setError(error.message);
             }
         };
 
         fetchData();
-    }, []);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
-const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
+    }, []);
+
+    const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
     useEffect(() => {
 
         const fetchUser = async () => {
@@ -75,24 +72,22 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
                 const response = await fetch(`http://145.24.223.94:8000/users/${loginData.email}`, {
                     method: "GET",
                     headers: {
-                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Replace with your actual API key
+                        "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz",
                         "Accept": "application/json",
                     },
                 });
                 const data = await response.json();
 
-                // Access the 'items' array and set it to the signs state
-                setUserID(data._id)
-                const lessonprogress = data.lessonProgress; // De array met de voortgang van de lessen
-                // Filter de juiste les op basis van lesson_id
+                setUserID(data._id);
+                const lessonprogress = data.lessonProgress;
                 const lessonP = lessonprogress.find(progress => progress.lesson_id === lesson);
                 if (lessonP) {
-                   setCurrentLessonProgress(lessonP.progress); // De progress voor de juiste les
+                    setCurrentLessonProgress(lessonP.progress);
                     console.log('Huidige voortgang:', currentLessonProgress);
-                    return currentLessonProgress; // De progress teruggeven
+                    return currentLessonProgress;
                 } else {
                     console.log('Geen voortgang gevonden voor deze les');
-                    return null; // Fallback als er geen les wordt gevonden
+                    return null;
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -101,16 +96,17 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
 
         fetchUser();
     }, []);
+
     useEffect(() => {
-        if (lesson.length === 0) return; // Voorkom een onnodige fetch als lesson nog niet geladen is
+        if (lesson.length === 0) return;
 
         const fetchData = async () => {
             try {
                 const response = await fetch(`http://145.24.223.94:8000/lessons/${lesson}`, {
-                    method: 'GET', // Dit zorgt ervoor dat de fetch een GET request is
+                    method: 'GET',
                     headers: {
-                        'Accept': 'application/json', // Dit geeft aan dat je JSON verwacht als antwoord
-                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz', // Je API key om toegang te krijgen
+                        'Accept': 'application/json',
+                        'apikey': '9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz',
                     },
                 });
 
@@ -122,12 +118,13 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
                 setCategories(data.items.lessonCategories)
 
             } catch (error) {
-                setError(error.message);  // Zet de fout in de state in
+                setError(error.message);
             }
         };
 
         fetchData();
-    }, [lesson]);  // Dit zorgt ervoor dat de fetch alleen uitgevoerd wordt bij de eerste render
+    }, [lesson]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -145,12 +142,10 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
 
                 const data = await response.json();
 
-                // Hier kun je de filtering op category_id toevoegen
                 const filteredExercises = data.items.filter(exercise => {
                     return exercise.category === category_id;
                 });
 
-                // Voeg de gefilterde oefeningen toe aan de questions state
                 filteredExercises.forEach(exercise => {
                     setQuestions(prevQuestions => [
                         ...prevQuestions,
@@ -159,37 +154,35 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
                 });
 
             } catch (error) {
-                setError(error.message);  // Zet de fout in de state in
+                setError(error.message);
             }
         };
 
         fetchData();
-    }, []);  // Dit zorgt ervoor dat de fetch opnieuw wordt uitgevoerd als lessonSigns verandert
+    }, []);
 
-    // console.log(questions)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState({ correct: 0, incorrect: 0 });
     const [isChecked, setIsChecked] = useState(false);
     const [toggle, setToggle] = useState(false);
 
-
     const currentQuestion = questions[currentQuestionIndex];
     const progressPercentage = ((currentQuestionIndex) / questions.length) * 100;
-    // 🔄 Volgende vraag
-    const navigate = useNavigate(); // Voeg deze regel toe binnen de function
-    const [answeredQuestions, setAnsweredQuestions] = useState({}); // Bijhouden welke vragen al beantwoord zijn
+
+    const navigate = useNavigate();
+    const [answeredQuestions, setAnsweredQuestions] = useState({});
+
     async function updateProgress(id, addProgress) {
-        try{
-            // Stuur de PATCH request naar de server
+        try {
             const response = await fetch(`http://145.24.223.94:8000/users/${userID}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
-                    "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz", // Vervang met je daadwerkelijke API-sleutel
+                    "apiKey": "9tavSjz5IYTNCGpIhjnkcS2HIXnVMrFz",
                 },
                 body: JSON.stringify({
-                    lessonId: id, // Voeg signId toe
+                    lessonId: id,
                     progress: (currentLessonProgress + addProgress),
                 })
             });
@@ -203,19 +196,19 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
             console.error("Fout bij het updaten van favoriet:", error);
         }
     }
+
     const handleNextQuestion = () => {
         setAnsweredQuestions((prev) => ({
             ...prev,
-            [currentQuestionIndex]: true, // Markeer als beantwoord
+            [currentQuestionIndex]: true,
         }));
-        setIsChecked(false)
+        setIsChecked(false);
 
         const nextIndex = currentQuestionIndex + 1;
         if (nextIndex >= questions.length) {
             navigate(`/opdracht/${category_id}/done`, { state: { score } });
-            const calc = 1/categories.length * 100
-            updateProgress(lesson, calc)
-            // console.log(calc)
+            const calc = 1 / categories.length * 100;
+            updateProgress(lesson, calc);
         } else {
             setCurrentQuestionIndex(nextIndex);
             setToggle(!toggle);
@@ -225,9 +218,10 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
     const handlePreviousQuestion = () => {
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
-            setIsChecked(true); // Voorkomt dat het opnieuw beantwoord wordt
+            setIsChecked(true);
         }
     };
+
     return (
         <div className="flex flex-col items-center ">
             <div className="flex flex-col items-center justify-center px-4 text-center">
@@ -262,18 +256,17 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
                         setScore={setScore}
                         setIsChecked={setIsChecked}
                     />
-                ): currentQuestion && currentQuestion.type && currentQuestion.type === 'open_question' ?(
+                ) : currentQuestion && currentQuestion.type && currentQuestion.type === 'open_question' ? (
                     <OpenVraag
                         exercise={currentQuestion}
                         onNext={handleNextQuestion}
                         setScore={setScore}
                         setIsChecked={setIsChecked}
-                        />
-                ):(
+                    />
+                ) : (
                     <p>loading...</p>
                 )}
             </div>
-
 
             <div className="mt-4">
                 <p>Score: {score.correct} correct, {score.incorrect} nog te oefenen</p>
@@ -284,7 +277,7 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
                 <button
                     className="btn bg-gray-500 text-white rounded w-full sm:w-auto m-4 px-5 py-2"
                     onClick={handlePreviousQuestion}
-                    disabled={true} // Volgende knop pas actief na controle van het antwoord
+                    disabled={currentQuestionIndex === 0} // Zorg ervoor dat de vorige knop alleen werkt als we niet op de eerste vraag zitten
                 >
                     Vorige
                 </button>
@@ -299,7 +292,7 @@ const [currentLessonProgress, setCurrentLessonProgress] = useState(0);
 
             {/* Voortgangsbalk */}
             <div className="w-1/2 bg-progress-ND h-3 rounded-full">
-                <div className="bg-progress-Done h-full rounded-full transition-all duration-300" style={{width: `${progressPercentage}%`}}></div>
+                <div className="bg-progress-Done h-full rounded-full transition-all duration-300" style={{ width: `${progressPercentage}%` }}></div>
             </div>
         </div>
     );

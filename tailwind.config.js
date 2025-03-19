@@ -21,19 +21,19 @@ export default {
           dark: '#65102A',
         },
         'inline-link': {
-          DEFAULT:'#C77DFF',
-          dark: '#65102A',
+          DEFAULT:'#FF2448',
+          dark: '#4DB3CD',
         },
         'clicked-link': {
-          DEFAULT: '#7B2CBF',
-          dark: '#65102A',
+          DEFAULT: '#A80255',
+          dark: '#006AAB',
         },
         'progress-ND': {
           DEFAULT: '#D2D2D2',
           dark: '#65102A',
         },
         'progress-Done': {
-          DEFAULT: '#2D941D',
+          DEFAULT: '#257017',
           dark: '#34792A',
         },
         'button-login': {
