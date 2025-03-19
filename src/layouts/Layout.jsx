@@ -100,7 +100,7 @@ function Layout() {
 
 
     return (
-        <div className="min-h-screen text-black">
+        <div className="min-h-screen text-black ">
             {/* Header */}
             <header className="bg-bg-nav-bar dark:bg-bg-nav-bar-dark shadow-lg py-4">
                 <nav className="container mx-auto flex justify-between items-center">
