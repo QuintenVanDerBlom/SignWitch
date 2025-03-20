@@ -37,11 +37,11 @@ function Layout() {
             const newLoginData = { token, name, email };
             localStorage.setItem("loginData", JSON.stringify(newLoginData));
             setLoginData(newLoginData);
-            window.location.href = "http://localhost:5173/";
+            window.location.href = "http://145.24.222.32/";
         }
 
         if (loginData == null) {
-            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+            window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://145.24.222.32/";
         } else {
             const response = await fetch(`https://cmgt.hr.nl/api/validate-sso-token`, {
                 method: 'GET',
@@ -75,7 +75,7 @@ function Layout() {
                     setIsAuthorised(false);
                 }
             } else {
-                window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://localhost:5173";
+                window.location.href = "https://cmgt.hr.nl/chat-login/handle/tle2-1?redirect=http://145.24.222.32/";
             }
         }
     }

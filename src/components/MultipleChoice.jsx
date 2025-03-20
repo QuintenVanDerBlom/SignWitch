@@ -108,7 +108,7 @@ function MultipleChoice({ question, setScore, setIsChecked }) {
                         tabIndex="0"
                         aria-label="Gebaar video"
                     >
-                        <source src={`../public/signs/${question.correctAnswer.title}.mp4`} type="video/mp4" />
+                        <source src={`/signs/${encodeURIComponent(question.correctAnswer.title)}.mp4`} type="video/mp4" />
                         Je browser ondersteunt deze video niet.
                     </video>
                 </div>
