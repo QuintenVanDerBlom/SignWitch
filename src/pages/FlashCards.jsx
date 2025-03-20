@@ -358,7 +358,7 @@ function FlashCards() {
                                     }}
                                     className="absolute top-2 right-2 text-yellow-400 text-2xl"
                                 >
-                                    {favorites.some(fav => fav.sign_id === sign._id && fav.saved) ? (
+                                    {favorites && favorites.some(fav => fav.sign_id === sign._id && fav.saved) ? (
                                         <FaStar /> // If it's a favorite
                                     ) : (
                                         <FaStar className="text-gray-400 dark:text-gray-200" /> // If it's not a favorite
@@ -368,7 +368,7 @@ function FlashCards() {
                                     <h2 className="text-[3rem] font-semibold text-gray-800 dark:text-gray-200">{sign.title}</h2>
                                 ) : (
                                     <video className="w-[640px] h-[360px] rounded-lg shadow-lg overflow-hidden" controls>
-                                        <source src={`/vids/${sign.title}.mp4`} key={sign.title} type="video/mp4"/>
+                                        <source src={`/signs/${sign.title}.mp4`} key={sign.title} type="video/mp4"/>
                                         Your browser does not support the video tag.
                                     </video>
                                 )}

@@ -50,7 +50,7 @@ function Sign() {
             {/* Video Section */}
             <div className="w-screen md:w-1/2 flex justify-center mb-8">
                 <video className="w-screen rounded-lg shadow-md border border-gray-300" controls>
-                    <source src={`/vids/${sign.title}.mp4`} type="video/mp4"/>
+                    <source src={`/signs/${sign.title}.mp4`} type="video/mp4"/>
                     Your browser does not support the video tag.
                 </video>
             </div>
